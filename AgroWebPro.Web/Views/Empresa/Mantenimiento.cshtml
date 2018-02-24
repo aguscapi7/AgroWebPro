@@ -1,0 +1,134 @@
+﻿@model AgroWebPro.Web.Models.EmpresaModels
+@{
+    ViewBag.Title = "Mantenimiento de empresa";
+}
+
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+
+<h2>Mantenimiento de empleados</h2>
+
+<div class="form-group">
+    <select id="dllZonaHoraria">
+        @if (Model.listaZonasHorarias != null && Model.listaZonasHorarias.Count() > 0)
+        {
+            foreach (var item in Model.listaZonasHorarias)
+            {
+                <option value="@item.idZonaHoraria">@item.zonaHoraria</option>
+            }
+        }
+    </select>
+    <div class="row form-group">
+        <div class="col-md-6">
+            <label>Nombre</label>
+            <input id="txtNombre" placeholder="Ingrese el nombre" class="form-control" />
+        </div>
+        <div class="col-md-6">
+            <label>Apellidos</label>
+            <input id="txtApellidos" placeholder="Ingrese los apellidos" type="email" class="form-control" />
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-6">
+            <label>Fecha de nacimiento</label>
+            <input class="form-control" id="txtFechaNacimiento" readonly="readonly" value="@(DateTime.Now.ToShortDateString())" />
+        </div>
+        <div class="col-md-6">
+            <label>Correo</label>
+            <input id="txtCorreo" placeholder="Ingrese el correo" type="email" class="form-control" />
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-6">
+            <label>Teléfono</label>
+            <input id="txtTelefono" placeholder="Ingrese el teléfono" class="form-control" />
+        </div>
+        <div class="col-md-6">
+            <label>Puesto</label>
+            <select id="selectPuesto" class="form-control">
+                <option>Seleccione...</option>
+                <option>Puesto 1</option>
+                <option>Puesto 2</option>
+                <option>Puesto 3</option>
+            </select>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-6">
+            <label>Dirección</label>
+            <textarea id="txtDirección" rows="5" placeholder="Ingrese la dirección" class="form-control"></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8"></div>
+        <div class="col-md-4">
+            <button class="btn btn-info pull-right btn-guardar">Guardar</button>
+            <button class="btn btn-danger pull-right">Cancelar</button>
+        </div>
+    </div>
+</div>
+<hr />
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Correo</th>
+            <th>Puesto</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>Agustín Omar</td>
+            <td>Castillo Picado</td>
+            <td>agustin.castillo@regionalsoft.com</td>
+            <td>Puesto 1</td>
+            <td><button class="btn btn-danger" onclick="EliminarUsuario()"><span class="fa fa-trash"></span> </button>&nbsp;<button class="btn btn-primary" onclick="EditarUsuario()"><span class="fa fa-pencil"></span> </button></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>María Fernanda</td>
+            <td>Sanchez Gamboa</td>
+            <td>maria.sanchezg@gmail.com</td>
+            <td>Puesto 1</td>
+            <td><button class="btn btn-danger" onclick="EliminarUsuario()"><span class="fa fa-trash"></span> </button>&nbsp;<button class="btn btn-primary" onclick="EditarUsuario()"><span class="fa fa-pencil"></span> </button></td>
+        </tr>
+    </tbody>
+</table>
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+<script src="~/Scripts/sweetalert.min.js"></script>
+<script>
+    $('#txtFechaNacimiento').datepicker({
+
+        changeMonth: true,
+        changeYear: true,
+        format: "dd/mm/yyyy",
+        todayHighlight: true,
+        todayBtn: "linked",
+        onSelect: function (date) {
+        }
+    }).on('changeDate', function (e) {
+        $(this).datepicker('hide');
+        });
+
+    function EliminarUsuario() {
+        swal({
+            title: "Borrar usuario",
+            text: "Esta acción eliminará al usuario",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    swal("El usuario ha sido eliminado correctamente", {
+                        icon: "success",
+                    });
+                }
+            });
+    }
+</script>

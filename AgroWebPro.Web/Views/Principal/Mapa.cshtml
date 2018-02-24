@@ -1,0 +1,177 @@
+﻿@{
+    ViewBag.Title = "Maps";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<link href="~/Content/leaflet.css" rel="stylesheet" />
+<link href="~/Content/leaflet.draw.css" rel="stylesheet" />
+<link href="~/Content/leaflet.toolbar.css" rel="stylesheet" />
+<link href="~/Content/leaflet.draw-toolbar.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/leaflet-src.js"></script>
+<script src="~/Scripts/leaflet.toolbar-src.js"></script>
+<script src="~/Scripts/leaflet.draw-src.js"></script>
+<script src="~/Scripts/leaflet.draw-toolbar.js"></script>
+
+<div id="map" style="height:580px;"></div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Información del terreno</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Nombre</label>
+                        <input type="text" class="form-control" value="Terreno" />
+                    </div>
+                </div>
+                <div class="row" style="margin-top:20px;">
+                        
+                        <div class="col-md-6"><label>Cultivo</label><select class="form-control"><option>Seleccione...</option><option>Papa</option><option>Cebolla</option><option>Piña</option></select></div>
+                        <div class="col-md-6"><button style="margin-top:25px" class="btn btn-primary">Agregar cultivo <span class="fa fa-plus"></span></button></div>
+                </div>
+                <div class="row" style="margin-top:20px;">
+                    <div class="col-md-12"><table class="table table-hover"><thead><tr><th>Cultivo</th></tr></thead><tbody><tr><td><center>No hay cultivos agregados</center></td></tr></tbody></table></div>
+                </div>
+                    
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary">Guardar cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModalTareas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar tarea</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Empleado</label>
+                        <select class="form-control"><option>Seleccione...</option><option>Usuario 1</option><option>Usuario 2</option><option>Usuario 3</option></select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Tarea</label><select class="form-control"><option>Seleccione...</option><option>Tarea 1</option><option>Tarea 2</option><option>Tarea 3</option></select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Cultivo</label><select class="form-control"><option>Seleccione...</option><option>Cultivo 1</option><option>Cultivo 2</option><option>Cultivo 3</option></select>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:20px;">
+                    <div class="col-md-12"><table class="table table-hover"><thead><tr><th>Empleado</th><th>Tarea</th><th>Cultivo</th><th>Estado</th></tr></thead><tbody><tr><td>Empleado 1</td><td>Tarea 1</td><td>Cultivo 1</td><td>En proceso</td></tr></tbody></table></div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary">Guardar cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        osm = L.tileLayer(osmUrl, { maxZoom: 29, attribution: osmAttrib });
+    var map = L.map('map').setView([9.842405, -83.9317569], 29),
+        drawnItems = new L.FeatureGroup().addTo(map);
+
+    L.tileLayer("http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}", {
+        attribution: ''
+    }).addTo(map);
+
+
+    new LeafletToolbar.DrawToolbar({
+        position: 'topleft'
+    }).addTo(map);
+
+    new LeafletToolbar.EditToolbar.Control({
+        position: 'topleft'
+    }).addTo(map, drawnItems);
+
+    map.on('draw:created', function (evt) {
+        var type = evt.layerType,
+            layer = evt.layer;
+
+        drawnItems.addLayer(layer);
+    });
+
+    L.control.layers({
+        'osm': osm.addTo(map),
+        "google": L.tileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}', {
+            maxZoom: 29, attribution: 'google'
+        })
+    }, { 'drawlayer': drawnItems }, { position: 'topleft', collapsed: false }).addTo(map);
+
+    
+    map.on('draw:created', function (e) {
+        debugger;
+        var type = e.layerType,
+            layer = e.layer;
+
+        if (type === 'polygon') {
+            // structure the geojson object
+            var geojson = {};
+            geojson['type'] = 'Feature';
+            geojson['geometry'] = {};
+            geojson['geometry']['type'] = "Polygon";
+
+            // export the coordinates from the layer
+            coordinates = [];
+            latlngs = layer.getLatLngs();
+            for (var i = 0; i < latlngs.length; i++) {
+                coordinates.push([latlngs[i].lng, latlngs[i].lat])
+            }
+
+            // push the coordinates to the json geometry
+            geojson['geometry']['coordinates'] = [coordinates];
+
+            // Finally, show the poly as a geojson object in the console
+            console.log(JSON.stringify(geojson));
+            layer.bindPopup(
+
+                '<div><div class="row">' +
+                    '<div class="col-md-12"><h4>Terreno<span style="float:right;cursor:pointer;" class="fa fa-pencil" onclick="AgregarCultivo()"></span></h4></div>' +
+                '</div>'+
+                '<div class="row">' +
+                    '<div class="col-md-12"><table class="table table-condensed"><thead><tr><th>Cultivo</th></tr></thead><tbody><tr><td><center>No hay cultivos agregados</center></td></tr></tbody></table></div>'+
+                '</div>' +
+                '<div class="row" style="margin-top:20px">' +
+                    '<div class="col-md-12"><button class="btn btn-primary" onclick="AgregarTarea()">Agregar tarea<span class="fa fa-plus" style="margin-left:20px;"></span></button></div>' +
+                '</div>', { maxWidth: "auto" }
+            );
+
+        }
+
+        drawnItems.addLayer(layer);
+    });
+
+    function AgregarCultivo() {
+        $("#myModal").modal("show");
+    }
+
+    function AgregarTarea() {
+        $("#myModalTareas").modal("show");
+    }
+    
+</script>

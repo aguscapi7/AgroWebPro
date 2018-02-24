@@ -1,0 +1,208 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Inicio</title>
+
+    <!-- css -->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="plugins/cubeportfolio/css/cubeportfolio.min.css">
+    <link href="~/Content/login.css" rel="stylesheet" />
+    <link href="~/Content/inicio/style.css" rel="stylesheet" />
+    <link href="~/Content/inicio/animate.css" rel="stylesheet" />
+    <link href="~/Content/inicio/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/inicio/nivo-lightbox.css" rel="stylesheet" />
+    <link href="~/Content/inicio/owl.carousel.css" rel="stylesheet" />
+    <link href="~/Content/inicio/owl.theme.css" rel="stylesheet" />
+
+    <!-- boxed bg -->
+    <link href="~/Content/bodybg/bg1.css" rel="stylesheet" />
+    <!-- template skin -->
+    <link href="~/Content/color/default.css" rel="stylesheet" />
+</head>
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-custom">
+
+
+    <div id="wrapper">
+
+        <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+            <div class="container navigation">
+
+                <div class="navbar-header page-scroll">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <a class="navbar-brand" onclick="AbrirEnlace('@Url.Action("Index", "Home")')">
+                        <img src="~/img/agro_web_small_black.png"  alt="" width="70" height="54" />
+                    </a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#intro">Inicio</a></li>
+                        <li><a href="#boxes">Servicios</a></li>
+                        @*<li><a href="#facilities">Facilidades</a></li>*@
+                        <li><a href="#pricing">Precios</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
+                            <ul id="login-dp" class="dropdown-menu">
+                                <li>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            @*<form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">*@
+                                                <div class="form-group">
+                                                    <label class="sr-only" for="exampleInputEmail2">Correo electrónico</label>
+                                                    <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Correo electrónico" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="sr-only" for="exampleInputPassword2">Contraseña</label>
+                                                    <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Contraseña" required>
+                                                    <div class="help-block text-right"><a class="olvido" href="" style="font-size:10px;">Olvidó su contraseña?</a></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button class="btn btn-skin btn-block" onclick="AbrirEnlace('@Url.Action("Cultivo", "Principal")')">Ingresar</button>
+                                                </div>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox"> Mantenerme conectado
+                                                    </label>
+                                                </div>
+                                            @*</form>*@
+                                        </div>
+                                        <div class="bottom text-center">
+                                            Nuevo aquí? <a href="#"><b>Regístrese</b></a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+</div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+        @RenderBody()
+        
+
+        <footer>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-md-4">
+                        <div class="wow fadeInDown" data-wow-delay="0.1s">
+                            <div class="widget">
+                                <h5>Acerca de AgroWebPro</h5>
+                                <p>
+                                    Lorem ipsum dolor sit amet, ne nam purto nihil impetus, an facilisi accommodare sea
+                                </p>
+                            </div>
+                        </div>
+                        <div class="wow fadeInDown" data-wow-delay="0.1s">
+                            <div class="widget">
+                                <h5>Información</h5>
+                                <ul>
+                                    <li><a href="#">Inicio</a></li>
+                                    <li><a href="#">Terminos & condiciones</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="wow fadeInDown" data-wow-delay="0.1s">
+                            <div class="widget">
+                                <h5>Call center</h5>
+                                <p>
+                                    Nam leo lorem, tincidunt id risus ut, ornare tincidunt naqunc sit amet.
+                                </p>
+                                <ul>
+                                    <li>
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-calendar-o fa-stack-1x fa-inverse"></i>
+                                        </span> Lunes a sábado, 8:00am a 10:00pm
+                                    </li>
+                                    <li>
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-phone fa-stack-1x fa-inverse"></i>
+                                        </span> +506 25544555
+                                    </li>
+                                    <li>
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-envelope-o fa-stack-1x fa-inverse"></i>
+                                        </span> info@agrowebpro.com
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="wow fadeInDown" data-wow-delay="0.1s">
+                            <div class="widget">
+                                <h5>Nuestra ubicación</h5>
+                                <p>Costado oeste de la plaza de Hacienda Vieja, Cartago, Costa Rica</p>
+
+                            </div>
+                        </div>
+                        <div class="wow fadeInDown" data-wow-delay="0.1s">
+                            <div class="widget">
+                                <h5>Síganos</h5>
+                                <ul class="company-social">
+                                    <li class="social-facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                    <li class="social-twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                    <li class="social-google"><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                    <li class="social-vimeo"><a href="#"><i class="fa fa-vimeo-square"></i></a></li>
+                                    <li class="social-dribble"><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sub-footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <div class="wow fadeInLeft" data-wow-delay="0.1s">
+                                <div class="text-left">
+                                    <p>&copy; @DateTime.Now.Year - AgroWebPro / Un desarrollo de CPSoft</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
+
+    <!-- Core JavaScript Files -->
+    <script src="~/Scripts/inicio/jquery.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/inicio/jquery.easing.min.js"></script>
+    <script src="~/Scripts/inicio/wow.min.js"></script>
+    <script src="~/Scripts/inicio/jquery.scrollTo.js"></script>
+    <script src="~/Scripts/inicio/jquery.appear.js"></script>
+    <script src="~/Scripts/inicio/stellar.js"></script>
+    <script src="plugins/cubeportfolio/js/jquery.cubeportfolio.min.js"></script>
+    <script src="~/Scripts/inicio/owl.carousel.min.js"></script>
+    <script src="~/Scripts/inicio/nivo-lightbox.min.js"></script>
+    <script src="~/Scripts/inicio/custom.js"></script>
+    <script>
+        function AbrirEnlace(enlace) {
+            window.location.href = enlace;
+        }
+    </script>
+</body>
+
+</html>

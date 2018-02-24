@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terrenos</title>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/navbar-fixed-left.css" rel="stylesheet" />
+    <link href="~/Content/menu.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-left">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#" onclick="AbrirEnlace('@Url.Action("Inicio", "Principal")')"><img src="~/img/agro_web_small.png" /></a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+                <ul class="nav navbar-nav">
+                    <li id="li-cultivo" onclick="AbrirEnlace('@Url.Action("Cultivo", "Principal")')" class="li-menu"><a><i class="fa fa-leaf"></i> Cultivos</a></li>
+                    <li id="li-terreno" onclick="AbrirEnlace('@Url.Action("Mapa", "Principal")')" class="li-menu"><a><i class="fa fa-map-o fa-lg"></i> Terrenos</a></li>
+                    <li id="li-mantenimiento-usuario" onclick="AbrirEnlace('@Url.Action("Mantenimiento", "Usuarios")')" class="li-menu"><a><i class="fa fa-users fa-lg"></i> Empleados</a></li>
+
+                    <li id="li-reporte" data-toggle="collapse" data-target="#reportes" class="collapsed">
+                        <a href="#"><i class="fa fa-pie-chart fa-lg"></i> Reportes <span class="arrow"></span></a>
+                    </li>
+                    
+                    <ul class="sub-menu collapse" id="reportes">
+                        <li onclick="AbrirEnlace('@Url.Action("Ventas", "Reportes")')"><a href="#">Ventas</a></li>
+                        <li onclick="AbrirEnlace('@Url.Action("Cosechas", "Reportes")')"><a href="#">Cosechas</a></li>
+                        <li onclick="AbrirEnlace('@Url.Action("Tareas", "Reportes")')"><a href="#">Tareas</a></li>
+                    </ul>
+                    
+                    <li id="li-salir" onclick="AbrirEnlace('@Url.Action("Index", "Home")')" class="li-menu"><a><i class="fa fa-sign-out fa-lg"></i> Cerrar sesión</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        <div>
+            <br /><br />
+        </div>
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - AgroWebPro / Un desarrollo de CPSoft</p>
+        </footer>
+    </div>
+    <script>
+        function AbrirEnlace(enlace) {
+            window.location.href = enlace;
+        }
+        var activo = '@(Session["menu-activo"] != null ? Session["menu-activo"].ToString() : "terreno")';
+        function EstablecerActivo() {
+            if (activo == "cultivo") {
+                $(".li-menu").removeClass("active");
+                $("#li-cultivo").addClass("active");
+            }
+            if (activo == "terreno") {
+                $(".li-menu").removeClass("active");
+                $("#li-terreno").addClass("active");
+            }
+            else if (activo == "reporte") {
+                $(".li-menu").removeClass("active");
+                $("#li-reporte").addClass("active");
+            }
+            else if (activo == "mantenimiento-usuarios") {
+                $(".li-menu").removeClass("active");
+                $("#li-mantenimiento-usuario").addClass("active");
+            }
+        }
+        EstablecerActivo();
+    </script>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

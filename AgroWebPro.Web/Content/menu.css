@@ -1,0 +1,30 @@
+﻿a {
+    cursor: pointer;
+}
+.navbar-inverse .navbar-nav > .active > a {
+    color: #ffffff;
+    background-color: #cc5802;
+}
+
+
+.sub-menu > li > a {
+    list-style:none;
+    text-decoration: none;
+    background-color: black;
+}
+
+ul > li, ul > li > a {
+    color: #999;
+    background-color: transparent;
+    list-style: none;
+}
+
+ul > li > a:hover {
+    color: #ffffff;
+    background-color: transparent;
+}
+
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
+    color: #fff;
+    background-color: #cc5802;
+}

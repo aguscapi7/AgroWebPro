@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewBag.Title = "Cultivos";
+}
+
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+
+<h2>Mantenimiento de cultivos</h2>
+
+<div class="form-group">
+    <div class="row form-group">
+        <div class="col-md-6">
+            <label>Nombre</label>
+            <input id="txtNombreCultivo" placeholder="Ingrese el nombre" class="form-control"/>
+        </div>
+        <div class="col-md-6">
+            <label>Familia</label>
+            <select id="selectPuesto" class="form-control">
+                <option>Seleccione...</option>
+                <option>Familia 1</option>
+                <option>Familia 2</option>
+                <option>Familia 3</option>
+            </select>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-12">
+            <label>Descripción</label>
+            <textarea id="txtDirección" rows="5" placeholder="Ingrese la dirección" class="form-control"></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8"></div>
+        <div class="col-md-4">
+            <button class="btn btn-info pull-right btn-guardar">Guardar</button>
+            <button class="btn btn-danger pull-right">Cancelar</button>
+        </div>
+    </div>
+</div>
+<hr />
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Familia</th>
+            <th>Descripción</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>Papa</td>
+            <td>Familia 1</td>
+            <td>Descripción...</td>
+            <td><button class="btn btn-danger" onclick="EliminarCultivo()"><span class="fa fa-trash"></span> </button>&nbsp;<button class="btn btn-primary" onclick="EditarUsuario()"><span class="fa fa-pencil"></span> </button></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Cebolla</td>
+            <td>Familia 2</td>
+            <td>Descripción...</td>
+            <td><button class="btn btn-danger" onclick="EliminarCultivo()"><span class="fa fa-trash"></span> </button>&nbsp;<button class="btn btn-primary" onclick="EditarUsuario()"><span class="fa fa-pencil"></span> </button></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Piña</td>
+            <td>Familia 3</td>
+            <td>Descripción...</td>
+            <td><button class="btn btn-danger" onclick="EliminarCultivo()"><span class="fa fa-trash"></span> </button>&nbsp;<button class="btn btn-primary" onclick="EditarUsuario()"><span class="fa fa-pencil"></span> </button></td>
+        </tr>
+    </tbody>
+</table>
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+<script src="~/Scripts/sweetalert.min.js"></script>
+<script>
+    $('#txtFechaNacimiento').datepicker({
+
+        changeMonth: true,
+        changeYear: true,
+        format: "dd/mm/yyyy",
+        todayHighlight: true,
+        todayBtn: "linked",
+        onSelect: function (date) {
+        }
+    }).on('changeDate', function (e) {
+        $(this).datepicker('hide');
+    });
+
+    function EliminarCultivo() {
+        swal({
+            title: "Borrar usuario",
+            text: "Esta acción eliminará el cultivo",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    swal("El cultivo ha sido eliminado correctamente", {
+                        icon: "success",
+                    });
+                } 
+            });
+    }
+</script>
