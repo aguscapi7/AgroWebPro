@@ -21,8 +21,8 @@ namespace AgroWebPro.LogicaNegocios.Metodos
             }
             catch (Exception ex)
             {
-                response.Estado = Constantes.EstadoError;
-                response.Mensaje = Constantes.MensajeErrorLogicaNegocios + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorLogicaNegocios + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
                 throw;
             }
             return response;

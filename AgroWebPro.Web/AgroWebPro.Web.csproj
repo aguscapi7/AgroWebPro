@@ -149,6 +149,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\EmpresaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PrincipalController.cs" />
@@ -158,6 +159,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\EmpresaModels.cs" />
+    <Compile Include="Models\HomeModels.cs" />
+    <Compile Include="Models\UsuarioModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -386,6 +389,7 @@
     <Content Include="Views\Principal\Inicio.cshtml" />
     <Content Include="Views\Principal\Mapa.cshtml" />
     <Content Include="Views\Empresa\Mantenimiento.cshtml" />
+    <Content Include="Views\Home\Registro.cshtml" />
     <None Include="Views\Principal\Cultivo.cshtml" />
     <None Include="Views\Reportes\Tareas.cshtml" />
     <Content Include="Views\Reportes\Cosechas.cshtml" />
@@ -394,6 +398,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -55,7 +55,9 @@
     <Compile Include="Generales\EntradaBase.cs" />
     <Compile Include="Generales\RespuestaBase.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoEmpresaRequest.cs" />
+    <Compile Include="Mantenimientos\Entrada\MantenimientoUsuarioRequest.cs" />
     <Compile Include="Mantenimientos\Salida\MantenimientoEmpresaResponse.cs" />
+    <Compile Include="Mantenimientos\Salida\MantenimientoUsuarioResponse.cs" />
     <Compile Include="ModelAgroWebPro.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

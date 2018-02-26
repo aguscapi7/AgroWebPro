@@ -22,11 +22,28 @@ namespace AgroWebPro.LogicaNegocios.Metodos
             }
             catch (Exception ex)
             {
-                response.Estado = Constantes.EstadoError;
-                response.Mensaje = Constantes.MensajeErrorLogicaNegocios + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorLogicaNegocios + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
                 throw;
             }
             return response;
-        } 
+        }
+
+        public MantenimientoUsuarioResponse MantenimientoUsuario(MantenimientoUsuarioRequest request)
+        {
+            AccesoDatos.Metodos.Mantenimientos mantenimiento = new AccesoDatos.Metodos.Mantenimientos();
+            MantenimientoUsuarioResponse response = new MantenimientoUsuarioResponse();
+            try
+            {
+                response = mantenimiento.MantenimientoUsuario(request);
+            }
+            catch (Exception ex)
+            {
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorLogicaNegocios + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                throw;
+            }
+            return response;
+        }
     }
 }

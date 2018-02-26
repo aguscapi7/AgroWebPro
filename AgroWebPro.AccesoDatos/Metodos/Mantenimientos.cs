@@ -35,15 +35,58 @@ namespace AgroWebPro.AccesoDatos.Metodos
                                                     , mensaje);
                     if (estado.Value.ToString().Equals(Constantes.EstadoError))
                     {
-                        response.Estado = Constantes.EstadoError;
-                        response.Mensaje = Constantes.MensajeErrorAccesoDatos + mensaje.Value.ToString();
+                        response.estado = Constantes.EstadoError;
+                        response.mensaje = Constantes.MensajeErrorAccesoDatos + mensaje.Value.ToString();
                     }
                 }
             }
             catch (Exception ex)
             {
-                response.Estado = Constantes.EstadoError;
-                response.Mensaje = Constantes.MensajeErrorAccesoDatos + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorAccesoDatos + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                throw;
+            }
+            return response;
+        }
+
+        public MantenimientoUsuarioResponse MantenimientoUsuario(MantenimientoUsuarioRequest request)
+        {
+            MantenimientoUsuarioResponse response = new MantenimientoUsuarioResponse();
+            ObjectParameter estado = new ObjectParameter("Estado", Constantes.EstadoCorrecto);
+            ObjectParameter mensaje = new ObjectParameter("Mensaje", string.Empty);
+            try
+            {
+                using (AgroWebProEntities modelo = new AgroWebProEntities())
+                {
+                    modelo.PA_MantenimientoUsuario(request.tipoOperacion
+                                                    , request.idUsuario
+                                                    , request.nombre
+                                                    , request.apellidos
+                                                    , request.correo
+                                                    , request.password
+                                                    , request.direccion
+                                                    , request.telefono
+                                                    , request.ingresadoPor
+                                                    , request.rol
+                                                    , request.activo
+                                                    , estado
+                                                    , mensaje);
+                    if (estado.Value.ToString().Equals(Constantes.EstadoError))
+                    {
+                        response.estado = Constantes.EstadoError;
+                        response.mensaje = Constantes.MensajeErrorAccesoDatos + mensaje.Value.ToString();
+                    }
+                    else if (estado.Value.ToString().Equals(Constantes.EstadoErrorCustom))
+                    {
+                        response.estado = Constantes.EstadoErrorCustom;
+                        response.mensaje = mensaje.Value.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorAccesoDatos + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
                 throw;
             }
             return response;

@@ -9,12 +9,22 @@ namespace AgroWebPro.Web.Models
 {
     public class EmpresaModels
     {
+        public Guid idEmpresa { get; set; }
+        public string nombreEmpres { get; set; }
+        public string descripcionEmpresa { get; set; }
+        public string telefono { get; set; }
+        public string cedulaJuridica { get; set; }
+        public string direccion { get; set; }
+        public Guid idZonaHoraria { get; set; }
+
+        public UsuarioModels usuario { get; set; }
+
         public List<ZonaHoraria> listaZonasHorarias { get; set; }
 
         public void CopiarListaZonasHorarias(ConsultarZonasHorariasResponse zonasHorariasResponse)
         {
             listaZonasHorarias = new List<ZonaHoraria>();
-            if(zonasHorariasResponse != null && zonasHorariasResponse.Estado.Equals(Constantes.EstadoCorrecto) && zonasHorariasResponse.listaZonasHorarias.Count() > 0)
+            if(zonasHorariasResponse != null && zonasHorariasResponse.estado.Equals(Constantes.EstadoCorrecto) && zonasHorariasResponse.listaZonasHorarias.Count() > 0)
             {
                 ZonaHoraria zona = null;
                 foreach (var item in zonasHorariasResponse.listaZonasHorarias)

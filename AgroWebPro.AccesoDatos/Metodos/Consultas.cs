@@ -27,15 +27,15 @@ namespace AgroWebPro.AccesoDatos.Metodos
                                                     , mensaje).ToList();
                     if (estado.Value.ToString().Equals(Constantes.EstadoError))
                     {
-                        response.Estado = Constantes.EstadoError;
-                        response.Mensaje = Constantes.MensajeErrorAccesoDatos + mensaje.Value.ToString();
+                        response.estado = Constantes.EstadoError;
+                        response.mensaje = Constantes.MensajeErrorAccesoDatos + mensaje.Value.ToString();
                     }
                 }
             }
             catch (Exception ex)
             {
-                response.Estado = Constantes.EstadoError;
-                response.Mensaje = Constantes.MensajeErrorAccesoDatos + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorAccesoDatos + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
                 throw;
             }
             return response;

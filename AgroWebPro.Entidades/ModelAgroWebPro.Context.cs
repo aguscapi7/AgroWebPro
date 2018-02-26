@@ -73,5 +73,54 @@ namespace AgroWebPro.Entidades
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_MantenimientoEmpresa", tipoOperacionParameter, idEmpresaParameter, nombreEmpresaParameter, descripcionEmpresaParameter, telefonoParameter, cedulaJuridicaParameter, diferenciaUTCParameter, direccionParameter, activaParameter, estado, mensaje);
         }
+    
+        public virtual int PA_MantenimientoUsuario(Nullable<int> tipoOperacion, Nullable<System.Guid> idUsuario, string nombre, string apellidos, string correo, string password, string direccion, string telefono, Nullable<System.Guid> ingresadoPor, Nullable<System.Guid> rol, Nullable<bool> activo, ObjectParameter estado, ObjectParameter mensaje)
+        {
+            var tipoOperacionParameter = tipoOperacion.HasValue ?
+                new ObjectParameter("TipoOperacion", tipoOperacion) :
+                new ObjectParameter("TipoOperacion", typeof(int));
+    
+            var idUsuarioParameter = idUsuario.HasValue ?
+                new ObjectParameter("IdUsuario", idUsuario) :
+                new ObjectParameter("IdUsuario", typeof(System.Guid));
+    
+            var nombreParameter = nombre != null ?
+                new ObjectParameter("Nombre", nombre) :
+                new ObjectParameter("Nombre", typeof(string));
+    
+            var apellidosParameter = apellidos != null ?
+                new ObjectParameter("Apellidos", apellidos) :
+                new ObjectParameter("Apellidos", typeof(string));
+    
+            var correoParameter = correo != null ?
+                new ObjectParameter("Correo", correo) :
+                new ObjectParameter("Correo", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
+    
+            var direccionParameter = direccion != null ?
+                new ObjectParameter("Direccion", direccion) :
+                new ObjectParameter("Direccion", typeof(string));
+    
+            var telefonoParameter = telefono != null ?
+                new ObjectParameter("Telefono", telefono) :
+                new ObjectParameter("Telefono", typeof(string));
+    
+            var ingresadoPorParameter = ingresadoPor.HasValue ?
+                new ObjectParameter("IngresadoPor", ingresadoPor) :
+                new ObjectParameter("IngresadoPor", typeof(System.Guid));
+    
+            var rolParameter = rol.HasValue ?
+                new ObjectParameter("Rol", rol) :
+                new ObjectParameter("Rol", typeof(System.Guid));
+    
+            var activoParameter = activo.HasValue ?
+                new ObjectParameter("Activo", activo) :
+                new ObjectParameter("Activo", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_MantenimientoUsuario", tipoOperacionParameter, idUsuarioParameter, nombreParameter, apellidosParameter, correoParameter, passwordParameter, direccionParameter, telefonoParameter, ingresadoPorParameter, rolParameter, activoParameter, estado, mensaje);
+        }
     }
 }

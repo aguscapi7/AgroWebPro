@@ -17,54 +17,103 @@
             }
         }
     </select>
-    <div class="row form-group">
-        <div class="col-md-6">
-            <label>Nombre</label>
-            <input id="txtNombre" placeholder="Ingrese el nombre" class="form-control" />
-        </div>
-        <div class="col-md-6">
-            <label>Apellidos</label>
-            <input id="txtApellidos" placeholder="Ingrese los apellidos" type="email" class="form-control" />
+    <div class="panel-group" style="display:none;">
+        <div class="panel panel-warning">
+            <div class="panel-heading"><h3 style="margin:0px;">Datos de la empresa</h3></div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="control-label" for="txtNombreEmpresa">Nombre empresa</label>
+
+                    <div class="input-group">
+                        <span id="txtNombreEmpresaPrepend" class="input-group-addon">icon</span>
+                        <input id="txtNombreEmpresa" name="txtNombreEmpresa" class="form-control" placeholder="Ingrese el nombre de la empresa" required="" type="text">
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label" for="txtDescripcion">Descripción</label>
+
+                    <div class="input-group">
+                        <span id="txtDescripcionPrepend" class="input-group-addon">icon</span>
+                        <input id="txtDescripcion" name="txtDescripcion" class="form-control" placeholder="Descripción de la empresa" type="text">
+
+                    </div>
+
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="ddlZonaHoraria">Zona horaria</label>
+                    <select id="ddlZonaHoraria" class="form-control">
+                        <option>- Seleccione -</option>
+                        @if (Model.listaZonasHorarias != null && Model.listaZonasHorarias.Count() > 0)
+                        {
+                            foreach (var item in Model.listaZonasHorarias)
+                            {
+                                <option value="@item.idZonaHoraria">@item.zonaHoraria</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="txtTelefono">Teléfono</label>
+
+                    <div class="input-group">
+                        <span id="txtTelefonoPrepend" class="input-group-addon">icon</span>
+                        <input id="txtTelefono" name="txtTelefono" class="form-control" placeholder="Ingrese el teléfono de la empresa" type="text">
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label" for="txtCedulaJuridica">Cédula Jurídica</label>
+
+                    <div class="input-group">
+                        <span id="txtCedulaJuridicaPrepend" class="input-group-addon">icon</span>
+                        <input id="txtCedulaJuridica" name="txtCedulaJuridica" class="form-control" placeholder="Ingrese la cédula jurídica" type="text">
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label" for="txtDireccionEmpresa">Dirección empresa</label>
+
+                    <div class="input-group">
+                        <span id="txtDireccionEmpresaPrepend" class="input-group-addon">icon</span>
+                        <input id="txtDireccionEmpresa" name="txtDireccionEmpresa" class="form-control" placeholder="Ingrese la dirección de la empresa" type="text">
+
+                    </div>
+
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label"></label>
+                    <div class="text-right">
+                        <div id="btnCancelarGroup" class="btn-group" role="group" aria-label="">
+                            <button type="button" id="btnCancelar" name="btnCancelar" class="btn btn-danger" aria-label="Cancelar">Cancelar</button>
+                            <button type="submit" id="btnGuardar" name="btnGuardar" class="btn btn-warning" aria-label="Cancelar">Guardar</button>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
         </div>
     </div>
-    <div class="row form-group">
-        <div class="col-md-6">
-            <label>Fecha de nacimiento</label>
-            <input class="form-control" id="txtFechaNacimiento" readonly="readonly" value="@(DateTime.Now.ToShortDateString())" />
-        </div>
-        <div class="col-md-6">
-            <label>Correo</label>
-            <input id="txtCorreo" placeholder="Ingrese el correo" type="email" class="form-control" />
-        </div>
-    </div>
-    <div class="row form-group">
-        <div class="col-md-6">
-            <label>Teléfono</label>
-            <input id="txtTelefono" placeholder="Ingrese el teléfono" class="form-control" />
-        </div>
-        <div class="col-md-6">
-            <label>Puesto</label>
-            <select id="selectPuesto" class="form-control">
-                <option>Seleccione...</option>
-                <option>Puesto 1</option>
-                <option>Puesto 2</option>
-                <option>Puesto 3</option>
-            </select>
-        </div>
-    </div>
-    <div class="row form-group">
-        <div class="col-md-6">
-            <label>Dirección</label>
-            <textarea id="txtDirección" rows="5" placeholder="Ingrese la dirección" class="form-control"></textarea>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-8"></div>
-        <div class="col-md-4">
-            <button class="btn btn-info pull-right btn-guardar">Guardar</button>
-            <button class="btn btn-danger pull-right">Cancelar</button>
-        </div>
-    </div>
+
 </div>
 <hr />
 <table class="table table-hover">

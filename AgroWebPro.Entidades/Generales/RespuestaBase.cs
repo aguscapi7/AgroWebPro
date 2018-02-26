@@ -13,11 +13,11 @@ namespace AgroWebPro.Entidades.Generales
 
         public RespuestaBase()
         {
-            Estado = "00";
-            Mensaje = string.Empty;
+            estado = "00";
+            mensaje = string.Empty;
         }
 
-        public string Estado { get; set; }
-        public string Mensaje { get; set; }
+        public string estado { get; set; }
+        public string mensaje { get; set; }
     }
 }

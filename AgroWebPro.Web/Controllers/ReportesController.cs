@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgroWebPro.Utilitarios;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,25 +11,25 @@ namespace AgroWebPro.Web.Controllers
     {
         public ActionResult Resumen()
         {
-            Session["menu-activo"] = "reporte";
+            Session[Constantes.MenuActivo] = Constantes.MenuReportes;
             return View();
         }
         
         public ActionResult Ventas()
         {
-            Session["menu-activo"] = "reporte";
+            Session[Constantes.MenuActivo] = Constantes.MenuReportes;
             return View();
         }
 
         public ActionResult Cosechas()
         {
-            Session["menu-activo"] = "reporte";
+            Session[Constantes.MenuActivo] = Constantes.MenuReportes;
             return View();
         }
 
         public ActionResult Tareas()
         {
-            Session["menu-activo"] = "reporte";
+            Session[Constantes.MenuActivo] = Constantes.MenuReportes;
             return View();
         }
 

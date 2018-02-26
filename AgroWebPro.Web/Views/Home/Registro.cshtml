@@ -1,0 +1,132 @@
+﻿@model AgroWebPro.Web.Models.UsuarioModels
+@{
+    ViewBag.Title = "Registro";
+    Layout = "~/Views/Shared/_LayoutInicio.cshtml";
+}
+<br /><br /><br />
+<div class="container">
+    @using (Html.BeginForm("Registro", "Home", FormMethod.Post, new
+    {
+        id = "formRegistro",
+        role = "form",
+        @data_toggle = "validator"@*, onsubmit = "return InfoRegistroValido();"*@ }))
+    {
+        <fieldset>
+            <div class="row">
+                <div class="col-md-2 col-sm-2"></div>
+                <div class="col-md-8 col-sm-8">
+                    <div class="panel-group">
+                        <div class="panel panel-warning">
+                            <div class="panel-heading"><h3 style="margin:0px;">Registro de usuario</h3></div>
+                            <div class="panel-body">
+
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="input-group">
+                                        <span id="txtNombreUsuarioPrepend" class="input-group-addon"><i class="fa fa-user"></i> </span>           
+                                        @Html.TextBoxFor(model => model.nombre, new { @id = "txtNombreUsuario", @class = "form-control", @required = "required", @placeholder = "Nombre" })
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="input-group">
+                                        <span id="txtApellidosPrepend" class="input-group-addon"><i class="fa fa-user-plus"></i></span>
+                                        @Html.TextBoxFor(model => model.apellidos, new { @id = "txtApellidos", @class = "form-control", @placeholder = "Apellidos" })
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="input-group">
+                                        <span id="txtCorreoPrepend" class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                        @Html.TextBoxFor(model => model.correo, new { @id = "txtCorreo", @class = "form-control", @required = "required", @placeholder = "Correo" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="input-group">
+                                        <span id="txtPasswordPrepend" class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                        @Html.TextBoxFor(model => model.password, new { @id = "txtPassword", @class = "form-control", @required = "required", @type = "password", @placeholder = "Contraseña" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="input-group">
+                                        <span id="txtPasswordRepetirPrepend" class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                        @Html.TextBoxFor(model => model.passwordRepetir, new { @id = "txtPasswordRepetir", @class = "form-control", @required = "required", @type = "password", @placeholder = "Repita la contraseña" })
+                                    </div>
+                                </div>
+                                @if(ViewBag.MensajeError != null)
+                                {
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="alert alert-danger"><center><label>@ViewBag.MensajeError</label></center></div>
+                                    </div>
+                                }
+                                <div class="col-md-12 col-sm-12" >
+                                    <button type="submit" style="float:right" id="btnGuardar" value="Guardar" name="btnGuardar" class="btn btn-warning">Guardar&nbsp;<i class="fa fa-save"></i></button>
+                                    <button type="button" style="float:right;margin-right:5px;" id="btnCancelar" value="Cancelar" name="btnCancelar" class="btn btn-danger">Cancelar&nbsp;<i class="fa fa-remove"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-2"></div>
+            </div>
+            
+
+        </fieldset>
+    }
+
+</div>
+<style>
+    .input-group{
+        margin-top:10px;
+        margin-bottom:10px;
+    }
+
+    #formRegistro{
+        margin-top:40px;
+        margin-bottom:40px;
+    }
+    .panel-body{
+        padding-left:0px;
+        padding-right:0px;
+    }
+    .btn {
+        text-transform: none !important;
+    }
+</style>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+<script>
+    function InfoRegistroValido() {
+        var infoAgendaValida = true;
+
+        $("#errorCatZonaHoraria").addClass("hide");
+        $('#formPerfilAgenda').validator('validate');
+
+        var nombreAgenda = $("#txtNombreAgenda").val();
+        var CatZonaHoraria = $("#ddlZonasHorarias option:selected").val();
+        var txtFrecuenciaCitas = $('#txtFrecuenciaCitasValor').val();
+        var txtPeriodoCitasVisibles = $("#txtPeriodoCitasVisiblesValor").val();
+
+        if (nombreAgenda == undefined || nombreAgenda == '') {
+            $("#txtNombreAgenda").parents('.form-group').addClass('has-error');
+            $("#txtNombreAgenda").focus();
+            infoAgendaValida = false;
+        }
+        else if (CatZonaHoraria == undefined || CatZonaHoraria == '') {
+            $("#ddlZonasHorarias").parents('.form-group').addClass('has-error');
+            $("#errorCatZonaHoraria").removeClass("hide");
+            $("#ddlZonasHorarias").focus();
+            $('#ddlZonasHorarias_chosen a.chosen-single').focus();
+            infoAgendaValida = false;
+        }
+        else if (txtFrecuenciaCitas == undefined || txtFrecuenciaCitas == '') {
+            $("#txtFrecuenciaCitas").parents('.form-group').addClass('has-error');
+            $("#txtFrecuenciaCitas").focus();
+            infoAgendaValida = false;
+        }
+        else if (txtPeriodoCitasVisibles == undefined || txtPeriodoCitasVisibles == '') {
+            $("#txtPeriodoCitasVisiblesValor").parents('.form-group').addClass('has-error');
+            $("#txtPeriodoCitasVisiblesValor").focus();
+            infoAgendaValida = false;
+        }
+
+        return infoAgendaValida;
+    }
+</script>

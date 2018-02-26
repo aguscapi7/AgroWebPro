@@ -27,11 +27,12 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
                 <ul class="nav navbar-nav">
+                    <li id="li-inicio" onclick="AbrirEnlace('@Url.Action("Inicio", "Principal")')" class="li-menu"><a><i class="fa fa-leaf"></i> Inicio</a></li>
                     <li id="li-cultivo" onclick="AbrirEnlace('@Url.Action("Cultivo", "Principal")')" class="li-menu"><a><i class="fa fa-leaf"></i> Cultivos</a></li>
                     <li id="li-terreno" onclick="AbrirEnlace('@Url.Action("Mapa", "Principal")')" class="li-menu"><a><i class="fa fa-map-o fa-lg"></i> Terrenos</a></li>
-                    <li id="li-mantenimiento-usuario" onclick="AbrirEnlace('@Url.Action("Mantenimiento", "Usuarios")')" class="li-menu"><a><i class="fa fa-users fa-lg"></i> Empleados</a></li>
+                    <li id="li-mantenimiento-usuarios" onclick="AbrirEnlace('@Url.Action("Mantenimiento", "Usuarios")')" class="li-menu"><a><i class="fa fa-users fa-lg"></i> Empleados</a></li>
 
-                    <li id="li-reporte" data-toggle="collapse" data-target="#reportes" class="collapsed">
+                    <li id="li-reportes" data-toggle="collapse" data-target="#reportes" class="collapsed">
                         <a href="#"><i class="fa fa-pie-chart fa-lg"></i> Reportes <span class="arrow"></span></a>
                     </li>
                     
@@ -60,23 +61,11 @@
         function AbrirEnlace(enlace) {
             window.location.href = enlace;
         }
-        var activo = '@(Session["menu-activo"] != null ? Session["menu-activo"].ToString() : "terreno")';
+        var activo = '@(Session[AgroWebPro.Utilitarios.Constantes.MenuActivo] != null ? Session["menu-activo"].ToString() : AgroWebPro.Utilitarios.Constantes.MenuInicio)';
         function EstablecerActivo() {
-            if (activo == "cultivo") {
+            if (activo == "@AgroWebPro.Utilitarios.Constantes.MenuInicio") {
                 $(".li-menu").removeClass("active");
-                $("#li-cultivo").addClass("active");
-            }
-            if (activo == "terreno") {
-                $(".li-menu").removeClass("active");
-                $("#li-terreno").addClass("active");
-            }
-            else if (activo == "reporte") {
-                $(".li-menu").removeClass("active");
-                $("#li-reporte").addClass("active");
-            }
-            else if (activo == "mantenimiento-usuarios") {
-                $(".li-menu").removeClass("active");
-                $("#li-mantenimiento-usuario").addClass("active");
+                $("#li-" + activo).addClass("active");
             }
         }
         EstablecerActivo();
