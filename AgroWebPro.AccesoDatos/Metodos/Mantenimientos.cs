@@ -28,7 +28,7 @@ namespace AgroWebPro.AccesoDatos.Metodos
                                                     , request.descripcionEmpresa
                                                     , request.telefono
                                                     , request.cedulaJuridica
-                                                    , request.diferenciaUtc
+                                                    , request.idZonaHoraria
                                                     , request.direccion
                                                     , request.activa
                                                     , estado
@@ -69,6 +69,47 @@ namespace AgroWebPro.AccesoDatos.Metodos
                                                     , request.ingresadoPor
                                                     , request.rol
                                                     , request.activo
+                                                    , request.idEmpresa
+                                                    , estado
+                                                    , mensaje);
+                    if (estado.Value.ToString().Equals(Constantes.EstadoError))
+                    {
+                        response.estado = Constantes.EstadoError;
+                        response.mensaje = Constantes.MensajeErrorAccesoDatos + mensaje.Value.ToString();
+                    }
+                    else if (estado.Value.ToString().Equals(Constantes.EstadoErrorCustom))
+                    {
+                        response.estado = Constantes.EstadoErrorCustom;
+                        response.mensaje = mensaje.Value.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorAccesoDatos + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                throw;
+            }
+            return response;
+        }
+
+        public MantenimientoCultivoResponse MantenimientoCultivo(MantenimientoCultivoRequest request)
+        {
+            MantenimientoCultivoResponse response = new MantenimientoCultivoResponse();
+            ObjectParameter estado = new ObjectParameter("Estado", Constantes.EstadoCorrecto);
+            ObjectParameter mensaje = new ObjectParameter("Mensaje", string.Empty);
+            try
+            {
+                using (AgroWebProEntities modelo = new AgroWebProEntities())
+                {
+                    modelo.PA_MantenimientoCultivo(request.tipoOperacion
+                                                    , request.idCultivo 
+                                                    , request.nombreCultivo
+                                                    , request.descripcionCultivo
+                                                    , request.idFamilia
+                                                    , request.ingresadoPor
+                                                    , request.activo
+                                                    , request.idEmpresa
                                                     , estado
                                                     , mensaje);
                     if (estado.Value.ToString().Equals(Constantes.EstadoError))

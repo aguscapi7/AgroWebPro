@@ -158,6 +158,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CultivoModels.cs" />
     <Compile Include="Models\EmpresaModels.cs" />
     <Compile Include="Models\HomeModels.cs" />
     <Compile Include="Models\UsuarioModels.cs" />
@@ -390,7 +391,7 @@
     <Content Include="Views\Principal\Mapa.cshtml" />
     <Content Include="Views\Empresa\Mantenimiento.cshtml" />
     <Content Include="Views\Home\Registro.cshtml" />
-    <None Include="Views\Principal\Cultivo.cshtml" />
+    <None Include="Views\Principal\MantenimientoCultivo.cshtml" />
     <None Include="Views\Reportes\Tareas.cshtml" />
     <Content Include="Views\Reportes\Cosechas.cshtml" />
     <Content Include="Views\Reportes\Ventas.cshtml" />
@@ -399,6 +400,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Base\" />
+    <Folder Include="Views\Cultivo\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

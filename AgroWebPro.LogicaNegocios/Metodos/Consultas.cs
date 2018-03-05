@@ -27,5 +27,56 @@ namespace AgroWebPro.LogicaNegocios.Metodos
             }
             return response;
         }
+
+        public ConsultarUsuarioLoginResponse ConsultarUsuarioLogin(ConsultarUsuarioLoginRequest request)
+        {
+            AccesoDatos.Metodos.Consultas mantenimiento = new AccesoDatos.Metodos.Consultas();
+            ConsultarUsuarioLoginResponse response = new ConsultarUsuarioLoginResponse();
+            try
+            {
+                response = mantenimiento.ConsultarUsuarioLogin(request);
+            }
+            catch (Exception ex)
+            {
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorLogicaNegocios + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                throw;
+            }
+            return response;
+        }
+
+        public ConsultarFamiliasResponse ConsultarFamilias(ConsultarFamiliasRequest request)
+        {
+            AccesoDatos.Metodos.Consultas mantenimiento = new AccesoDatos.Metodos.Consultas();
+            ConsultarFamiliasResponse response = new ConsultarFamiliasResponse();
+            try
+            {
+                response = mantenimiento.ConsultarFamilias(request);
+            }
+            catch (Exception ex)
+            {
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorLogicaNegocios + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                throw;
+            }
+            return response;
+        }
+
+        public ConsultarCultivosEmpresaResponse ConsultarCultivosEmpresa(ConsultarCultivosEmpresaRequest request)
+        {
+            AccesoDatos.Metodos.Consultas mantenimiento = new AccesoDatos.Metodos.Consultas();
+            ConsultarCultivosEmpresaResponse response = new ConsultarCultivosEmpresaResponse();
+            try
+            {
+                response = mantenimiento.ConsultarCultivosEmpresa(request);
+            }
+            catch (Exception ex)
+            {
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorLogicaNegocios + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                throw;
+            }
+            return response;
+        }
     }
 }

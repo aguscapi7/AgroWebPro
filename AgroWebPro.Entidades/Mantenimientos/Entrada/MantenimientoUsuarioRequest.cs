@@ -20,5 +20,6 @@ namespace AgroWebPro.Entidades.Mantenimientos.Entrada
         public Nullable<Guid> ingresadoPor { get; set; }
         public Guid rol { get; set; }
         public bool activo { get; set; }
+        public Guid idEmpresa { get; set; }
     }
 }

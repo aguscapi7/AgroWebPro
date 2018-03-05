@@ -1,4 +1,4 @@
-﻿
+﻿@model AgroWebPro.Web.Models.CultivoModels
 @{
     ViewBag.Title = "Cultivos";
 }
@@ -6,33 +6,33 @@
 <link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
 
 <h2>Mantenimiento de cultivos</h2>
-
+@using (Html.BeginForm("MantenimientoCultivo", "Principal", FormMethod.Post, new
+{
+    id = "formCultivo",
+    role = "form",
+    @data_toggle = "validator" }))
+{
 <div class="form-group">
     <div class="row form-group">
         <div class="col-md-6">
             <label>Nombre</label>
-            <input id="txtNombreCultivo" placeholder="Ingrese el nombre" class="form-control"/>
+            @Html.TextBoxFor(model => model.nombreCultivo, new { @id = "txtNombreCultivo", @class = "form-control", @required = "required", @placeholder = "Nombre" })
         </div>
         <div class="col-md-6">
             <label>Familia</label>
-            <select id="selectPuesto" class="form-control">
-                <option>Seleccione...</option>
-                <option>Familia 1</option>
-                <option>Familia 2</option>
-                <option>Familia 3</option>
-            </select>
+            @Html.DropDownListFor(model => model.idFamilia, new SelectList(Model.listaFamilias, "IdFamilia", "NombreFamilia"), new { @id = "ddlFamilias", @class = "form-control", @required = "required" })
         </div>
     </div>
     <div class="row form-group">
         <div class="col-md-12">
             <label>Descripción</label>
-            <textarea id="txtDirección" rows="5" placeholder="Ingrese la dirección" class="form-control"></textarea>
+            @Html.TextAreaFor(model => model.descripcionCultivo, new { @id = "txtDescripcionCultivo", @class = "form-control", @required = "required", @placeholder = "Descripción" })
         </div>
     </div>
     <div class="row">
         <div class="col-md-8"></div>
         <div class="col-md-4">
-            <button class="btn btn-info pull-right btn-guardar">Guardar</button>
+            <button type="submit" name="btnGuardar" class="btn btn-info pull-right btn-guardar">Guardar</button>
             <button class="btn btn-danger pull-right">Cancelar</button>
         </div>
     </div>
@@ -41,7 +41,6 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th>ID</th>
             <th>Nombre</th>
             <th>Familia</th>
             <th>Descripción</th>
@@ -49,30 +48,22 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>1</td>
-            <td>Papa</td>
-            <td>Familia 1</td>
-            <td>Descripción...</td>
-            <td><button class="btn btn-danger" onclick="EliminarCultivo()"><span class="fa fa-trash"></span> </button>&nbsp;<button class="btn btn-primary" onclick="EditarUsuario()"><span class="fa fa-pencil"></span> </button></td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Cebolla</td>
-            <td>Familia 2</td>
-            <td>Descripción...</td>
-            <td><button class="btn btn-danger" onclick="EliminarCultivo()"><span class="fa fa-trash"></span> </button>&nbsp;<button class="btn btn-primary" onclick="EditarUsuario()"><span class="fa fa-pencil"></span> </button></td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>Piña</td>
-            <td>Familia 3</td>
-            <td>Descripción...</td>
-            <td><button class="btn btn-danger" onclick="EliminarCultivo()"><span class="fa fa-trash"></span> </button>&nbsp;<button class="btn btn-primary" onclick="EditarUsuario()"><span class="fa fa-pencil"></span> </button></td>
-        </tr>
+        @if (Model.listaCultivos != null)
+        {
+            foreach (var itemCultivo in Model.listaCultivos)
+            {
+                <tr>
+                    <td>@itemCultivo.nombreCultivo</td>
+                    <td>@itemCultivo.nombreFamilia</td>
+                    <td>@itemCultivo.descripcionCultivo</td>
+                    <td><button class="btn btn-danger" onclick="EliminarCultivo()"><span class="fa fa-trash"></span> </button>&nbsp;<button class="btn btn-primary" onclick="EditarUsuario()"><span class="fa fa-pencil"></span> </button></td>
+                </tr>
+            }
+        }
+        
     </tbody>
 </table>
-
+}
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/bootstrap-datepicker.js"></script>
 <script src="~/Scripts/sweetalert.min.js"></script>

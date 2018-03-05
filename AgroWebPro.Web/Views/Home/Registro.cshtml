@@ -17,7 +17,7 @@
                 <div class="col-md-8 col-sm-8">
                     <div class="panel-group">
                         <div class="panel panel-warning">
-                            <div class="panel-heading"><h3 style="margin:0px;">Registro de usuario</h3></div>
+                            <div class="panel-heading"><h3 style="margin:0px;">Datos del usuario</h3></div>
                             <div class="panel-body">
 
                                 <div class="col-md-6 col-sm-6">
@@ -51,13 +51,32 @@
                                         @Html.TextBoxFor(model => model.passwordRepetir, new { @id = "txtPasswordRepetir", @class = "form-control", @required = "required", @type = "password", @placeholder = "Repita la contraseña" })
                                     </div>
                                 </div>
-                                @if(ViewBag.MensajeError != null)
+                                
+                            </div>
+                            <div class="panel-heading">
+                                <h3 style="margin:0px;">Datos de la empresa</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="input-group">
+                                        <span id="txtNombreEmpresaPrepend" class="input-group-addon"><i class="fa fa-building"></i></span>
+                                        @Html.TextBoxFor(model => model.nombreEmpresa, new { @id = "txtNombreEmpresa", @class = "form-control", @required = "required", @type = "text", @placeholder = "Nombre de la empresa" })
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="input-group">
+                                        <span id="txtPasswordRepetirPrepend" class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
+                                        @Html.DropDownListFor(model => model.idZonaHoraria, new SelectList(Model.empresaModels.listaZonasHorarias, "IdZonaHoraria", "ZonaHoraria"), new { @id = "ddlZonaHoraria", @class = "form-control", @required = "required" })
+                                    </div>
+                                </div>
+                                @if (ViewBag.MensajeError != null)
                                 {
                                     <div class="col-md-12 col-sm-12">
                                         <div class="alert alert-danger"><center><label>@ViewBag.MensajeError</label></center></div>
                                     </div>
                                 }
-                                <div class="col-md-12 col-sm-12" >
+                                <div class="col-md-12 col-sm-12">
                                     <button type="submit" style="float:right" id="btnGuardar" value="Guardar" name="btnGuardar" class="btn btn-warning">Guardar&nbsp;<i class="fa fa-save"></i></button>
                                     <button type="button" style="float:right;margin-right:5px;" id="btnCancelar" value="Cancelar" name="btnCancelar" class="btn btn-danger">Cancelar&nbsp;<i class="fa fa-remove"></i></button>
                                 </div>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AgroWebPro.Entidades.Consultas.Salida;
+using AgroWebPro.Utilitarios;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,5 +16,8 @@ namespace AgroWebPro.Web.Models
         public string password { get; set; }
         public string passwordRepetir { get; set; }
         public string direccion { get; set; }
+        public string nombreEmpresa { get; set; }
+        public Guid idZonaHoraria { get; set; }
+        public EmpresaModels empresaModels { get; set; }
     }
 }

@@ -50,12 +50,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Consultas\Entrada\ConsultarCultivosEmpresaRequest.cs" />
+    <Compile Include="Consultas\Entrada\ConsultarFamiliasRequest.cs" />
+    <Compile Include="Consultas\Entrada\ConsultarUsuarioLoginRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarZonasHorariasRequest.cs" />
+    <Compile Include="Consultas\Salida\ConsultarCultivosEmpresaResponse.cs" />
+    <Compile Include="Consultas\Salida\ConsultarFamiliasResponse.cs" />
+    <Compile Include="Consultas\Salida\ConsultarUsuarioLoginResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarZonasHorariasResponse.cs" />
     <Compile Include="Generales\EntradaBase.cs" />
     <Compile Include="Generales\RespuestaBase.cs" />
+    <Compile Include="Mantenimientos\Entrada\MantenimientoCultivoRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoEmpresaRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoUsuarioRequest.cs" />
+    <Compile Include="Mantenimientos\Salida\MantenimientoCultivoResponse.cs" />
     <Compile Include="Mantenimientos\Salida\MantenimientoEmpresaResponse.cs" />
     <Compile Include="Mantenimientos\Salida\MantenimientoUsuarioResponse.cs" />
     <Compile Include="ModelAgroWebPro.Context.cs">
@@ -72,6 +80,18 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelAgroWebPro.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="PA_ConsultarCultivosEmpresa_Result.cs">
+      <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PA_ConsultarFamilias_Result.cs">
+      <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PA_ConsultarUsuarioLogin_Result.cs">
+      <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PA_ConsultarUsuarioXCorreoXClave_Result.cs">
+      <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
     </Compile>
     <Compile Include="PA_ConsultarZonasHorarias_Result.cs">
       <DependentUpon>ModelAgroWebPro.tt</DependentUpon>

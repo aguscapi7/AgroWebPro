@@ -26,7 +26,12 @@ namespace AgroWebPro.Web.Models
             listaZonasHorarias = new List<ZonaHoraria>();
             if(zonasHorariasResponse != null && zonasHorariasResponse.estado.Equals(Constantes.EstadoCorrecto) && zonasHorariasResponse.listaZonasHorarias.Count() > 0)
             {
-                ZonaHoraria zona = null;
+                ZonaHoraria zona = new ZonaHoraria()
+                {
+                    idZonaHoraria = Guid.Empty,
+                    zonaHoraria = "Seleccione zona horaria"
+                };
+                listaZonasHorarias.Add(zona);
                 foreach (var item in zonasHorariasResponse.listaZonasHorarias)
                 {
                     zona = new ZonaHoraria();

@@ -33,7 +33,7 @@ namespace AgroWebPro.Entidades
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarZonasHorarias_Result>("PA_ConsultarZonasHorarias", estado, mensaje);
         }
     
-        public virtual int PA_MantenimientoEmpresa(Nullable<int> tipoOperacion, Nullable<System.Guid> idEmpresa, string nombreEmpresa, string descripcionEmpresa, string telefono, string cedulaJuridica, Nullable<decimal> diferenciaUTC, string direccion, Nullable<bool> activa, ObjectParameter estado, ObjectParameter mensaje)
+        public virtual int PA_MantenimientoEmpresa(Nullable<int> tipoOperacion, Nullable<System.Guid> idEmpresa, string nombreEmpresa, string descripcionEmpresa, string telefono, string cedulaJuridica, Nullable<System.Guid> idZonaHoraria, string direccion, Nullable<bool> activa, ObjectParameter estado, ObjectParameter mensaje)
         {
             var tipoOperacionParameter = tipoOperacion.HasValue ?
                 new ObjectParameter("TipoOperacion", tipoOperacion) :
@@ -59,9 +59,9 @@ namespace AgroWebPro.Entidades
                 new ObjectParameter("CedulaJuridica", cedulaJuridica) :
                 new ObjectParameter("CedulaJuridica", typeof(string));
     
-            var diferenciaUTCParameter = diferenciaUTC.HasValue ?
-                new ObjectParameter("DiferenciaUTC", diferenciaUTC) :
-                new ObjectParameter("DiferenciaUTC", typeof(decimal));
+            var idZonaHorariaParameter = idZonaHoraria.HasValue ?
+                new ObjectParameter("idZonaHoraria", idZonaHoraria) :
+                new ObjectParameter("idZonaHoraria", typeof(System.Guid));
     
             var direccionParameter = direccion != null ?
                 new ObjectParameter("Direccion", direccion) :
@@ -71,10 +71,10 @@ namespace AgroWebPro.Entidades
                 new ObjectParameter("Activa", activa) :
                 new ObjectParameter("Activa", typeof(bool));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_MantenimientoEmpresa", tipoOperacionParameter, idEmpresaParameter, nombreEmpresaParameter, descripcionEmpresaParameter, telefonoParameter, cedulaJuridicaParameter, diferenciaUTCParameter, direccionParameter, activaParameter, estado, mensaje);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_MantenimientoEmpresa", tipoOperacionParameter, idEmpresaParameter, nombreEmpresaParameter, descripcionEmpresaParameter, telefonoParameter, cedulaJuridicaParameter, idZonaHorariaParameter, direccionParameter, activaParameter, estado, mensaje);
         }
     
-        public virtual int PA_MantenimientoUsuario(Nullable<int> tipoOperacion, Nullable<System.Guid> idUsuario, string nombre, string apellidos, string correo, string password, string direccion, string telefono, Nullable<System.Guid> ingresadoPor, Nullable<System.Guid> rol, Nullable<bool> activo, ObjectParameter estado, ObjectParameter mensaje)
+        public virtual int PA_MantenimientoUsuario(Nullable<int> tipoOperacion, Nullable<System.Guid> idUsuario, string nombre, string apellidos, string correo, string password, string direccion, string telefono, Nullable<System.Guid> ingresadoPor, Nullable<System.Guid> rol, Nullable<bool> activo, Nullable<System.Guid> idEmpresa, ObjectParameter estado, ObjectParameter mensaje)
         {
             var tipoOperacionParameter = tipoOperacion.HasValue ?
                 new ObjectParameter("TipoOperacion", tipoOperacion) :
@@ -120,7 +120,75 @@ namespace AgroWebPro.Entidades
                 new ObjectParameter("Activo", activo) :
                 new ObjectParameter("Activo", typeof(bool));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_MantenimientoUsuario", tipoOperacionParameter, idUsuarioParameter, nombreParameter, apellidosParameter, correoParameter, passwordParameter, direccionParameter, telefonoParameter, ingresadoPorParameter, rolParameter, activoParameter, estado, mensaje);
+            var idEmpresaParameter = idEmpresa.HasValue ?
+                new ObjectParameter("IdEmpresa", idEmpresa) :
+                new ObjectParameter("IdEmpresa", typeof(System.Guid));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_MantenimientoUsuario", tipoOperacionParameter, idUsuarioParameter, nombreParameter, apellidosParameter, correoParameter, passwordParameter, direccionParameter, telefonoParameter, ingresadoPorParameter, rolParameter, activoParameter, idEmpresaParameter, estado, mensaje);
+        }
+    
+        public virtual ObjectResult<PA_ConsultarUsuarioLogin_Result> PA_ConsultarUsuarioLogin(string correo, string password, ObjectParameter estado, ObjectParameter mensaje)
+        {
+            var correoParameter = correo != null ?
+                new ObjectParameter("Correo", correo) :
+                new ObjectParameter("Correo", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarUsuarioLogin_Result>("PA_ConsultarUsuarioLogin", correoParameter, passwordParameter, estado, mensaje);
+        }
+    
+        public virtual int PA_MantenimientoCultivo(Nullable<int> tipoOperacion, Nullable<System.Guid> idCultivo, string nombre, string descripcion, Nullable<System.Guid> idFamilia, Nullable<System.Guid> ingresadoPor, Nullable<bool> activo, Nullable<System.Guid> idEmpresa, ObjectParameter estado, ObjectParameter mensaje)
+        {
+            var tipoOperacionParameter = tipoOperacion.HasValue ?
+                new ObjectParameter("TipoOperacion", tipoOperacion) :
+                new ObjectParameter("TipoOperacion", typeof(int));
+    
+            var idCultivoParameter = idCultivo.HasValue ?
+                new ObjectParameter("IdCultivo", idCultivo) :
+                new ObjectParameter("IdCultivo", typeof(System.Guid));
+    
+            var nombreParameter = nombre != null ?
+                new ObjectParameter("Nombre", nombre) :
+                new ObjectParameter("Nombre", typeof(string));
+    
+            var descripcionParameter = descripcion != null ?
+                new ObjectParameter("Descripcion", descripcion) :
+                new ObjectParameter("Descripcion", typeof(string));
+    
+            var idFamiliaParameter = idFamilia.HasValue ?
+                new ObjectParameter("IdFamilia", idFamilia) :
+                new ObjectParameter("IdFamilia", typeof(System.Guid));
+    
+            var ingresadoPorParameter = ingresadoPor.HasValue ?
+                new ObjectParameter("IngresadoPor", ingresadoPor) :
+                new ObjectParameter("IngresadoPor", typeof(System.Guid));
+    
+            var activoParameter = activo.HasValue ?
+                new ObjectParameter("Activo", activo) :
+                new ObjectParameter("Activo", typeof(bool));
+    
+            var idEmpresaParameter = idEmpresa.HasValue ?
+                new ObjectParameter("IdEmpresa", idEmpresa) :
+                new ObjectParameter("IdEmpresa", typeof(System.Guid));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_MantenimientoCultivo", tipoOperacionParameter, idCultivoParameter, nombreParameter, descripcionParameter, idFamiliaParameter, ingresadoPorParameter, activoParameter, idEmpresaParameter, estado, mensaje);
+        }
+    
+        public virtual ObjectResult<PA_ConsultarFamilias_Result> PA_ConsultarFamilias(ObjectParameter estado, ObjectParameter mensaje)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarFamilias_Result>("PA_ConsultarFamilias", estado, mensaje);
+        }
+    
+        public virtual ObjectResult<PA_ConsultarCultivosEmpresa_Result> PA_ConsultarCultivosEmpresa(Nullable<System.Guid> idEmpresa, ObjectParameter estado, ObjectParameter mensaje)
+        {
+            var idEmpresaParameter = idEmpresa.HasValue ?
+                new ObjectParameter("IdEmpresa", idEmpresa) :
+                new ObjectParameter("IdEmpresa", typeof(System.Guid));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarCultivosEmpresa_Result>("PA_ConsultarCultivosEmpresa", idEmpresaParameter, estado, mensaje);
         }
     }
 }
