@@ -10,33 +10,37 @@
 {
     id = "formCultivo",
     role = "form",
-    @data_toggle = "validator" }))
+    @data_toggle = "validator"
+}))
 {
-<div class="form-group">
-    <div class="row form-group">
-        <div class="col-md-6">
-            <label>Nombre</label>
-            @Html.TextBoxFor(model => model.nombreCultivo, new { @id = "txtNombreCultivo", @class = "form-control", @required = "required", @placeholder = "Nombre" })
+    <div class="form-group">
+        <div class="row form-group">
+            <div class="col-md-6">
+                <label>Nombre</label>
+                @Html.TextBoxFor(model => model.nombreCultivo, new { @id = "txtNombreCultivo", @class = "form-control", @required = "required", @placeholder = "Nombre" })
+            </div>
+            <div class="col-md-6">
+                <label>Familia</label>
+                @Html.DropDownListFor(model => model.idFamilia, new SelectList(Model.listaFamilias, "IdFamilia", "NombreFamilia"), new { @id = "ddlFamilias", @class = "form-control", @required = "required" })
+            </div>
         </div>
-        <div class="col-md-6">
-            <label>Familia</label>
-            @Html.DropDownListFor(model => model.idFamilia, new SelectList(Model.listaFamilias, "IdFamilia", "NombreFamilia"), new { @id = "ddlFamilias", @class = "form-control", @required = "required" })
+        <div class="row form-group">
+            <div class="col-md-12">
+                <label>Descripción</label>
+                @Html.TextAreaFor(model => model.descripcionCultivo, new { @id = "txtDescripcionCultivo", @class = "form-control", @placeholder = "Descripción" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8"></div>
+            <div class="col-md-4">
+                <button type="submit" id="btnEditar" name="btnEditar" class="btn btn-info pull-right btn-guardar hidden">Editar</button>
+                <button type="submit" id="btnGuardar" name="btnGuardar" class="btn btn-info pull-right btn-guardar">Guardar</button>
+                <button class="btn btn-danger pull-right" type="button" onclick="Cancelar()">Cancelar</button>
+            </div>
         </div>
     </div>
-    <div class="row form-group">
-        <div class="col-md-12">
-            <label>Descripción</label>
-            @Html.TextAreaFor(model => model.descripcionCultivo, new { @id = "txtDescripcionCultivo", @class = "form-control", @required = "required", @placeholder = "Descripción" })
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-8"></div>
-        <div class="col-md-4">
-            <button type="submit" name="btnGuardar" class="btn btn-info pull-right btn-guardar">Guardar</button>
-            <button class="btn btn-danger pull-right">Cancelar</button>
-        </div>
-    </div>
-</div>
+    @Html.HiddenFor(model => Model.idCultivo, new { @id = "hdnIdCultivo" })
+}
 <hr />
 <table class="table table-hover">
     <thead>
@@ -49,21 +53,21 @@
     </thead>
     <tbody>
         @if (Model.listaCultivos != null)
-        {
-            foreach (var itemCultivo in Model.listaCultivos)
             {
+                foreach (var itemCultivo in Model.listaCultivos)
+                {
                 <tr>
                     <td>@itemCultivo.nombreCultivo</td>
                     <td>@itemCultivo.nombreFamilia</td>
                     <td>@itemCultivo.descripcionCultivo</td>
-                    <td><button class="btn btn-danger" onclick="EliminarCultivo()"><span class="fa fa-trash"></span> </button>&nbsp;<button class="btn btn-primary" onclick="EditarUsuario()"><span class="fa fa-pencil"></span> </button></td>
+                    <td><button class="btn btn-danger" onclick="EliminarCultivo()"><span class="fa fa-trash"></span> </button>&nbsp;<button class="btn btn-primary" data-idfamilia="@itemCultivo.idFamilia" data-nombrecultivo="@itemCultivo.nombreCultivo" data-descripcioncultivo="@itemCultivo.descripcionCultivo" data-idcultivo="@itemCultivo.idCultivo" onclick="EditarCultivo(this)"><span class="fa fa-pencil"></span> </button></td>
                 </tr>
             }
         }
-        
+
     </tbody>
 </table>
-}
+
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/bootstrap-datepicker.js"></script>
 <script src="~/Scripts/sweetalert.min.js"></script>
@@ -83,18 +87,43 @@
 
     function EliminarCultivo() {
         swal({
-            title: "Borrar usuario",
+            title: "Borrar cultivo",
             text: "Esta acción eliminará el cultivo",
             icon: "warning",
             buttons: true,
             dangerMode: true,
         })
-            .then((willDelete) => {
-                if (willDelete) {
-                    swal("El cultivo ha sido eliminado correctamente", {
-                        icon: "success",
-                    });
-                } 
-            });
+        .then((willDelete) => {
+            if (willDelete) {
+                swal("El cultivo ha sido eliminado correctamente", {
+                    icon: "success",
+                });
+            }
+        });
     }
+
+    function EditarCultivo(cultivo) {
+        debugger;
+        var idCultivo = $(cultivo).data("idcultivo");
+        var nombreCultivo = $(cultivo).data("nombrecultivo");
+        var descripcionCultivo = $(cultivo).data("descripcioncultivo");
+        var idFamilia = $(cultivo).data("idfamilia");
+
+        $("#txtNombreCultivo").val(nombreCultivo);
+        $("#txtDescripcionCultivo").val(descripcionCultivo);
+        $("#ddlFamilias").val(idFamilia);
+        $("#btnEditar").removeClass("hidden");
+        $("#btnGuardar").addClass("hidden");
+        $("#btnEditar").val(idCultivo);
+    }
+
+    function Cancelar() {
+        $("#txtNombreCultivo").val("");
+        $("#txtDescripcionCultivo").val("");
+        $("#dllFamilias").val("@Guid.Empty");
+        $("#btnEditar").addClass("hidden");
+        $("#btnGuardar").removeClass("hidden");
+        $("#btnEditar").val("");
+    }
+
 </script>
