@@ -25,7 +25,7 @@ namespace AgroWebPro.Web.Controllers
 
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
@@ -101,20 +101,42 @@ namespace AgroWebPro.Web.Controllers
                 string idUsuarioCookie = Request.Cookies["usuario"]["idUsuario"];
                 Guid idEmpresa = Guid.Parse(idEmpresaCookie);
                 Guid idUsuario = Guid.Parse(idUsuarioCookie);
-                
 
-                cultivoRequest = new MantenimientoCultivoRequest()
+                if (!string.IsNullOrEmpty(btnGuardar))
                 {
-                    tipoOperacion = Constantes.operacionCrear,
-                    idCultivo = Guid.NewGuid(),
-                    nombreCultivo = cultivoModels.nombreCultivo,
-                    descripcionCultivo = cultivoModels.descripcionCultivo,
-                    idFamilia = cultivoModels.idFamilia,
-                    idEmpresa = idEmpresa,
-                    ingresadoPor = idUsuario
-                };
+                    cultivoRequest = new MantenimientoCultivoRequest()
+                    {
+                        tipoOperacion = Constantes.operacionCrear,
+                        idCultivo = Guid.NewGuid(),
+                        nombreCultivo = cultivoModels.nombreCultivo,
+                        descripcionCultivo = cultivoModels.descripcionCultivo,
+                        idFamilia = cultivoModels.idFamilia,
+                        idEmpresa = idEmpresa,
+                        ingresadoPor = idUsuario
+                    };
 
-                cultivoResponse = mantenimientos.MantenimientoCultivo(cultivoRequest);
+                    cultivoResponse = mantenimientos.MantenimientoCultivo(cultivoRequest);
+                }
+                else if (!string.IsNullOrEmpty(btnEditar))
+                {
+                    cultivoRequest = new MantenimientoCultivoRequest()
+                    {
+                        tipoOperacion = Constantes.operacionModificar,
+                        idCultivo = Guid.Parse(btnEditar),
+                        nombreCultivo = cultivoModels.nombreCultivo,
+                        descripcionCultivo = cultivoModels.descripcionCultivo,
+                        idFamilia = cultivoModels.idFamilia,
+                        idEmpresa = idEmpresa,
+                        ingresadoPor = idUsuario
+                    };
+
+                    cultivoResponse = mantenimientos.MantenimientoCultivo(cultivoRequest);
+                }
+
+
+                familiasRequest = new ConsultarFamiliasRequest();
+                familiasResponse = consultas.ConsultarFamilias(familiasRequest);
+                cultivoModels.CopiarFamilias(familiasResponse);
 
                 cultivosEmpresaRequest = new ConsultarCultivosEmpresaRequest();
                 cultivosEmpresaRequest.idEmpresa = idEmpresa;
@@ -127,7 +149,7 @@ namespace AgroWebPro.Web.Controllers
             {
 
             }
-            return View();
+            return View(cultivoModels);
         }
     }
 }
