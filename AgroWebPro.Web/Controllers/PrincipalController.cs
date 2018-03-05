@@ -1,4 +1,7 @@
 ﻿using AgroWebPro.Entidades.Consultas.Entrada;
+using AgroWebPro.Entidades.Consultas.Salida;
+using AgroWebPro.Entidades.Mantenimientos.Entrada;
+using AgroWebPro.Entidades.Mantenimientos.Salida;
 using AgroWebPro.LogicaNegocios.Metodos;
 using AgroWebPro.Utilitarios;
 using AgroWebPro.Web.Models;
