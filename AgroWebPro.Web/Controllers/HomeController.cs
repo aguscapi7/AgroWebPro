@@ -41,7 +41,7 @@ namespace AgroWebPro.Web.Controllers
             Consultas consultas = new Consultas();
             ConsultarUsuarioLoginResponse consultarUsuarioResponse = null;
             ConsultarUsuarioLoginRequest consultarUsuarioRequest = null;
-
+            AgroWebPro.Entidades.Mantenimientos.Entrada
             try
             {
                 consultarUsuarioRequest = new ConsultarUsuarioLoginRequest()
