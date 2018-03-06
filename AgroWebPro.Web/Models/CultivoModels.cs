@@ -2,6 +2,7 @@
 using AgroWebPro.Utilitarios;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -10,9 +11,18 @@ namespace AgroWebPro.Web.Models
     public class CultivoModels
     {
         public Guid idCultivo { get; set; }
+
+        [Display(Name = "Nombre")]
+        [Required(ErrorMessage = "El nombre es requerido")]
         public string nombreCultivo { get; set; }
+
+        [Display(Name = "Descripción")]
         public string descripcionCultivo { get; set; }
-        public Guid idFamilia { get; set; }
+
+        [Display(Name = "Familia")]
+        [Required(ErrorMessage = "Debe seleccionar la familia")]
+        public Guid? idFamilia { get; set; }
+
         public string nombreFamilia { get; set; }
         public Guid ingresadoPor { get; set; }
         public bool activo { get; set; }
@@ -27,12 +37,7 @@ namespace AgroWebPro.Web.Models
                 listaFamilias = new List<FamiliaModels>();
                 if(familiasResponse != null && familiasResponse.estado.Equals(Constantes.EstadoCorrecto) && familiasResponse.listaFamilias.Count >= 0)
                 {
-                    FamiliaModels familia = new FamiliaModels()
-                    {
-                        idFamilia = Guid.Empty,
-                        nombreFamilia = "Seleccione la familia"
-                    };
-                    listaFamilias.Add(familia);
+                    FamiliaModels familia = null;
                     foreach (var familiaItem in familiasResponse.listaFamilias)
                     {
                         familia = new FamiliaModels();
