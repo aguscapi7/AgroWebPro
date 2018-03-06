@@ -47,6 +47,8 @@ namespace AgroWebPro.Web.Controllers
         [HttpGet]
         public ActionResult MantenimientoCultivo()
         {
+
+            Session[Constantes.MenuActivo] = Constantes.MenuCultivo;
             CultivoModels cultivoModels = new CultivoModels();
             Consultas consultas = new Consultas();
 
@@ -79,29 +81,27 @@ namespace AgroWebPro.Web.Controllers
             }
             return View(cultivoModels);
         }
-
+        
         [HttpPost]
         public ActionResult MantenimientoCultivo(CultivoModels cultivoModels, string btnGuardar, string btnEditar, string btnEliminar)
         {
             Consultas consultas = new Consultas();
             Mantenimientos mantenimientos = new Mantenimientos();
 
-            ConsultarCultivosEmpresaRequest cultivosEmpresaRequest = null;
-            ConsultarCultivosEmpresaResponse cultivosEmpresaResponse = null;
-
-            ConsultarFamiliasResponse familiasResponse = null;
-            ConsultarFamiliasRequest familiasRequest = null;
-
             MantenimientoCultivoResponse cultivoResponse = null;
             MantenimientoCultivoRequest cultivoRequest = null;
+
+            string respuesta = string.Empty;
 
             try
             {
                 string idEmpresaCookie = Request.Cookies["usuario"]["idEmpresa"];
                 string idUsuarioCookie = Request.Cookies["usuario"]["idUsuario"];
+                string idRol = Request.Cookies["usuario"]["idRol"];
+
                 Guid idEmpresa = Guid.Parse(idEmpresaCookie);
                 Guid idUsuario = Guid.Parse(idUsuarioCookie);
-
+                
                 if (!string.IsNullOrEmpty(btnGuardar))
                 {
                     cultivoRequest = new MantenimientoCultivoRequest()
@@ -114,42 +114,47 @@ namespace AgroWebPro.Web.Controllers
                         idEmpresa = idEmpresa,
                         ingresadoPor = idUsuario
                     };
-
-                    cultivoResponse = mantenimientos.MantenimientoCultivo(cultivoRequest);
                 }
                 else if (!string.IsNullOrEmpty(btnEditar))
                 {
                     cultivoRequest = new MantenimientoCultivoRequest()
                     {
                         tipoOperacion = Constantes.operacionModificar,
-                        idCultivo = Guid.Parse(btnEditar),
+                        idCultivo = cultivoModels.idCultivo,
                         nombreCultivo = cultivoModels.nombreCultivo,
                         descripcionCultivo = cultivoModels.descripcionCultivo,
                         idFamilia = cultivoModels.idFamilia,
                         idEmpresa = idEmpresa,
                         ingresadoPor = idUsuario
                     };
+                }
+                else if (!string.IsNullOrEmpty(btnEliminar))
+                {
+                    cultivoRequest = new MantenimientoCultivoRequest()
+                    {
+                        tipoOperacion = Constantes.operacionDesactivar,
+                        idCultivo = cultivoModels.idCultivo
+                    };
 
-                    cultivoResponse = mantenimientos.MantenimientoCultivo(cultivoRequest);
                 }
 
-
-                familiasRequest = new ConsultarFamiliasRequest();
-                familiasResponse = consultas.ConsultarFamilias(familiasRequest);
-                cultivoModels.CopiarFamilias(familiasResponse);
-
-                cultivosEmpresaRequest = new ConsultarCultivosEmpresaRequest();
-                cultivosEmpresaRequest.idEmpresa = idEmpresa;
-
-                cultivosEmpresaResponse = consultas.ConsultarCultivosEmpresa(cultivosEmpresaRequest);
-                cultivoModels.CopiarCultivosEmpresa(cultivosEmpresaResponse);
+                cultivoResponse = mantenimientos.MantenimientoCultivo(cultivoRequest);
+                if (cultivoResponse != null && cultivoResponse.estado.Equals(Constantes.EstadoCorrecto))
+                {
+                    respuesta = Constantes.EstadoCorrecto;
+                }
+                else
+                {
+                    respuesta = Constantes.EstadoError;
+                }
+                
 
             }
             catch (Exception ex)
             {
 
             }
-            return View(cultivoModels);
+            return Json( new { respuesta = respuesta });
         }
     }
 }

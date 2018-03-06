@@ -27,7 +27,7 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
                 <ul class="nav navbar-nav">
-                    <li id="li-inicio" onclick="AbrirEnlace('@Url.Action("Inicio", "Principal")')" class="li-menu"><a><i class="fa fa-leaf"></i> Inicio</a></li>
+                    <li id="li-inicio" onclick="AbrirEnlace('@Url.Action("Inicio", "Principal")')" class="li-menu"><a><i class="fa fa-home"></i> Inicio</a></li>
                     <li id="li-cultivo" onclick="AbrirEnlace('@Url.Action("MantenimientoCultivo", "Principal")')" class="li-menu"><a><i class="fa fa-leaf"></i> Cultivos</a></li>
                     <li id="li-terreno" onclick="AbrirEnlace('@Url.Action("Mapa", "Principal")')" class="li-menu"><a><i class="fa fa-map-o fa-lg"></i> Terrenos</a></li>
                     <li id="li-mantenimiento-usuarios" onclick="AbrirEnlace('@Url.Action("Mantenimiento", "Usuarios")')" class="li-menu"><a><i class="fa fa-users fa-lg"></i> Empleados</a></li>
@@ -61,12 +61,11 @@
         function AbrirEnlace(enlace) {
             window.location.href = enlace;
         }
-        var activo = '@(Session[AgroWebPro.Utilitarios.Constantes.MenuActivo] != null ? Session["menu-activo"].ToString() : AgroWebPro.Utilitarios.Constantes.MenuInicio)';
         function EstablecerActivo() {
-            if (activo == "@AgroWebPro.Utilitarios.Constantes.MenuInicio") {
-                $(".li-menu").removeClass("active");
-                $("#li-" + activo).addClass("active");
-            }
+            var activo = '@(Session[AgroWebPro.Utilitarios.Constantes.MenuActivo] != null ? Session["menu-activo"].ToString() : AgroWebPro.Utilitarios.Constantes.MenuInicio)';
+            $(".li-menu").removeClass("active");
+            $("#li-" + activo).addClass("active");
+
         }
         EstablecerActivo();
     </script>

@@ -190,5 +190,19 @@ namespace AgroWebPro.Entidades
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarCultivosEmpresa_Result>("PA_ConsultarCultivosEmpresa", idEmpresaParameter, estado, mensaje);
         }
+    
+        public virtual ObjectResult<PA_ConsultarEmpleadosEmpresa_Result> PA_ConsultarEmpleadosEmpresa(Nullable<System.Guid> idEmpresa, ObjectParameter estado, ObjectParameter mensaje)
+        {
+            var idEmpresaParameter = idEmpresa.HasValue ?
+                new ObjectParameter("IdEmpresa", idEmpresa) :
+                new ObjectParameter("IdEmpresa", typeof(System.Guid));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarEmpleadosEmpresa_Result>("PA_ConsultarEmpleadosEmpresa", idEmpresaParameter, estado, mensaje);
+        }
+    
+        public virtual ObjectResult<PA_ConsultarRoles_Result> PA_ConsultarRoles(ObjectParameter estado, ObjectParameter mensaje)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarRoles_Result>("PA_ConsultarRoles", estado, mensaje);
+        }
     }
 }

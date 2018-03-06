@@ -10,7 +10,16 @@
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
+        <Function Name="PA_ConsultarEmpleadosEmpresa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdEmpresa" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
         <Function Name="PA_ConsultarFamilias" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
+        <Function Name="PA_ConsultarRoles" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
@@ -131,6 +140,15 @@
             <Parameter Name="Estado" Mode="InOut" Type="String" />
             <Parameter Name="Mensaje" Mode="InOut" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="PA_ConsultarEmpleadosEmpresa" ReturnType="Collection(AgroWebProModel.PA_ConsultarEmpleadosEmpresa_Result)">
+            <Parameter Name="IdEmpresa" Mode="In" Type="Guid" />
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PA_ConsultarRoles" ReturnType="Collection(AgroWebProModel.PA_ConsultarRoles_Result)">
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="PA_ConsultarZonasHorarias_Result">
           <Property Type="Guid" Name="IdZonaHoraria" Nullable="false" />
@@ -171,6 +189,26 @@
           <Property Type="Guid" Name="IngresadoPor" Nullable="true" />
           <Property Type="DateTime" Name="FechaIngreso" Nullable="false" Precision="23" />
           <Property Type="Boolean" Name="Activo" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="PA_ConsultarEmpleadosEmpresa_Result">
+          <Property Type="Guid" Name="IdUsuario" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Apellidos" Nullable="true" MaxLength="80" />
+          <Property Type="String" Name="Correo" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Direccion" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Telefono" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="FechaIngreso" Nullable="false" Precision="23" />
+          <Property Type="Guid" Name="IngresadoPor" Nullable="true" />
+          <Property Type="Boolean" Name="Activo" Nullable="false" />
+          <Property Type="Guid" Name="IdEmpresa" Nullable="false" />
+          <Property Type="Guid" Name="IdRol" Nullable="false" />
+          <Property Type="String" Name="NombreRol" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="PA_ConsultarRoles_Result">
+          <Property Type="Guid" Name="IdRol" Nullable="false" />
+          <Property Type="String" Name="NombreRol" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Descripcion" Nullable="true" MaxLength="200" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -224,6 +262,34 @@
                 <ScalarProperty Name="IngresadoPor" ColumnName="IngresadoPor" />
                 <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
                 <ScalarProperty Name="Activo" ColumnName="Activo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PA_ConsultarEmpleadosEmpresa" FunctionName="AgroWebProModel.Store.PA_ConsultarEmpleadosEmpresa">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AgroWebProModel.PA_ConsultarEmpleadosEmpresa_Result">
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
+                <ScalarProperty Name="IngresadoPor" ColumnName="IngresadoPor" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+                <ScalarProperty Name="IdRol" ColumnName="IdRol" />
+                <ScalarProperty Name="NombreRol" ColumnName="NombreRol" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PA_ConsultarRoles" FunctionName="AgroWebProModel.Store.PA_ConsultarRoles">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AgroWebProModel.PA_ConsultarRoles_Result">
+                <ScalarProperty Name="IdRol" ColumnName="IdRol" />
+                <ScalarProperty Name="NombreRol" ColumnName="NombreRol" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

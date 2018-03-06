@@ -1,4 +1,4 @@
-﻿
+﻿@model AgroWebPro.Web.Models.UsuarioModels
 @{
     ViewBag.Title = "Mantenimiento de empleados";
 }
@@ -9,51 +9,49 @@
 
 <div class="form-group">
     <div class="row form-group">
+        <input type="hidden" id="hdnIdEmpleado" />
         <div class="col-md-6">
             <label>Nombre</label>
-            <input id="txtNombre" placeholder="Ingrese el nombre" class="form-control"/>
+            @Html.TextBoxFor(model => model.nombre, new { @id = "txtNombreUsuario", @class = "form-control", @required = "required", @placeholder = "Ingrese el nombre" })
         </div>
         <div class="col-md-6">
             <label>Apellidos</label>
-            <input id="txtApellidos" placeholder="Ingrese los apellidos" type="email" class="form-control"/>
+            @Html.TextBoxFor(model => model.apellidos, new { @id = "txtApellidos", @class = "form-control", @placeholder = "Ingrese los apellidos" })
         </div>
     </div>
     <div class="row form-group">
         <div class="col-md-6">
             <label>Fecha de nacimiento</label>
-            <input class="form-control" id="txtFechaNacimiento" readonly="readonly" value="@(DateTime.Now.ToShortDateString())"/>
+            @{string fecha = DateTime.Now.ToShortDateString(); }
+            @Html.TextBoxFor(model => fecha, new { @id = "txtFechaNacimiento", @class = "form-control", value = fecha , @readonly = "readonly" })
         </div>
         <div class="col-md-6">
             <label>Correo</label>
-            <input id="txtCorreo" placeholder="Ingrese el correo" type="email" class="form-control" />
+            @Html.TextBoxFor(model => model.correo, new { @id = "txtCorreo", @class = "form-control", @type = "email", @placeholder = "Ingrese el correo" })
         </div>
     </div>
     <div class="row form-group">
         <div class="col-md-6">
             <label>Teléfono</label>
-            <input id="txtTelefono" placeholder="Ingrese el teléfono" class="form-control" />
+            @Html.TextBoxFor(model => model.telefono, new { @id = "txtTelefono", @class = "form-control",  @placeholder = "Ingrese el telefono" })
         </div>
         <div class="col-md-6">
             <label>Puesto</label>
-            <select id="selectPuesto" class="form-control">
-                <option>Seleccione...</option>
-                <option>Puesto 1</option>
-                <option>Puesto 2</option>
-                <option>Puesto 3</option>
-            </select>
+            @Html.DropDownListFor(model => model.idRol, new SelectList(Model.listaRoles, "idRol", "nombreRol"), new { @id = "ddlRoles", @class = "form-control", @required = "required" })
+
         </div>
     </div>
     <div class="row form-group">
         <div class="col-md-6">
             <label>Dirección</label>
-            <textarea id="txtDirección" rows="5" placeholder="Ingrese la dirección" class="form-control"></textarea>
+            @Html.TextAreaFor(model => model.direccion, new { @id = "txtDireccion", @class = "form-control", @rows = 5, @placeholder = "Ingrese la dirección" })
         </div>
     </div>
     <div class="row">
         <div class="col-md-8"></div>
         <div class="col-md-4">
-            <button class="btn btn-info pull-right btn-guardar">Guardar</button>
-            <button class="btn btn-danger pull-right">Cancelar</button>
+            <button class="btn btn-primary pull-right btn-guardar">Guardar</button>
+            <button class="btn btn-danger pull-right" id="btnCancelar">Cancelar</button>
         </div>
     </div>
 </div>
@@ -123,3 +121,8 @@
             });
     }
 </script>
+<style>
+    #btnCancelar {
+        margin-right: 10px;
+    }
+</style>

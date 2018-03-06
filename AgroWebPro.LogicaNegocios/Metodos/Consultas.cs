@@ -78,5 +78,39 @@ namespace AgroWebPro.LogicaNegocios.Metodos
             }
             return response;
         }
+
+        public ConsultarEmpleadosEmpresaResponse ConsultarEmpleadosEmpresa(ConsultarEmpleadosEmpresaRequest request)
+        {
+            AccesoDatos.Metodos.Consultas mantenimiento = new AccesoDatos.Metodos.Consultas();
+            ConsultarEmpleadosEmpresaResponse response = new ConsultarEmpleadosEmpresaResponse();
+            try
+            {
+                response = mantenimiento.ConsultarEmpleadosEmpresa(request);
+            }
+            catch (Exception ex)
+            {
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorLogicaNegocios + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                throw;
+            }
+            return response;
+        }
+
+        public ConsultarRolesResponse ConsultarRoles(ConsultarRolesRequest request)
+        {
+            AccesoDatos.Metodos.Consultas mantenimiento = new AccesoDatos.Metodos.Consultas();
+            ConsultarRolesResponse response = new ConsultarRolesResponse();
+            try
+            {
+                response = mantenimiento.ConsultarRoles(request);
+            }
+            catch (Exception ex)
+            {
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorLogicaNegocios + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                throw;
+            }
+            return response;
+        }
     }
 }

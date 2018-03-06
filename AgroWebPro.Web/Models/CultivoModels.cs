@@ -32,6 +32,7 @@ namespace AgroWebPro.Web.Models
                         idFamilia = Guid.Empty,
                         nombreFamilia = "Seleccione la familia"
                     };
+                    listaFamilias.Add(familia);
                     foreach (var familiaItem in familiasResponse.listaFamilias)
                     {
                         familia = new FamiliaModels();
@@ -55,13 +56,14 @@ namespace AgroWebPro.Web.Models
                 if (cultivosEmpresaResult != null && cultivosEmpresaResult.estado.Equals(Constantes.EstadoCorrecto) && cultivosEmpresaResult.listaCultivosEmpresa.Count >= 0)
                 {
                     CultivoModels cultivo = null;
-                    foreach (var familiaItem in cultivosEmpresaResult.listaCultivosEmpresa)
+                    foreach (var cultivoItem in cultivosEmpresaResult.listaCultivosEmpresa)
                     {
                         cultivo = new CultivoModels();
-                        cultivo.idCultivo = familiaItem.IdCultivo;
-                        cultivo.nombreCultivo = familiaItem.Nombre;
-                        cultivo.idFamilia = familiaItem.IdFamilia;
-                        cultivo.nombreFamilia = familiaItem.NombreFamilia;
+                        cultivo.idCultivo = cultivoItem.IdCultivo;
+                        cultivo.nombreCultivo = cultivoItem.Nombre;
+                        cultivo.idFamilia = cultivoItem.IdFamilia;
+                        cultivo.nombreFamilia = cultivoItem.NombreFamilia;
+                        cultivo.descripcionCultivo = cultivoItem.Descripcion;
                         listaCultivos.Add(cultivo);
                     }
                 }

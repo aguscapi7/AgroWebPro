@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AgroWebPro.Entidades.Consultas.Entrada
 {
-    public class ConsultarFamiliasRequest:EntradaBase
+    public class ConsultarRolesRequest:EntradaBase
     {
     }
 }
