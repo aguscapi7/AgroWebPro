@@ -13,39 +13,10 @@ using System.Web.Mvc;
 
 namespace AgroWebPro.Web.Controllers
 {
-    public class PrincipalController : Controller
+    public class CultivoController : Controller
     {
-        public ActionResult Inicio()
-        {
-            EmpresaModels empresaModels = new EmpresaModels();
-            try
-            {
-                empresaModels.usuario = new UsuarioModels() { nombre = Request.Cookies["usuario"]["nombre"] };
-                Session[Constantes.MenuActivo] = Constantes.MenuInicio;
-
-
-            }
-            catch (Exception ex)
-            {
-
-            }
-            return View(empresaModels);
-        }
-
-        public ActionResult Mapa()
-        {
-            Session[Constantes.MenuActivo] = Constantes.MenuTerreno;
-            return View();
-        }
-
-        public ActionResult Cultivo()
-        {
-            Session[Constantes.MenuActivo] = Constantes.MenuCultivo;
-            return View();
-        }
-
         [HttpGet]
-        public ActionResult MantenimientoCultivo()
+        public ActionResult Mantenimiento()
         {
 
             Session[Constantes.MenuActivo] = Constantes.MenuCultivo;
@@ -61,18 +32,26 @@ namespace AgroWebPro.Web.Controllers
 
             try
             {
-                string idEmpresaCookie = Request.Cookies["usuario"]["idEmpresa"];
-                Guid idEmpresa = Guid.Parse(idEmpresaCookie);
+                if(Request.Cookies["usuario"] != null)
+                {
+                    string idEmpresaCookie = Request.Cookies["usuario"]["idEmpresa"];
+                    Guid idEmpresa = Guid.Parse(idEmpresaCookie);
 
-                cultivosEmpresaRequest = new ConsultarCultivosEmpresaRequest();
-                cultivosEmpresaRequest.idEmpresa = idEmpresa;
+                    cultivosEmpresaRequest = new ConsultarCultivosEmpresaRequest();
+                    cultivosEmpresaRequest.idEmpresa = idEmpresa;
 
-                cultivosEmpresaResponse = consultas.ConsultarCultivosEmpresa(cultivosEmpresaRequest);
-                cultivoModels.CopiarCultivosEmpresa(cultivosEmpresaResponse);
+                    cultivosEmpresaResponse = consultas.ConsultarCultivosEmpresa(cultivosEmpresaRequest);
+                    cultivoModels.CopiarCultivosEmpresa(cultivosEmpresaResponse);
 
-                familiasRequest = new ConsultarFamiliasRequest();
-                familiasResponse = consultas.ConsultarFamilias(familiasRequest);
-                cultivoModels.CopiarFamilias(familiasResponse);
+                    familiasRequest = new ConsultarFamiliasRequest();
+                    familiasResponse = consultas.ConsultarFamilias(familiasRequest);
+                    cultivoModels.CopiarFamilias(familiasResponse);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                
 
             }
             catch (Exception ex)
@@ -83,7 +62,7 @@ namespace AgroWebPro.Web.Controllers
         }
         
         [HttpPost]
-        public ActionResult MantenimientoCultivo(CultivoModels cultivoModels, string btnGuardar, string btnEditar, string btnEliminar)
+        public ActionResult Mantenimiento(CultivoModels cultivoModels, string btnGuardar, string btnEditar, string btnEliminar)
         {
             Consultas consultas = new Consultas();
             Mantenimientos mantenimientos = new Mantenimientos();
@@ -143,14 +122,6 @@ namespace AgroWebPro.Web.Controllers
                     mensajeCorrecto = string.Format(mensajeCorrecto, "editado");
                     mensajeError = string.Format(mensajeError, "editar");
                 }
-                else if (!string.IsNullOrEmpty(btnEliminar))
-                {
-                    cultivoRequest = new MantenimientoCultivoRequest()
-                    {
-                        tipoOperacion = Constantes.operacionDesactivar,
-                        idCultivo = cultivoModels.idCultivo
-                    };
-                }
 
                 cultivoResponse = mantenimientos.MantenimientoCultivo(cultivoRequest);
                 if (cultivoResponse != null && cultivoResponse.estado.Equals(Constantes.EstadoCorrecto))
@@ -184,7 +155,7 @@ namespace AgroWebPro.Web.Controllers
             return View(cultivoModels);
         }
 
-        public ActionResult EliminarCultivo(Guid idCultivo)
+        public ActionResult Eliminar(Guid idCultivo)
         {
             Mantenimientos mantenimientos = new Mantenimientos();
 
@@ -217,5 +188,7 @@ namespace AgroWebPro.Web.Controllers
             }
             return Json( new { respuesta = respuesta });
         }
+
+        
     }
 }

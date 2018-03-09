@@ -18,23 +18,26 @@ namespace AgroWebPro.Web.Controllers
     {
         public ActionResult Index()
         {
+            try
+            {
+                if(Request.Cookies["usuario"] != null)
+                {
+                    string idUsuario = Request.Cookies["usuario"]["idUsuario"];
+                    if (!string.IsNullOrEmpty(idUsuario))
+                    {
+                        return RedirectToAction("Inicio");
+                    }
+                }
+                
+            }
+            catch(Exception ex)
+            {
+
+            }
             return View();
         }
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
-
+       
         [HttpPost]
         public ActionResult Login(UsuarioModels usuarioModels)
         {
@@ -64,7 +67,7 @@ namespace AgroWebPro.Web.Controllers
                     cookie.Expires = DateTime.Now.AddDays(1);
                     Response.Cookies.Add(cookie);
 
-                    return RedirectToAction("Inicio", "Principal");
+                    return RedirectToAction("Inicio", "Home");
                 }
             }
             catch(Exception ex)
@@ -184,6 +187,43 @@ namespace AgroWebPro.Web.Controllers
 
             }
             return View(modelo);
+        }
+
+        public ActionResult Inicio()
+        {
+            EmpresaModels empresaModels = new EmpresaModels();
+            try
+            {
+                empresaModels.usuario = new UsuarioModels() { nombre = Request.Cookies["usuario"]["nombre"] };
+                Session[Constantes.MenuActivo] = Constantes.MenuInicio;
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return View(empresaModels);
+        }
+
+        public ActionResult CerrarSesion()
+        {
+            try
+            {
+                string[] myCookies = Request.Cookies.AllKeys;
+                foreach (string nombreCookie in myCookies)
+                {
+                    Request.Cookies.Remove(nombreCookie);
+
+                    var aCookie = new HttpCookie(nombreCookie) { Expires = DateTime.Now.AddDays(-1) };
+                    Response.Cookies.Add(aCookie);
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+            return RedirectToAction("Index", "Home");
         }
     }
 }

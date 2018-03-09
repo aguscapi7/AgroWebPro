@@ -152,9 +152,9 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\EmpresaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\PrincipalController.cs" />
-    <Compile Include="Controllers\ReportesController.cs" />
-    <Compile Include="Controllers\UsuariosController.cs" />
+    <Compile Include="Controllers\CultivoController.cs" />
+    <Compile Include="Controllers\ReporteController.cs" />
+    <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -177,6 +177,7 @@
     <Content Include="Content\bodybg\bg9.css" />
     <Content Include="Content\bootstrap-datepicker.css" />
     <Content Include="Content\bootstrap-datepicker.min.css" />
+    <Content Include="Content\bootstrap-table.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\color\amethyst.css" />
     <Content Include="Content\color\blue.css" />
@@ -268,6 +269,8 @@
     <Content Include="img\testimonials\5.jpg" />
     <Content Include="img\testimonials\6.jpg" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
+    <Content Include="Scripts\bootstrap-table-locale-all.min.js" />
+    <Content Include="Scripts\bootstrap-table.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -388,16 +391,15 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Shared\_LayoutInicio.cshtml" />
-    <Content Include="Views\Principal\Inicio.cshtml" />
-    <Content Include="Views\Principal\Mapa.cshtml" />
+    <Content Include="Views\Home\Inicio.cshtml" />
+    <Content Include="Views\Empresa\Terrenos.cshtml" />
     <Content Include="Views\Empresa\Mantenimiento.cshtml" />
     <Content Include="Views\Home\Registro.cshtml" />
-    <Content Include="Views\Cultivo\View.cshtml" />
-    <None Include="Views\Principal\MantenimientoCultivo.cshtml" />
-    <None Include="Views\Reportes\Tareas.cshtml" />
-    <Content Include="Views\Reportes\Cosechas.cshtml" />
-    <Content Include="Views\Reportes\Ventas.cshtml" />
-    <Content Include="Views\Usuarios\Mantenimiento.cshtml" />
+    <None Include="Views\Cultivo\Mantenimiento.cshtml" />
+    <None Include="Views\Reporte\Tareas.cshtml" />
+    <Content Include="Views\Reporte\Cosechas.cshtml" />
+    <Content Include="Views\Reporte\Ventas.cshtml" />
+    <Content Include="Views\Usuario\Mantenimiento.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,313 @@
+﻿@model AgroWebPro.Web.Models.UsuarioModels
+@using AgroWebPro.Utilitarios;
+@{
+    ViewBag.Title = "Mantenimiento de empleados";
+}
+
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-table.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/bootstrap-table.js"></script>
+<link href="~/Content/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert.js"></script>
+<script src="~/Scripts/bootstrap-table-locale-all.min.js"></script>
+@using (Html.BeginForm("Mantenimiento", "Usuario", FormMethod.Post, new { id = "formEmpleado", role = "form", @data_toggle = "validator" }))
+{
+    @Html.AntiForgeryToken();
+    @Html.ValidationSummary(true);
+    <div class="form-group hidden" id="divMantenimiento">
+        <h2 id="tituloMantenimiento">Agregar empleado</h2>
+        <div class="row form-group">
+            <input type="hidden" id="hdnIdEmpleado" />
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.nombre)
+                @Html.TextBoxFor(model => model.nombre, new { @id = "txtNombre", @class = "form-control", @required = "required", @placeholder = "Ingrese el nombre" })
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.apellidos)
+                @Html.TextBoxFor(model => model.apellidos, new { @id = "txtApellidos", @class = "form-control", @placeholder = "Ingrese los apellidos" })
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.fechaNacimiento)
+                <div class="input-group date" data-provide="datepicker">
+                    @Html.TextBoxFor(model => model.fechaNacimiento, new { @id = "txtFechaNacimiento", @class = "form-control", Value = DateTime.Now.ToString("dd/MM/yyyy"), @readonly = "readonly" })
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-th"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.correo)
+                @Html.TextBoxFor(model => model.correo, new { @id = "txtCorreo", @class = "form-control", @type = "email", @placeholder = "Ingrese el correo" })
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.telefono)
+                @Html.TextBoxFor(model => model.telefono, new { @id = "txtTelefono", @class = "form-control", @placeholder = "Ingrese el telefono" })
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.idRol)
+                @Html.DropDownListFor(model => model.idRol, new SelectList(Model.listaRoles, "idRol", "nombreRol"), new { @id = "ddlRoles", @class = "form-control", @required = "required" })
+
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.direccion)
+                @Html.TextAreaFor(model => model.direccion, new { @id = "txtDireccion", @class = "form-control", @rows = 2, @placeholder = "Ingrese la dirección" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8"></div>
+            <div class="col-md-4">
+                <button id="btnEditar" name="btnEditar" class="btn btn-primary pull-right btn-guardar hidden" type="submit">Editar&nbsp;<span><i class="fa fa-refresh"></i></span></button>
+                <button id="btnGuardar" name="btnGuardar" class="btn btn-primary pull-right btn-guardar" value="btnGuardar" type="submit">Guardar&nbsp;<span><i class="fa fa-plus"></i></span></button>
+                <button class="btn btn-danger pull-right" id="btnCancelar" type="button" onclick="Cancelar()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+}
+
+<div class="form-group" id="divTablaEmpleados">
+    <h2>Listado de empleados</h2>
+    <div class="row">
+        <div class="col-md-12"><button class="btn btn-orange" onclick="MostrarDivMantenimiento()">Agregar empleado&nbsp;<span class="fa fa-plus"></span></button></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-hover" data-show-toggle="true"  data-search="true"
+                        data-show-export="true"
+                        data-detail-formatter="detailFormatter"
+                        data-minimum-count-columns="2"
+                        data-show-pagination-switch="true"
+                        data-pagination="true"
+                        data-page-list="[10, 25, 50, 100, ALL]"
+                        data-locale="es-CR">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th>Correo</th>
+                            <th>Puesto</th>
+                            <th>Teléfono</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.listaEmpleadosEmpresa != null && Model.listaEmpleadosEmpresa.Count() > 0)
+                        {
+                            foreach (var itemEmpleado in Model.listaEmpleadosEmpresa)
+                            {
+                                <tr>
+                                    <td>@itemEmpleado.nombre</td>
+                                    <td>@itemEmpleado.apellidos</td>
+                                    <td>@itemEmpleado.correo</td>
+                                    <td>@itemEmpleado.nombreRol</td>
+                                    <td>@itemEmpleado.telefono</td>
+                                    <td>
+                                        <button class="btn btn-danger" onclick="EliminarEmpleadoPaso1('@itemEmpleado.idUsuario')"><span class="fa fa-trash"></span> </button>&nbsp;
+                                        <button class="btn btn-primary"
+                                                data-idusuario="@itemEmpleado.idUsuario"
+                                                data-nombre="@itemEmpleado.nombre"
+                                                data-apellidos="@itemEmpleado.apellidos"
+                                                data-direccion="@itemEmpleado.direccion"
+                                                data-idrol="@itemEmpleado.idRol"
+                                                data-telefono="@itemEmpleado.telefono"
+                                                data-correo="@itemEmpleado.correo"
+                                                onclick="CargarDatosEmpleado(this)">
+                                            <span class="fa fa-pencil"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr><td colspan="6"><center>Aún no ha agregado empleados</center></td></tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+<script src="~/Scripts/sweetalert.min.js"></script>
+@if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoCorrecto)
+{
+    <script>
+        swal({
+            title: 'Correcto',
+            text: "@ViewBag.mensaje",
+            type: 'success',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+}
+else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoError)
+{
+    <script>
+        swal({
+            title: 'Error',
+            text: "@ViewBag.mensaje",
+            type: 'danger',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+            });
+    </script>
+}
+<script>
+
+    $('table').bootstrapTable({
+        editable: true
+    });
+
+    $('#txtFechaNacimiento').datepicker({
+
+        changeMonth: true,
+        changeYear: true,
+        format: "dd/mm/yyyy",
+        todayHighlight: true,
+        todayBtn: "linked",
+        onSelect: function (date) {
+        }
+    }).on('changeDate', function (e) {
+        $(this).datepicker('hide');
+    });
+
+    function EliminarEmpleado() {
+        var parametros = {
+            idUsuario: $("#hdnIdEmpleado").val()
+        };
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: '@Url.Action("Eliminar", "Usuario")',
+            data: parametros,
+            success: function (data) {
+                if (data.respuesta == '@Constantes.EstadoCorrecto')
+                {
+                    swal({
+                        title: 'Correcto',
+                        text: "El empleado se ha borrado correctamente",
+                        type: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Aceptar'
+                    }).then(function (isConfirm) {
+                        window.location.href = window.location.href;
+                    });
+
+
+                }
+                else
+                {
+                    swal({
+                        title: 'Error',
+                        text: "Ocurrió un error al borrar el empleado",
+                        type: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'danger'
+                    }).then(function (isConfirm) {
+                        window.location.href = window.location.href;
+                    });
+                }
+
+            }
+        });
+    }
+
+    function EliminarEmpleadoPaso1(idEmpleado)
+    {
+        swal({
+            title: '',
+            text: "Esta acción eliminará el empleado",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Borrar',
+            cancelButtonText: 'Cancelar'
+        }).then(function (isConfirm) {
+            if (isConfirm)
+            {
+                $("#hdnIdEmpleado").val(idEmpleado);
+                EliminarEmpleado();
+            }
+
+        })
+    }
+
+    function CargarDatosEmpleado(empleado)
+    {
+        var idUsuario = $(empleado).data("idusuario");
+        var nombre = $(empleado).data("nombre");
+        var apellidos = $(empleado).data("apellidos");
+        var direccion = $(empleado).data("direccion");
+        var idrol = $(empleado).data("idrol");
+        var telefono = $(empleado).data("telefono");
+        var correo = $(empleado).data("correo");
+
+        $("#txtNombre").val(nombre);
+        $("#txtApellidos").val(apellidos);
+        $("#txtDireccion").val(direccion);
+        $("#txtTelefono").val(telefono);
+        $("#txtCorreo").val(correo);
+        $("#ddlRoles").val(idrol);
+        $("#btnEditar").removeClass("hidden");
+        $("#btnGuardar").addClass("hidden");
+        $("#btnEditar").val(idUsuario);
+
+        $("#divMantenimiento").removeClass("hidden");
+        $("#divTablaEmpleados").addClass("hidden");
+        $("#tituloMantenimiento").html("Editar empleado");
+    }
+
+    function Cancelar()
+    {
+        $("#txtNombre").val("");
+        $("#txtApellidos").val("");
+        $("#txtDireccion").val("");
+        $("#txtTelefono").val("");
+        $("#txtCorreo").val("");
+        $("#ddlRoles").val("@Guid.Empty");
+        $("#btnEditar").addClass("hidden");
+        $("#btnGuardar").removeClass("hidden");
+        $("#btnEditar").val("");
+
+        $("#divMantenimiento").addClass("hidden");
+        $("#divTablaEmpleados").removeClass("hidden");
+        $("#tituloMantenimiento").html("Editar empleado");
+    }
+
+    function MostrarDivMantenimiento()
+    {
+        $("#divMantenimiento").removeClass("hidden");
+        $("#divTablaEmpleados").addClass("hidden");
+        $("#tituloMantenimiento").html("Agregar empleado");
+        
+    }
+
+    function OcultarDivMantenimiento()
+    {
+        $("#divMantenimiento").removeClass("hidden");
+        $("#divTablaEmpleados").addClass("hidden");
+    }
+
+</script>
+<style>
+    #btnCancelar {
+        margin-right: 10px;
+    }
+    .ui-datepicker {
+        z-index: 10000 !important;
+    }
+</style>

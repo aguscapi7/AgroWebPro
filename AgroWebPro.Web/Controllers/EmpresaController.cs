@@ -1,6 +1,7 @@
 ﻿using AgroWebPro.Entidades.Consultas.Entrada;
 using AgroWebPro.Entidades.Consultas.Salida;
 using AgroWebPro.LogicaNegocios.Metodos;
+using AgroWebPro.Utilitarios;
 using AgroWebPro.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,12 @@ namespace AgroWebPro.Web.Controllers
 
             }
             return View(empresaModels);
+        }
+
+        public ActionResult Terrenos()
+        {
+            Session[Constantes.MenuActivo] = Constantes.MenuTerreno;
+            return View();
         }
     }
 }

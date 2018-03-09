@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace AgroWebPro.Web.Controllers
 {
-    public class ReportesController : Controller
+    public class ReporteController : Controller
     {
         public ActionResult Resumen()
         {
