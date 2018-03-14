@@ -40,8 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Metodos\Consultas.cs" />
-    <Compile Include="Metodos\Mantenimientos.cs" />
+    <Compile Include="Interfaces\ICatalogos.cs" />
+    <Compile Include="Interfaces\IEmpresa.cs" />
+    <Compile Include="Interfaces\IUsuario.cs" />
+    <Compile Include="Metodos\Catalogos.cs" />
+    <Compile Include="Metodos\Empresa.cs" />
+    <Compile Include="Metodos\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -58,5 +62,6 @@
       <Name>AgroWebPro.Utilitarios</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

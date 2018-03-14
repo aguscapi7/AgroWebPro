@@ -50,23 +50,41 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Consultas\Entrada\ConsultarClientesProveedoresEmpresaRequest.cs" />
+    <Compile Include="Consultas\Entrada\ConsultarUsuarioRequest.cs" />
+    <Compile Include="Consultas\Entrada\ConsultarEmpresaRequest.cs" />
+    <Compile Include="Consultas\Entrada\ConsultarTerrenosEmpresaRequest.cs" />
+    <Compile Include="Consultas\Entrada\ConsultarTerrenoRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarEmpleadosEmpresaRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarCultivosEmpresaRequest.cs" />
+    <Compile Include="Consultas\Entrada\ConsultarUnidadesVentaRequest.cs" />
+    <Compile Include="Consultas\Entrada\ConsultarMonedasRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarRolesRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarFamiliasRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarUsuarioLoginRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarZonasHorariasRequest.cs" />
+    <Compile Include="Consultas\Salida\ConsultarClientesProveedoresEmpresaResponse.cs" />
+    <Compile Include="Consultas\Salida\ConsultarUsuarioResponse.cs" />
+    <Compile Include="Consultas\Salida\ConsultarEmpresaResponse .cs" />
+    <Compile Include="Consultas\Salida\ConsultarTerrenosEmpresaResponse.cs" />
+    <Compile Include="Consultas\Salida\ConsultarTerrenoResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarEmpleadosEmpresaResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarCultivosEmpresaResponse.cs" />
+    <Compile Include="Consultas\Salida\ConsultarUnidadesVentaResponse.cs" />
+    <Compile Include="Consultas\Salida\ConsultarMonedasResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarRolesResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarFamiliasResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarUsuarioLoginResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarZonasHorariasResponse.cs" />
     <Compile Include="Generales\EntradaBase.cs" />
     <Compile Include="Generales\RespuestaBase.cs" />
+    <Compile Include="Mantenimientos\Entrada\MantenimientoTareaRequest .cs" />
+    <Compile Include="Mantenimientos\Entrada\MantenimientoTerrenoRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoCultivoRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoEmpresaRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoUsuarioRequest.cs" />
+    <Compile Include="Mantenimientos\Salida\MantenimientoTareaResponse.cs" />
+    <Compile Include="Mantenimientos\Salida\MantenimientoTerrenoResponse.cs" />
     <Compile Include="Mantenimientos\Salida\MantenimientoCultivoResponse.cs" />
     <Compile Include="Mantenimientos\Salida\MantenimientoEmpresaResponse.cs" />
     <Compile Include="Mantenimientos\Salida\MantenimientoUsuarioResponse.cs" />
@@ -85,22 +103,43 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelAgroWebPro.edmx</DependentUpon>
     </Compile>
+    <Compile Include="PA_ConsultarClientesProveedoresEmpresa_Result.cs">
+      <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
+    </Compile>
     <Compile Include="PA_ConsultarCultivosEmpresa_Result.cs">
       <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
     </Compile>
     <Compile Include="PA_ConsultarEmpleadosEmpresa_Result.cs">
       <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
     </Compile>
+    <Compile Include="PA_ConsultarEmpresa_Result.cs">
+      <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
+    </Compile>
     <Compile Include="PA_ConsultarFamilias_Result.cs">
       <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
     </Compile>
+    <Compile Include="PA_ConsultarMonedas_Result.cs">
+      <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
+    </Compile>
     <Compile Include="PA_ConsultarRoles_Result.cs">
+      <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PA_ConsultarTerrenosEmpresa_Result.cs">
+      <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PA_ConsultarTerreno_Result.cs">
+      <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PA_ConsultarUnidadesVenta_Result.cs">
       <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
     </Compile>
     <Compile Include="PA_ConsultarUsuarioLogin_Result.cs">
       <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
     </Compile>
     <Compile Include="PA_ConsultarUsuarioXCorreoXClave_Result.cs">
+      <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PA_ConsultarUsuario_Result.cs">
       <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
     </Compile>
     <Compile Include="PA_ConsultarZonasHorarias_Result.cs">

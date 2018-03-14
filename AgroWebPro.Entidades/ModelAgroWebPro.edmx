@@ -5,6 +5,12 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="AgroWebProModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <Function Name="PA_ConsultarClientesProveedoresEmpresa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdEmpresa" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="EsCliente" Type="bit" Mode="In" />
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
         <Function Name="PA_ConsultarCultivosEmpresa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdEmpresa" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
@@ -15,11 +21,39 @@
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
+        <Function Name="PA_ConsultarEmpresa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdEmpresa" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
         <Function Name="PA_ConsultarFamilias" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
+        <Function Name="PA_ConsultarMonedas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
         <Function Name="PA_ConsultarRoles" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
+        <Function Name="PA_ConsultarTerreno" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdTerreno" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
+        <Function Name="PA_ConsultarTerrenosEmpresa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdEmpresa" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
+        <Function Name="PA_ConsultarUnidadesVenta" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
+        <Function Name="PA_ConsultarUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdUsuario" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
@@ -38,7 +72,7 @@
           <Parameter Name="IdCultivo" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="Nombre" Type="varchar" Mode="In" />
           <Parameter Name="Descripcion" Type="varchar" Mode="In" />
-          <Parameter Name="IdFamilia" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="IdFamilia" Type="int" Mode="In" />
           <Parameter Name="IngresadoPor" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="Activo" Type="bit" Mode="In" />
           <Parameter Name="IdEmpresa" Type="uniqueidentifier" Mode="In" />
@@ -55,6 +89,36 @@
           <Parameter Name="idZonaHoraria" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="Direccion" Type="varchar" Mode="In" />
           <Parameter Name="Activa" Type="bit" Mode="In" />
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
+        <Function Name="PA_MantenimientoTarea" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TipoOperacion" Type="int" Mode="In" />
+          <Parameter Name="IdTarea" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="IdUsuario" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="IdTerreno" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="FechaAsignacion" Type="datetime" Mode="In" />
+          <Parameter Name="AsignadaPor" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="FechaInicio" Type="datetime" Mode="In" />
+          <Parameter Name="FechaFinalizacion" Type="datetime" Mode="In" />
+          <Parameter Name="HorasEstimadas" Type="decimal" Mode="In" />
+          <Parameter Name="Resumen" Type="varchar" Mode="In" />
+          <Parameter Name="Observaciones" Type="varchar" Mode="In" />
+          <Parameter Name="IdTipoTarea" Type="int" Mode="In" />
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
+        <Function Name="PA_MantenimientoTerreno" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TipoOperacion" Type="int" Mode="In" />
+          <Parameter Name="IdTerreno" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="Descripcion" Type="varchar" Mode="In" />
+          <Parameter Name="Coordenadas" Type="xml" Mode="In" />
+          <Parameter Name="IdCultivo" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="IngresadoPor" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="Activo" Type="bit" Mode="In" />
+          <Parameter Name="ActualizarCoordenadas" Type="bit" Mode="In" />
+          <Parameter Name="IdEmpresa" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
@@ -124,7 +188,7 @@
             <Parameter Name="IdCultivo" Mode="In" Type="Guid" />
             <Parameter Name="Nombre" Mode="In" Type="String" />
             <Parameter Name="Descripcion" Mode="In" Type="String" />
-            <Parameter Name="IdFamilia" Mode="In" Type="Guid" />
+            <Parameter Name="IdFamilia" Mode="In" Type="Int32" />
             <Parameter Name="IngresadoPor" Mode="In" Type="Guid" />
             <Parameter Name="Activo" Mode="In" Type="Boolean" />
             <Parameter Name="IdEmpresa" Mode="In" Type="Guid" />
@@ -146,6 +210,70 @@
             <Parameter Name="Mensaje" Mode="InOut" Type="String" />
           </FunctionImport>
           <FunctionImport Name="PA_ConsultarRoles" ReturnType="Collection(AgroWebProModel.PA_ConsultarRoles_Result)">
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PA_ConsultarMonedas" ReturnType="Collection(AgroWebProModel.PA_ConsultarMonedas_Result)">
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PA_ConsultarUnidadesVenta" ReturnType="Collection(AgroWebProModel.PA_ConsultarUnidadesVenta_Result)">
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PA_MantenimientoTarea">
+            <Parameter Name="TipoOperacion" Mode="In" Type="Int32" />
+            <Parameter Name="IdTarea" Mode="In" Type="Guid" />
+            <Parameter Name="IdUsuario" Mode="In" Type="Guid" />
+            <Parameter Name="IdTerreno" Mode="In" Type="Guid" />
+            <Parameter Name="FechaAsignacion" Mode="In" Type="DateTime" />
+            <Parameter Name="AsignadaPor" Mode="In" Type="Guid" />
+            <Parameter Name="FechaInicio" Mode="In" Type="DateTime" />
+            <Parameter Name="FechaFinalizacion" Mode="In" Type="DateTime" />
+            <Parameter Name="HorasEstimadas" Mode="In" Type="Decimal" />
+            <Parameter Name="Resumen" Mode="In" Type="String" />
+            <Parameter Name="Observaciones" Mode="In" Type="String" />
+            <Parameter Name="IdTipoTarea" Mode="In" Type="Int32" />
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PA_ConsultarTerreno" ReturnType="Collection(AgroWebProModel.PA_ConsultarTerreno_Result)">
+            <Parameter Name="IdTerreno" Mode="In" Type="Guid" />
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PA_MantenimientoTerreno">
+            <Parameter Name="TipoOperacion" Mode="In" Type="Int32" />
+            <Parameter Name="IdTerreno" Mode="In" Type="Guid" />
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="Descripcion" Mode="In" Type="String" />
+            <Parameter Name="Coordenadas" Mode="In" Type="String" />
+            <Parameter Name="IdCultivo" Mode="In" Type="Guid" />
+            <Parameter Name="IngresadoPor" Mode="In" Type="Guid" />
+            <Parameter Name="Activo" Mode="In" Type="Boolean" />
+            <Parameter Name="ActualizarCoordenadas" Mode="In" Type="Boolean" />
+            <Parameter Name="IdEmpresa" Mode="In" Type="Guid" />
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PA_ConsultarTerrenosEmpresa" ReturnType="Collection(AgroWebProModel.PA_ConsultarTerrenosEmpresa_Result)">
+            <Parameter Name="IdEmpresa" Mode="In" Type="Guid" />
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PA_ConsultarEmpresa" ReturnType="Collection(AgroWebProModel.PA_ConsultarEmpresa_Result)">
+            <Parameter Name="IdEmpresa" Mode="In" Type="Guid" />
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PA_ConsultarUsuario" ReturnType="Collection(AgroWebProModel.PA_ConsultarUsuario_Result)">
+            <Parameter Name="IdUsuario" Mode="In" Type="Guid" />
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PA_ConsultarClientesProveedoresEmpresa" ReturnType="Collection(AgroWebProModel.PA_ConsultarClientesProveedoresEmpresa_Result)">
+            <Parameter Name="IdEmpresa" Mode="In" Type="Guid" />
+            <Parameter Name="EsCliente" Mode="In" Type="Boolean" />
             <Parameter Name="Estado" Mode="InOut" Type="String" />
             <Parameter Name="Mensaje" Mode="InOut" Type="String" />
           </FunctionImport>
@@ -176,20 +304,20 @@
           <Property Type="Guid" Name="IdRol" Nullable="false" />
         </ComplexType>
         <ComplexType Name="PA_ConsultarFamilias_Result">
-          <Property Type="Guid" Name="IdFamilia" Nullable="false" />
+          <Property Type="Int32" Name="IdFamilia" Nullable="false" />
           <Property Type="String" Name="NombreFamilia" Nullable="false" MaxLength="100" />
         </ComplexType>
         <ComplexType Name="PA_ConsultarCultivosEmpresa_Result">
           <Property Type="Guid" Name="IdCultivo" Nullable="false" />
           <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Descripcion" Nullable="true" MaxLength="200" />
-          <Property Type="Guid" Name="IdFamilia" Nullable="false" />
+          <Property Type="Int32" Name="IdFamilia" Nullable="false" />
           <Property Type="String" Name="NombreFamilia" Nullable="false" MaxLength="100" />
           <Property Type="Guid" Name="IdEmpresa" Nullable="false" />
           <Property Type="Guid" Name="IngresadoPor" Nullable="true" />
           <Property Type="DateTime" Name="FechaIngreso" Nullable="false" Precision="23" />
           <Property Type="Boolean" Name="Activo" Nullable="false" />
-        </ComplexType>
+          </ComplexType>
         <ComplexType Name="PA_ConsultarEmpleadosEmpresa_Result">
           <Property Type="Guid" Name="IdUsuario" Nullable="false" />
           <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
@@ -209,6 +337,69 @@
           <Property Type="Guid" Name="IdRol" Nullable="false" />
           <Property Type="String" Name="NombreRol" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Descripcion" Nullable="true" MaxLength="200" />
+        </ComplexType>
+        <ComplexType Name="PA_ConsultarMonedas_Result">
+          <Property Type="Int32" Name="IdMoneda" Nullable="false" />
+          <Property Type="String" Name="NombreMoneda" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="SimboloMoneda" Nullable="false" MaxLength="2" />
+          <Property Type="String" Name="CodigoMoneda" Nullable="false" MaxLength="5" />
+        </ComplexType>
+        <ComplexType Name="PA_ConsultarUnidadesVenta_Result">
+          <Property Type="Int32" Name="IdUnidadVenta" Nullable="false" />
+          <Property Type="String" Name="NombreUnidad" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="SimboloUnidad" Nullable="false" MaxLength="10" />
+        </ComplexType>
+        <ComplexType Name="PA_ConsultarTerreno_Result">
+          <Property Type="Guid" Name="IdTerreno" Nullable="false" />
+          <Property Type="String" Name="NombreTerreno" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Descripcion" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Coordenadas" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="PA_ConsultarTerrenosEmpresa_Result">
+          <Property Type="Guid" Name="IdTerreno" Nullable="false" />
+          <Property Type="String" Name="NombreTerreno" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="DescripcionTerreno" Nullable="true" MaxLength="200" />
+          <Property Type="Guid" Name="IngresadoPor" Nullable="false" />
+          <Property Type="DateTime" Name="FechaIngreso" Nullable="false" Precision="23" />
+          <Property Type="Guid" Name="IdCultivo" Nullable="false" />
+          <Property Type="String" Name="NombreCultivo" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="PA_ConsultarEmpresa_Result">
+          <Property Type="Guid" Name="IdEmpresa" Nullable="false" />
+          <Property Type="String" Name="NombreEmpresa" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="DescripcionEmpresa" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Telefono" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="CedulaJuridica" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Direccion" Nullable="true" MaxLength="200" />
+          <Property Type="Guid" Name="IdZonaHoraria" Nullable="false" />
+          <Property Type="Boolean" Name="Activa" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="PA_ConsultarUsuario_Result">
+          <Property Type="Guid" Name="IdUsuario" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Apellidos" Nullable="true" MaxLength="80" />
+          <Property Type="String" Name="Correo" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Password" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Direccion" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Telefono" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="FechaIngreso" Nullable="false" Precision="23" />
+          <Property Type="Guid" Name="IngresadoPor" Nullable="true" />
+          <Property Type="Boolean" Name="Activo" Nullable="false" />
+          <Property Type="Guid" Name="IdEmpresa" Nullable="false" />
+          <Property Type="Guid" Name="IdRol" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="PA_ConsultarClientesProveedoresEmpresa_Result">
+          <Property Type="Guid" Name="IdClienteProveedor" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Apellidos" Nullable="true" MaxLength="80" />
+          <Property Type="String" Name="Correo" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Direccion" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Telefono" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="FechaIngreso" Nullable="false" Precision="23" />
+          <Property Type="Guid" Name="IngresadoPor" Nullable="true" />
+          <Property Type="Boolean" Name="Activo" Nullable="false" />
+          <Property Type="Guid" Name="IdEmpresa" Nullable="false" />
+          <Property Type="Boolean" Name="EsCliente" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -262,7 +453,7 @@
                 <ScalarProperty Name="IngresadoPor" ColumnName="IngresadoPor" />
                 <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
                 <ScalarProperty Name="Activo" ColumnName="Activo" />
-              </ComplexTypeMapping>
+                </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="PA_ConsultarEmpleadosEmpresa" FunctionName="AgroWebProModel.Store.PA_ConsultarEmpleadosEmpresa">
@@ -290,6 +481,99 @@
                 <ScalarProperty Name="IdRol" ColumnName="IdRol" />
                 <ScalarProperty Name="NombreRol" ColumnName="NombreRol" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PA_ConsultarMonedas" FunctionName="AgroWebProModel.Store.PA_ConsultarMonedas">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AgroWebProModel.PA_ConsultarMonedas_Result">
+                <ScalarProperty Name="IdMoneda" ColumnName="IdMoneda" />
+                <ScalarProperty Name="NombreMoneda" ColumnName="NombreMoneda" />
+                <ScalarProperty Name="SimboloMoneda" ColumnName="SimboloMoneda" />
+                <ScalarProperty Name="CodigoMoneda" ColumnName="CodigoMoneda" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PA_ConsultarUnidadesVenta" FunctionName="AgroWebProModel.Store.PA_ConsultarUnidadesVenta">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AgroWebProModel.PA_ConsultarUnidadesVenta_Result">
+                <ScalarProperty Name="IdUnidadVenta" ColumnName="IdUnidadVenta" />
+                <ScalarProperty Name="NombreUnidad" ColumnName="NombreUnidad" />
+                <ScalarProperty Name="SimboloUnidad" ColumnName="SimboloUnidad" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PA_MantenimientoTarea" FunctionName="AgroWebProModel.Store.PA_MantenimientoTarea" />
+          <FunctionImportMapping FunctionImportName="PA_ConsultarTerreno" FunctionName="AgroWebProModel.Store.PA_ConsultarTerreno">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AgroWebProModel.PA_ConsultarTerreno_Result">
+                <ScalarProperty Name="IdTerreno" ColumnName="IdTerreno" />
+                <ScalarProperty Name="NombreTerreno" ColumnName="NombreTerreno" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Coordenadas" ColumnName="Coordenadas" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PA_MantenimientoTerreno" FunctionName="AgroWebProModel.Store.PA_MantenimientoTerreno" />
+          <FunctionImportMapping FunctionImportName="PA_ConsultarTerrenosEmpresa" FunctionName="AgroWebProModel.Store.PA_ConsultarTerrenosEmpresa">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AgroWebProModel.PA_ConsultarTerrenosEmpresa_Result">
+                <ScalarProperty Name="IdTerreno" ColumnName="IdTerreno" />
+                <ScalarProperty Name="NombreTerreno" ColumnName="NombreTerreno" />
+                <ScalarProperty Name="DescripcionTerreno" ColumnName="DescripcionTerreno" />
+                <ScalarProperty Name="IngresadoPor" ColumnName="IngresadoPor" />
+                <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
+                <ScalarProperty Name="IdCultivo" ColumnName="IdCultivo" />
+                <ScalarProperty Name="NombreCultivo" ColumnName="NombreCultivo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PA_ConsultarEmpresa" FunctionName="AgroWebProModel.Store.PA_ConsultarEmpresa">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AgroWebProModel.PA_ConsultarEmpresa_Result">
+                <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+                <ScalarProperty Name="NombreEmpresa" ColumnName="NombreEmpresa" />
+                <ScalarProperty Name="DescripcionEmpresa" ColumnName="DescripcionEmpresa" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="CedulaJuridica" ColumnName="CedulaJuridica" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="IdZonaHoraria" ColumnName="IdZonaHoraria" />
+                <ScalarProperty Name="Activa" ColumnName="Activa" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PA_ConsultarUsuario" FunctionName="AgroWebProModel.Store.PA_ConsultarUsuario">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AgroWebProModel.PA_ConsultarUsuario_Result">
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
+                <ScalarProperty Name="IngresadoPor" ColumnName="IngresadoPor" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+                <ScalarProperty Name="IdRol" ColumnName="IdRol" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PA_ConsultarClientesProveedoresEmpresa" FunctionName="AgroWebProModel.Store.PA_ConsultarClientesProveedoresEmpresa">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AgroWebProModel.PA_ConsultarClientesProveedoresEmpresa_Result">
+                <ScalarProperty Name="IdClienteProveedor" ColumnName="IdClienteProveedor" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
+                <ScalarProperty Name="IngresadoPor" ColumnName="IngresadoPor" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+                <ScalarProperty Name="EsCliente" ColumnName="EsCliente" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

@@ -13,7 +13,7 @@ namespace AgroWebPro.Entidades
     
     public partial class PA_ConsultarFamilias_Result
     {
-        public System.Guid IdFamilia { get; set; }
+        public int IdFamilia { get; set; }
         public string NombreFamilia { get; set; }
     }
 }

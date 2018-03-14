@@ -1,5 +1,6 @@
 ﻿using AgroWebPro.Entidades.Consultas.Entrada;
 using AgroWebPro.Entidades.Consultas.Salida;
+using AgroWebPro.LogicaNegocios.Interfaces;
 using AgroWebPro.LogicaNegocios.Metodos;
 using AgroWebPro.Utilitarios;
 using AgroWebPro.Web.Models;
@@ -17,13 +18,13 @@ namespace AgroWebPro.Web.Controllers
         {
             EmpresaModels empresaModels = new EmpresaModels();
             ConsultarZonasHorariasRequest zonasHorariasRequest = null;
-            Consultas consultas = null;
+            ICatalogos catalogos = null;
             try
             {
                 zonasHorariasRequest = new ConsultarZonasHorariasRequest();
-                consultas = new Consultas();
+                catalogos = new Catalogos();
 
-                empresaModels.CopiarListaZonasHorarias(consultas.ConsultarZonasHorarias(zonasHorariasRequest));
+                empresaModels.CopiarListaZonasHorarias(catalogos.ConsultarZonasHorarias(zonasHorariasRequest));
 
                 
             }

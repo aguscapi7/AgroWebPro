@@ -21,14 +21,27 @@ namespace AgroWebPro.Web.Models
 
         [Display(Name = "Familia")]
         [Required(ErrorMessage = "Debe seleccionar la familia")]
-        public Guid? idFamilia { get; set; }
+        public int idFamilia { get; set; }
+
+        [Display(Name = "Moneda")]
+        public int idMoneda { get; set; }
+
+        [Display(Name = "Precio")]
+        public decimal precio { get; set; }
+
+        [Display(Name = "Unidad de venta")]
+        public int idUnidadVenta { get; set; }
 
         public string nombreFamilia { get; set; }
         public Guid ingresadoPor { get; set; }
         public bool activo { get; set; }
         public Guid idEmpresa { get; set; }
+        public string simboloMoneda { get; set; }
+        public string nombreUnidadVenta { get; set; }
         public List<FamiliaModels> listaFamilias { get; set; }
         public List<CultivoModels> listaCultivos { get; set; }
+        public List<UnidadVentaModels> listaUnidadVenta { get; set; }
+        public List<MonedaModels> listaMonedas { get; set; }
 
         public void CopiarFamilias(ConsultarFamiliasResponse familiasResponse)
         {
@@ -53,15 +66,15 @@ namespace AgroWebPro.Web.Models
             }
         }
 
-        public void CopiarCultivosEmpresa(ConsultarCultivosEmpresaResponse cultivosEmpresaResult)
+        public void CopiarCultivosEmpresa(ConsultarCultivosEmpresaResponse cultivosEmpresaResponse)
         {
             try
             {
                 listaCultivos = new List<CultivoModels>();
-                if (cultivosEmpresaResult != null && cultivosEmpresaResult.estado.Equals(Constantes.EstadoCorrecto) && cultivosEmpresaResult.listaCultivosEmpresa.Count >= 0)
+                if (cultivosEmpresaResponse != null && cultivosEmpresaResponse.estado.Equals(Constantes.EstadoCorrecto) && cultivosEmpresaResponse.listaCultivosEmpresa.Count >= 0)
                 {
                     CultivoModels cultivo = null;
-                    foreach (var cultivoItem in cultivosEmpresaResult.listaCultivosEmpresa)
+                    foreach (var cultivoItem in cultivosEmpresaResponse.listaCultivosEmpresa)
                     {
                         cultivo = new CultivoModels();
                         cultivo.idCultivo = cultivoItem.IdCultivo;
@@ -78,11 +91,75 @@ namespace AgroWebPro.Web.Models
 
             }
         }
+
+        public void CopiarMonedas(ConsultarMonedasResponse monedasResponse)
+        {
+            try
+            {
+                listaMonedas = new List<MonedaModels>();
+                if (monedasResponse != null && monedasResponse.estado.Equals(Constantes.EstadoCorrecto) && monedasResponse.listaMonedas.Count >= 0)
+                {
+                    MonedaModels moneda = null;
+                    foreach (var monedaItem in monedasResponse.listaMonedas)
+                    {
+                        moneda = new MonedaModels();
+                        moneda.simboloMoneda = monedaItem.SimboloMoneda;
+                        moneda.idMoneda = monedaItem.IdMoneda;
+                        moneda.codigoMoneda = monedaItem.CodigoMoneda;
+                        moneda.nombreMoneda = monedaItem.NombreMoneda;
+                        listaMonedas.Add(moneda);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        public void CopiarUnidadesVenta(ConsultarUnidadesVentaResponse unidadesVentaResponse)
+        {
+            try
+            {
+                listaUnidadVenta = new List<UnidadVentaModels>();
+                if (unidadesVentaResponse != null && unidadesVentaResponse.estado.Equals(Constantes.EstadoCorrecto) && unidadesVentaResponse.listaUnidadesVenta.Count >= 0)
+                {
+                    UnidadVentaModels unidadVenta = null;
+                    foreach (var unidadVentaItem in unidadesVentaResponse.listaUnidadesVenta)
+                    {
+                        unidadVenta = new UnidadVentaModels();
+                        unidadVenta.idUnidadVenta = unidadVentaItem.IdUnidadVenta;
+                        unidadVenta.nombreUnidadVenta = unidadVentaItem.NombreUnidad;
+                        unidadVenta.simboloUnidadVenta = unidadVentaItem.SimboloUnidad;
+                        listaUnidadVenta.Add(unidadVenta);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
     }
 
     public class FamiliaModels
     {
-        public Guid idFamilia { get; set; }
+        public int idFamilia { get; set; }
         public string nombreFamilia { get; set; }
+    }
+
+    public class UnidadVentaModels
+    {
+        public int idUnidadVenta { get; set; }
+        public string nombreUnidadVenta { get; set; }
+        public string simboloUnidadVenta { get; set; }
+    }
+
+    public class MonedaModels
+    {
+        public int idMoneda { get; set; }
+        public string nombreMoneda { get; set; }
+        public string simboloMoneda { get; set; }
+        public string codigoMoneda { get; set; }
     }
 }

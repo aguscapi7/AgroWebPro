@@ -12,12 +12,13 @@
 <link href="~/Content/sweetalert.css" rel="stylesheet" />
 <script src="~/Scripts/sweetalert.js"></script>
 <script src="~/Scripts/bootstrap-table-locale-all.min.js"></script>
+
 @using (Html.BeginForm("Mantenimiento", "Cultivo", FormMethod.Post, new { id = "formCultivo", role = "form", @data_toggle = "validator" }))
 {
     @Html.AntiForgeryToken();
     @Html.ValidationSummary(true);
     <div class="form-group hidden" id="divMantenimiento">
-        <h2 id="tituloMantenimiento">Agregar cultibo</h2>
+        <h2 id="tituloMantenimiento">Agregar cultivo</h2>
         <div class="row form-group">
             <input type="hidden" id="hdnIdCultivo"/>
             <div class="col-md-6">
@@ -48,53 +49,62 @@
 
 
 <div class="form-group" id="divTablaCultivos">
-        <h2>Listado de cultivos</h2>
-        <div class="row">
-            <div class="col-md-12"><button class="btn btn-orange" onclick="MostrarDivMantenimiento()">Agregar cultivo&nbsp;<span class="fa fa-plus"></span></button></div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="table-responsive">
-                    <table class="table table-sm table-hover" data-show-toggle="true"  data-search="true" 
-                        data-show-export="true"
-                        data-detail-formatter="detailFormatter"
-                        data-minimum-count-columns="2"
-                        data-show-pagination-switch="true"
-                        data-pagination="true"
-                        data-page-list="[10, 25, 50, 100, ALL]" 
-                        data-locale="es-CR">
-                        <thead  class="thead-default">
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Familia</th>
-                                <th>Descripción</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model.listaCultivos != null && Model.listaCultivos.Count() > 0)
+    <h2>Listado de cultivos</h2>
+    <br />
+    <div class="row">
+        <div class="col-md-12"><button class="btn btn-orange" onclick="MostrarDivMantenimiento()">Agregar cultivo&nbsp;<span class="fa fa-plus"></span></button></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-sm table-hover" data-show-toggle="true"  data-search="true" 
+                    data-show-export="true"
+                    data-detail-formatter="detailFormatter"
+                    data-minimum-count-columns="2"
+                    data-show-pagination-switch="true"
+                    data-pagination="true"
+                    data-page-list="[10, 25, 50, 100, ALL]" 
+                    data-locale="es-CR">
+                    <thead  class="thead-default">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Familia</th>
+                            <th>Descripción</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.listaCultivos != null && Model.listaCultivos.Count() > 0)
+                        {
+                            foreach (var itemCultivo in Model.listaCultivos)
                             {
-                                foreach (var itemCultivo in Model.listaCultivos)
-                                {
-                                    <tr>
-                                        <td>@itemCultivo.nombreCultivo</td>
-                                        <td>@itemCultivo.nombreFamilia</td>
-                                        <td>@itemCultivo.descripcionCultivo</td>
-                                        <td><button class="btn btn-danger" onclick="EliminarCultivoPaso1('@itemCultivo.idCultivo')"><span class="fa fa-trash"></span> </button>&nbsp;<button class="btn btn-primary" data-idfamilia="@itemCultivo.idFamilia" data-nombrecultivo="@itemCultivo.nombreCultivo" data-descripcioncultivo="@itemCultivo.descripcionCultivo" data-idcultivo="@itemCultivo.idCultivo" onclick="CargarDatosCultivo(this)"><span class="fa fa-pencil"></span> </button></td>
-                                    </tr>
-                                }
+                                <tr>
+                                    <td>@itemCultivo.nombreCultivo</td>
+                                    <td>@itemCultivo.nombreFamilia</td>
+                                    <td>@itemCultivo.descripcionCultivo</td>
+                                    <td><button class="btn btn-danger" onclick="EliminarCultivoPaso1('@itemCultivo.idCultivo')"><span class="fa fa-trash"></span> </button>&nbsp;
+                                        <button class="btn btn-primary" 
+                                                data-idfamilia="@itemCultivo.idFamilia" 
+                                                data-nombrecultivo="@itemCultivo.nombreCultivo" 
+                                                data-descripcioncultivo="@itemCultivo.descripcionCultivo" 
+                                                data-idcultivo="@itemCultivo.idCultivo" 
+                                                onclick="CargarDatosCultivo(this)">
+                                        <span class="fa fa-pencil"></span> </button></td>
+                                </tr>
                             }
+                        }
 
-                        </tbody>
-                    </table>
-                </div>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+</div>
 
 
 <script src="~/Scripts/bootstrap-datepicker.js"></script>
 <script src="~/Scripts/sweetalert.min.js"></script>
+<script src="~/Scripts/jquery.numeric.js"></script>
     @if(ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoCorrecto)
     {
         <script>
@@ -119,6 +129,8 @@
     }
 
 <script>
+
+    $('#txtPrecio').numeric(",");
     $('table').bootstrapTable({
         editable: true
     });
@@ -190,7 +202,6 @@
         var nombreCultivo = $(cultivo).data("nombrecultivo");
         var descripcionCultivo = $(cultivo).data("descripcioncultivo");
         var idFamilia = $(cultivo).data("idfamilia");
-
 
         $("#txtNombreCultivo").val(nombreCultivo);
         $("#txtDescripcionCultivo").val(descripcionCultivo);

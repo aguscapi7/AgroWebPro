@@ -11,16 +11,11 @@ namespace AgroWebPro.Entidades
 {
     using System;
     
-    public partial class PA_ConsultarCultivosEmpresa_Result
+    public partial class PA_ConsultarTerreno_Result
     {
-        public System.Guid IdCultivo { get; set; }
-        public string Nombre { get; set; }
+        public System.Guid IdTerreno { get; set; }
+        public string NombreTerreno { get; set; }
         public string Descripcion { get; set; }
-        public int IdFamilia { get; set; }
-        public string NombreFamilia { get; set; }
-        public System.Guid IdEmpresa { get; set; }
-        public Nullable<System.Guid> IngresadoPor { get; set; }
-        public System.DateTime FechaIngreso { get; set; }
-        public bool Activo { get; set; }
+        public string Coordenadas { get; set; }
     }
 }

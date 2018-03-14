@@ -1,0 +1,479 @@
+﻿@model AgroWebPro.Web.Models.TerrenoModels
+@using AgroWebPro.Utilitarios;
+@{
+    ViewBag.Title = "Terrenos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<link href="~/Content/leaflet.css" rel="stylesheet" />
+<link href="~/Content/leaflet.draw.css" rel="stylesheet" />
+<link href="~/Content/leaflet.toolbar.css" rel="stylesheet" />
+<link href="~/Content/leaflet.draw-toolbar.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/leaflet-src.js"></script>
+<script src="~/Scripts/leaflet.toolbar-src.js"></script>
+<script src="~/Scripts/leaflet.draw-src.js"></script>
+<script src="~/Scripts/leaflet.draw-toolbar.js"></script>
+
+<link href="~/Content/bootstrap-table.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-table.js"></script>
+<link href="~/Content/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert.js"></script>
+<script src="~/Scripts/bootstrap-table-locale-all.min.js"></script>
+<link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-multiselect.min.js"></script>
+<script src="~/Scripts/popper.min.js"></script>
+@using (Html.BeginForm("Mantenimiento", "Terreno", FormMethod.Post, new { id = "formTerreno", role = "form", @data_toggle = "validator" }))
+{
+    @Html.AntiForgeryToken();
+    @Html.ValidationSummary(true);
+    <div class="form-group" id="divMantenimiento">
+        <h2 id="tituloMantenimiento">Agregar cultivo</h2>
+        <input id="hdnIdTerreno"/>
+        <div class="row form-group">
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.nombreTerreno)
+                @Html.TextBoxFor(model => model.nombreTerreno, new { @id = "txtNombreTerreno", @class = "form-control", @placeholder = "Nombre" })
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.idCultivo)<br />
+                @Html.DropDownListFor(model => model.idCultivo, new SelectList(Model.listaCultivosEmpresa, "idCultivo", "nombreCultivo"), new { @id = "ddlCultivos", @class = "form-control", @required = "required" })
+                @*<select class="form-control col-md-6" id="ddlCultivos" name="listaCultivosSeleccionados" multiple>
+                    @if (Model.listaCultivosEmpresa != null && Model.listaCultivosEmpresa.Count() > 0)
+                    {
+                        foreach (var itemCultivo in Model.listaCultivosEmpresa)
+                        {
+                            <option value="@itemCultivo.idCultivo">@itemCultivo.nombreCultivo</option>
+                        }
+                    }
+                </select>*@
+            </div>
+        </div>
+        
+        <div class="row form-group">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.descripcionTerreno)
+                @Html.TextAreaFor(model => model.descripcionTerreno, new { @id = "txtDescripcionTerreno", @class = "form-control", @placeholder = "Descripción" })
+            </div>
+        </div>
+        @Html.TextBoxFor(model => model.listaCoordenadas, new { @id = "txtListaCoordenadas", @class = "form-control hidden", @placeholder = "Nombre" })
+        <div id="map" style="height:580px;"></div>
+        <br />
+        <div class="row">
+            <div class="col-md-8"></div>
+            <div class="col-md-4">
+                <button id="btnEditar" name="btnEditar" class="btn btn-primary pull-right btn-guardar hidden" type="submit">Editar&nbsp;<span><i class="fa fa-refresh"></i></span></button>
+                <button id="btnGuardar" name="btnGuardar" class="btn btn-primary pull-right btn-guardar" value="btnGuardar" disabled type="submit">Guardar&nbsp;<span><i class="fa fa-plus"></i></span></button>
+                <button class="btn btn-danger pull-right" id="btnCancelar" type="button" onclick="Cancelar()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="form-group" id="divTablaTerrenos">
+    <h2>Listado de terrenos</h2>
+    <div class="row">
+        <div class="col-md-12"><button class="btn btn-orange" onclick="MostrarDivMantenimiento()">Agregar terreno&nbsp;<span class="fa fa-plus"></span></button></div>
+        <br />
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-hover" data-show-toggle="true" data-search="true"
+                       data-show-export="true"
+                       data-detail-formatter="detailFormatter"
+                       data-minimum-count-columns="2"
+                       data-show-pagination-switch="true"
+                       data-pagination="true"
+                       data-page-list="[10, 25, 50, 100, ALL]"
+                       data-locale="es-CR">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Cultivo</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.listaTerrenosEmpresa != null && Model.listaTerrenosEmpresa.Count() > 0)
+                        {
+                            foreach (var itemEmpleado in Model.listaTerrenosEmpresa)
+                            {
+                                <tr>
+                                    <td>@itemEmpleado.nombreTerreno</td>
+                                    <td>@itemEmpleado.descripcionTerreno</td>
+                                    <td>@itemEmpleado.idCultivo</td>
+                                    <td>
+                                        <button class="btn btn-danger" onclick="EliminarEmpleadoPaso1('@itemEmpleado.idTerreno')"><span class="fa fa-trash"></span> </button>&nbsp;
+                                        <button class="btn btn-primary"
+                                                onclick="CargarDatosEmpleado(this)">
+                                            <span class="fa fa-pencil"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr><td colspan="6"><center>Aún no ha agregado empleados</center></td></tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Terreno 1</td>
+            <td><button class="btn btn-danger" onclick="EliminarUsuario()"><span class="fa fa-trash"></span> </button>&nbsp;<button class="btn btn-primary" onclick="VerMapa()"><span class="fa fa-eye"></span> Ver mapa</button></td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Información del terreno</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Nombre</label>
+                        <input type="text" class="form-control" value="Terreno" />
+                    </div>
+                </div>
+                <div class="row" style="margin-top:20px;">
+                        
+                        <div class="col-md-6"><label>Cultivo</label><select class="form-control"><option>Seleccione...</option><option>Papa</option><option>Cebolla</option><option>Piña</option></select></div>
+                        <div class="col-md-6"><button style="margin-top:25px" class="btn btn-primary">Agregar cultivo <span class="fa fa-plus"></span></button></div>
+                </div>
+                <div class="row" style="margin-top:20px;">
+                    <div class="col-md-12"><table class="table table-hover"><thead><tr><th>Cultivo</th></tr></thead><tbody><tr><td><center>No hay cultivos agregados</center></td></tr></tbody></table></div>
+                </div>
+                    
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary">Guardar cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModalTareas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar tarea</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Empleado</label>
+                        <select class="form-control"><option>Seleccione...</option><option>Usuario 1</option><option>Usuario 2</option><option>Usuario 3</option></select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Tarea</label><select class="form-control"><option>Seleccione...</option><option>Tarea 1</option><option>Tarea 2</option><option>Tarea 3</option></select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Cultivo</label><select class="form-control"><option>Seleccione...</option><option>Cultivo 1</option><option>Cultivo 2</option><option>Cultivo 3</option></select>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:20px;">
+                    <div class="col-md-12"><table class="table table-hover"><thead><tr><th>Empleado</th><th>Tarea</th><th>Cultivo</th><th>Estado</th></tr></thead><tbody><tr><td>Empleado 1</td><td>Tarea 1</td><td>Cultivo 1</td><td>En proceso</td></tr></tbody></table></div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary">Guardar cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+@if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoCorrecto)
+{
+    <script>
+        swal({
+            title: 'Correcto',
+            text: "@ViewBag.mensaje",
+            type: 'success',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+}
+else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoError)
+{
+    <script>
+        swal({
+            title: 'Error',
+            text: "@ViewBag.mensaje",
+            type: 'danger',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+            });
+    </script>
+}
+<script>
+    $('#ddlCultivos')
+        .multiselect({
+            enableFiltering: true,
+            includeSelectAllOption: true,
+            // Re-validate the multiselect field when it is changed
+            onChange: function (element, checked) {
+            },
+            onDropdownShown: function (e) {
+            },
+            onDropdownHidden: function (e) {
+            }, nonSelectedText: 'Seleccione los cultivos'
+        })
+        .end();
+    var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        osm = L.tileLayer(osmUrl, { maxZoom: 29, attribution: osmAttrib });
+    var map = L.map('map').setView([9.842405, -83.9317569], 29),
+        drawnItems = new L.FeatureGroup().addTo(map);
+
+    L.tileLayer("http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}", {
+        attribution: ''
+    }).addTo(map);
+
+
+    new LeafletToolbar.DrawToolbar({
+        position: 'topleft'
+    }).addTo(map);
+
+    new LeafletToolbar.EditToolbar.Control({
+        position: 'topleft'
+    }).addTo(map, drawnItems);
+
+    map.on('draw:created', function (evt) {
+        var type = evt.layerType,
+            layer = evt.layer;
+
+        drawnItems.addLayer(layer);
+    });
+
+    L.control.layers({
+        'osm': osm.addTo(map),
+        "google": L.tileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}', {
+            maxZoom: 29, attribution: 'google'
+        })
+    }, { 'drawlayer': drawnItems }, { position: 'topleft', collapsed: false }).addTo(map);
+
+
+    map.on('draw:created', function (e) {
+        debugger;
+        var type = e.layerType,
+            layer = e.layer;
+
+        if (type === 'polygon') {
+            // structure the geojson object
+            var geojson = {};
+            geojson['type'] = 'Feature';
+            geojson['geometry'] = {};
+            geojson['geometry']['type'] = "Polygon";
+
+            // export the coordinates from the layer
+            coordinates = [];
+            var coordenadas = "";
+            latlngs = layer.getLatLngs();
+            for (var i = 0; i < latlngs[0].length; i++) {
+                coordinates.push([latlngs[0][i].lng, latlngs[0][i].lat])
+                var orden = i + 1;
+                coordenadas += '<coordenada><longitud>' + latlngs[0][i].lng + "</longitud><latitud>" + latlngs[0][i].lat + '</latitud><orden>' + orden + '</orden></coordenada>';
+            }
+
+            coordenadas = '<coordenadas>' + coordenadas + '</coordenadas>';
+            // push the coordinates to the json geometry
+            geojson['geometry']['coordinates'] = [coordinates];
+
+            //layer.bindPopup(
+
+            //    '<div><div class="row">' +
+            //        '<div class="col-md-12"><h4>Terreno<span style="float:right;cursor:pointer;" class="fa fa-pencil" onclick="AgregarCultivo()"></span></h4></div>' +
+            //    '</div>'+
+            //    '<div class="row">' +
+            //        '<div class="col-md-12"><table class="table table-condensed"><thead><tr><th>Cultivo</th></tr></thead><tbody><tr><td><center>No hay cultivos agregados</center></td></tr></tbody></table></div>'+
+            //    '</div>' +
+            //    '<div class="row" style="margin-top:20px">' +
+            //        '<div class="col-md-12"><button class="btn btn-primary" onclick="AgregarTarea()">Agregar tarea<span class="fa fa-plus" style="margin-left:20px;"></span></button></div>' +
+            //    '</div>', { maxWidth: "auto" }
+            //);
+            $("#txtListaCoordenadas").val(coordenadas);
+            $("#btnGuardar").removeAttr("disabled");
+
+        }
+
+        drawnItems.addLayer(layer);
+    });
+
+    function AgregarCultivo() {
+        $("#myModal").modal("show");
+    }
+
+    function AgregarTarea() {
+        $("#myModalTareas").modal("show");
+    }
+
+    function VerMapa() {
+        $("#map").css("display", "block");
+    }
+
+
+    function EliminarTerreno() {
+        var parametros = {
+            idUsuario: $("#hdnIdEmpleado").val()
+        };
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: '@Url.Action("Eliminar", "Usuario")',
+            data: parametros,
+            success: function (data) {
+                if (data.respuesta == '@Constantes.EstadoCorrecto')
+                {
+                    swal({
+                        title: 'Correcto',
+                        text: "El empleado se ha borrado correctamente",
+                        type: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Aceptar'
+                    }).then(function (isConfirm) {
+                        window.location.href = window.location.href;
+                    });
+
+
+                }
+                else
+                {
+                    swal({
+                        title: 'Error',
+                        text: "Ocurrió un error al borrar el empleado",
+                        type: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'danger'
+                    }).then(function (isConfirm) {
+                        window.location.href = window.location.href;
+                    });
+                }
+
+            }
+        });
+    }
+
+    function EliminarEmpleadoPaso1(idEmpleado)
+    {
+        swal({
+            title: '',
+            text: "Esta acción eliminará el empleado",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Borrar',
+            cancelButtonText: 'Cancelar'
+        }).then(function (isConfirm) {
+            if (isConfirm)
+            {
+                $("#hdnIdEmpleado").val(idEmpleado);
+                EliminarEmpleado();
+            }
+
+        })
+    }
+
+    function CargarDatosEmpleado(empleado)
+    {
+        var idUsuario = $(empleado).data("idusuario");
+        var nombre = $(empleado).data("nombre");
+        var apellidos = $(empleado).data("apellidos");
+        var direccion = $(empleado).data("direccion");
+        var idrol = $(empleado).data("idrol");
+        var telefono = $(empleado).data("telefono");
+        var correo = $(empleado).data("correo");
+
+        $("#txtNombre").val(nombre);
+        $("#txtApellidos").val(apellidos);
+        $("#txtDireccion").val(direccion);
+        $("#txtTelefono").val(telefono);
+        $("#txtCorreo").val(correo);
+        $("#ddlRoles").val(idrol);
+        $("#btnEditar").removeClass("hidden");
+        $("#btnGuardar").addClass("hidden");
+        $("#btnEditar").val(idUsuario);
+
+        $("#divMantenimiento").removeClass("hidden");
+        $("#divTablaEmpleados").addClass("hidden");
+        $("#tituloMantenimiento").html("Editar empleado");
+    }
+
+    function Cancelar()
+    {
+        $("#txtNombre").val("");
+        $("#txtApellidos").val("");
+        $("#txtDireccion").val("");
+        $("#txtTelefono").val("");
+        $("#txtCorreo").val("");
+        $("#ddlRoles").val("@Guid.Empty");
+        $("#btnEditar").addClass("hidden");
+        $("#btnGuardar").removeClass("hidden");
+        $("#btnEditar").val("");
+
+        $("#divMantenimiento").addClass("hidden");
+        $("#divTablaEmpleados").removeClass("hidden");
+        $("#tituloMantenimiento").html("Editar empleado");
+    }
+
+    function MostrarDivMantenimiento()
+    {
+        $("#divMantenimiento").removeClass("hidden");
+        $("#divTablaEmpleados").addClass("hidden");
+        $("#tituloMantenimiento").html("Agregar empleado");
+
+    }
+
+    function OcultarDivMantenimiento()
+    {
+        $("#divMantenimiento").removeClass("hidden");
+        $("#divTablaEmpleados").addClass("hidden");
+    }
+
+</script>
+<style>
+    #btnCancelar {
+        margin-right: 10px;
+    }
+
+    .ui-datepicker {
+        z-index: 10000 !important;
+    }
+</style>

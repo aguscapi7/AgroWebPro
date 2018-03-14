@@ -2,6 +2,7 @@
 using AgroWebPro.Entidades.Consultas.Salida;
 using AgroWebPro.Entidades.Mantenimientos.Entrada;
 using AgroWebPro.Entidades.Mantenimientos.Salida;
+using AgroWebPro.LogicaNegocios.Interfaces;
 using AgroWebPro.LogicaNegocios.Metodos;
 using AgroWebPro.Utilitarios;
 using AgroWebPro.Web.Models;
@@ -18,10 +19,11 @@ namespace AgroWebPro.Web.Controllers
         public ActionResult Mantenimiento()
         {
 
+            IEmpresa empresa = new Empresa();
+            ICatalogos catalogos = new Catalogos();
+
             Session[Constantes.MenuActivo] = Constantes.MenuMantenimientoUsuarios;
             UsuarioModels usuarioModels = new UsuarioModels();
-            Consultas consultas = new Consultas();
-
             ConsultarEmpleadosEmpresaRequest empleadosEmpresaRequest = null;
             ConsultarEmpleadosEmpresaResponse empleadosEmpresaResponse = null;
 
@@ -37,12 +39,12 @@ namespace AgroWebPro.Web.Controllers
                     empleadosEmpresaRequest = new ConsultarEmpleadosEmpresaRequest();
                     empleadosEmpresaRequest.idEmpresa = idEmpresa;
 
-                    empleadosEmpresaResponse = consultas.ConsultarEmpleadosEmpresa(empleadosEmpresaRequest);
+                    empleadosEmpresaResponse = empresa.ConsultarEmpleadosEmpresa(empleadosEmpresaRequest);
                     usuarioModels.CopiarEmpleadosEmpresa(empleadosEmpresaResponse);
 
                     rolesRequest = new ConsultarRolesRequest();
 
-                    rolesResponse = consultas.ConsultarRoles(rolesRequest);
+                    rolesResponse = catalogos.ConsultarRoles(rolesRequest);
                     usuarioModels.CopiarRoles(rolesResponse);
                 }
                 else
@@ -60,8 +62,9 @@ namespace AgroWebPro.Web.Controllers
         [HttpPost]
         public ActionResult Mantenimiento(UsuarioModels usuarioModels, string btnGuardar, string btnEditar)
         {
-            Consultas consultas = new Consultas();
-            Mantenimientos mantenimientos = new Mantenimientos();
+            IUsuario usuario = new Usuario();
+            IEmpresa empresa = new Empresa();
+            ICatalogos catalogos = new Catalogos();
 
             MantenimientoUsuarioResponse empleadoResponse = null;
             MantenimientoUsuarioRequest empleadoRequest = null;
@@ -126,7 +129,7 @@ namespace AgroWebPro.Web.Controllers
                     mensajeError = string.Format(mensajeError, "editar");
                 }
 
-                empleadoResponse = mantenimientos.MantenimientoUsuario(empleadoRequest);
+                empleadoResponse = usuario.MantenimientoUsuario(empleadoRequest);
                 if (empleadoResponse != null && empleadoResponse.estado.Equals(Constantes.EstadoCorrecto))
                 {
                     ModelState.Clear();
@@ -144,12 +147,12 @@ namespace AgroWebPro.Web.Controllers
                 empleadosEmpresaRequest = new ConsultarEmpleadosEmpresaRequest();
                 empleadosEmpresaRequest.idEmpresa = idEmpresa;
 
-                empleadosEmpresaResponse = consultas.ConsultarEmpleadosEmpresa(empleadosEmpresaRequest);
+                empleadosEmpresaResponse = empresa.ConsultarEmpleadosEmpresa(empleadosEmpresaRequest);
                 usuarioModels.CopiarEmpleadosEmpresa(empleadosEmpresaResponse);
 
                 rolesRequest = new ConsultarRolesRequest();
 
-                rolesResponse = consultas.ConsultarRoles(rolesRequest);
+                rolesResponse = catalogos.ConsultarRoles(rolesRequest);
                 usuarioModels.CopiarRoles(rolesResponse);
 
             }
@@ -162,7 +165,7 @@ namespace AgroWebPro.Web.Controllers
 
         public ActionResult Eliminar(Guid idUsuario)
         {
-            Mantenimientos mantenimientos = new Mantenimientos();
+            IUsuario usuario = new Usuario();
 
             MantenimientoUsuarioResponse empleadoResponse = null;
             MantenimientoUsuarioRequest empleadoRequest = null;
@@ -177,7 +180,7 @@ namespace AgroWebPro.Web.Controllers
                     idUsuario = idUsuario
                 };
 
-                empleadoResponse = mantenimientos.MantenimientoUsuario(empleadoRequest);
+                empleadoResponse = usuario.MantenimientoUsuario(empleadoRequest);
                 if (empleadoResponse != null && empleadoResponse.estado.Equals(Constantes.EstadoCorrecto))
                 {
                     respuesta = Constantes.EstadoCorrecto;

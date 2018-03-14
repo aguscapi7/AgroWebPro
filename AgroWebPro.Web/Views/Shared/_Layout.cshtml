@@ -32,7 +32,7 @@
                     <li id="li-cultivo" onclick="AbrirEnlace('@Url.Action("Mantenimiento", "Cultivo")')" class="li-menu"><a><i class="fa fa-leaf fa-lg"></i> Cultivos</a></li>
                     <li id="li-mantenimiento-usuarios" onclick="AbrirEnlace('@Url.Action("Mantenimiento", "Usuario")')" class="li-menu"><a><i class="fa fa-users fa-lg"></i> Empleados</a></li>
                     <li id="li-tareas" onclick="AbrirEnlace('@Url.Action("Mantenimiento", "Usuario")')" class="li-menu"><a><i class="fa fa-tasks fa-lg"></i> Tareas</a></li>
-                    <li id="li-terreno" onclick="AbrirEnlace('@Url.Action("Terrenos", "Empresa")')" class="li-menu"><a><i class="fa fa-map-o fa-lg"></i> Terrenos</a></li>
+                    <li id="li-terreno" onclick="AbrirEnlace('@Url.Action("Mantenimiento", "Terreno")')" class="li-menu"><a><i class="fa fa-map-o fa-lg"></i> Terrenos</a></li>
 
                     <li id="li-reportes" data-toggle="collapse" data-target="#reportes" class="collapsed">
                         <a href="#"><i class="fa fa-pie-chart fa-lg"></i> Reportes <span class="arrow"></span></a>
@@ -43,6 +43,8 @@
                         <li onclick="AbrirEnlace('@Url.Action("Cosechas", "Reporte")')"><a href="#">Cosechas</a></li>
                         <li onclick="AbrirEnlace('@Url.Action("Tareas", "Reporte")')"><a href="#">Tareas</a></li>
                     </ul>
+                    <li id="li-clientes" onclick="AbrirEnlace('@Url.Action("Terrenos", "Empresa")')" class="li-menu"><a><i class="fa fa-address-book fa-lg"></i> Clientes</a></li>
+                    <li id="li-perfil-usuario" onclick="AbrirEnlace('@Url.Action("Terrenos", "Empresa")')" class="li-menu"><a><i class="fa fa-user fa-lg"></i> Perfil</a></li>
                     
                     <li id="li-salir" onclick="AbrirEnlace('@Url.Action("CerrarSesion", "Home")')" class="li-menu"><a><i class="fa fa-sign-out fa-lg"></i> Cerrar sesión</a></li>
                 </ul>

@@ -2,6 +2,7 @@
 using AgroWebPro.Entidades.Consultas.Salida;
 using AgroWebPro.Entidades.Mantenimientos.Entrada;
 using AgroWebPro.Entidades.Mantenimientos.Salida;
+using AgroWebPro.LogicaNegocios.Interfaces;
 using AgroWebPro.LogicaNegocios.Metodos;
 using AgroWebPro.Utilitarios;
 using AgroWebPro.Web.Models;
@@ -41,7 +42,7 @@ namespace AgroWebPro.Web.Controllers
         [HttpPost]
         public ActionResult Login(UsuarioModels usuarioModels)
         {
-            Consultas consultas = new Consultas();
+            IUsuario usuario = new Usuario();
             ConsultarUsuarioLoginResponse consultarUsuarioResponse = null;
             ConsultarUsuarioLoginRequest consultarUsuarioRequest = null;
             try
@@ -52,18 +53,18 @@ namespace AgroWebPro.Web.Controllers
                     password = usuarioModels.password
                 };
 
-                consultarUsuarioResponse = consultas.ConsultarUsuarioLogin(consultarUsuarioRequest);
+                consultarUsuarioResponse = usuario.ConsultarUsuarioLogin(consultarUsuarioRequest);
 
                 if(consultarUsuarioResponse != null && consultarUsuarioResponse.estado.Equals(Constantes.EstadoCorrecto) && consultarUsuarioResponse.listaUsuarioLogin.Count > 0)
                 {
-                    var usuario = consultarUsuarioResponse.listaUsuarioLogin[0];
+                    var consultaUsuario = consultarUsuarioResponse.listaUsuarioLogin[0];
                     HttpCookie cookie = new HttpCookie("usuario");
-                    cookie.Values["nombre"] = usuario.Nombre;
-                    cookie.Values["apellidos"] = usuario.Apellidos;
-                    cookie.Values["idUsuario"] = usuario.IdUsuario.ToString();
-                    cookie.Values["rol"] = usuario.IdRol.ToString();
-                    cookie.Values["password"] = usuario.Password;
-                    cookie.Values["idEmpresa"] = usuario.IdEmpresa.ToString();
+                    cookie.Values["nombre"] = consultaUsuario.Nombre;
+                    cookie.Values["apellidos"] = consultaUsuario.Apellidos;
+                    cookie.Values["idUsuario"] = consultaUsuario.IdUsuario.ToString();
+                    cookie.Values["rol"] = consultaUsuario.IdRol.ToString();
+                    cookie.Values["password"] = consultaUsuario.Password;
+                    cookie.Values["idEmpresa"] = consultaUsuario.IdEmpresa.ToString();
                     cookie.Expires = DateTime.Now.AddDays(1);
                     Response.Cookies.Add(cookie);
 
@@ -81,15 +82,14 @@ namespace AgroWebPro.Web.Controllers
         public ActionResult Registro()
         {
             UsuarioModels usuarioModels = new UsuarioModels();
-            Consultas consultas = new Consultas();
+            ICatalogos catalogos = new Catalogos();
             ConsultarZonasHorariasRequest zonasHorariasRequest = null;
 
             try
             {
                 zonasHorariasRequest = new ConsultarZonasHorariasRequest();
-                consultas = new Consultas();
                 usuarioModels.empresaModels = new EmpresaModels();
-                usuarioModels.empresaModels.CopiarListaZonasHorarias(consultas.ConsultarZonasHorarias(zonasHorariasRequest));
+                usuarioModels.empresaModels.CopiarListaZonasHorarias(catalogos.ConsultarZonasHorarias(zonasHorariasRequest));
             }
             catch(Exception ex)
             {
@@ -102,7 +102,9 @@ namespace AgroWebPro.Web.Controllers
         [HttpPost]
         public ActionResult Registro(UsuarioModels modelo, string btnGuardar)
         {
-            Mantenimientos mantenimientos = new Mantenimientos();
+            IUsuario usuario = new Usuario();
+            IEmpresa empresa = new Empresa();
+            ICatalogos catalogos = new Catalogos();
 
             MantenimientoUsuarioResponse usuarioResponse = null ;
             MantenimientoUsuarioRequest usuarioRequest = null;
@@ -110,16 +112,14 @@ namespace AgroWebPro.Web.Controllers
             MantenimientoEmpresaResponse empresaResponse = null;
             MantenimientoEmpresaRequest empresaRequest = null;
 
-
-            Consultas consultas = new Consultas();
+            
             ConsultarZonasHorariasRequest zonasHorariasRequest = null;
 
             try
             {
                 zonasHorariasRequest = new ConsultarZonasHorariasRequest();
-                consultas = new Consultas();
                 modelo.empresaModels = new EmpresaModels();
-                modelo.empresaModels.CopiarListaZonasHorarias(consultas.ConsultarZonasHorarias(zonasHorariasRequest));
+                modelo.empresaModels.CopiarListaZonasHorarias(catalogos.ConsultarZonasHorarias(zonasHorariasRequest));
 
                 if (modelo != null)
                 {
@@ -149,11 +149,11 @@ namespace AgroWebPro.Web.Controllers
                             tipoOperacion = Constantes.operacionCrear
                         };
 
-                        empresaResponse = mantenimientos.MantenimientoEmpresa(empresaRequest);
+                        empresaResponse = empresa.MantenimientoEmpresa(empresaRequest);
 
                         if(empresaResponse != null && empresaResponse.estado.Equals(Constantes.EstadoCorrecto))
                         {
-                            usuarioResponse = mantenimientos.MantenimientoUsuario(usuarioRequest);
+                            usuarioResponse = usuario.MantenimientoUsuario(usuarioRequest);
 
                             if (usuarioResponse != null && empresaResponse != null && usuarioResponse.estado.Equals(Constantes.EstadoCorrecto) && empresaResponse.estado.Equals(Constantes.EstadoCorrecto))
                             {

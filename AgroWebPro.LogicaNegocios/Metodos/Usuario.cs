@@ -1,24 +1,32 @@
-﻿using AgroWebPro.AccesoDatos.Metodos;
-using AgroWebPro.Entidades.Mantenimientos.Entrada;
-using AgroWebPro.Entidades.Mantenimientos.Salida;
-using AgroWebPro.Utilitarios;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AgroWebPro.Entidades.Mantenimientos.Entrada;
+using AgroWebPro.Entidades.Mantenimientos.Salida;
+using AgroWebPro.Entidades.Consultas.Entrada;
+using AgroWebPro.Entidades.Consultas.Salida;
+using AgroWebPro.Utilitarios;
+using AgroWebPro.LogicaNegocios.Interfaces;
 
 namespace AgroWebPro.LogicaNegocios.Metodos
 {
-    public class Mantenimientos
+    public class Usuario:IUsuario
     {
-        public MantenimientoEmpresaResponse MantenimientoEmpresa(MantenimientoEmpresaRequest request)
+        AccesoDatos.Interfaces.IUsuario usuario;
+
+        public Usuario()
         {
-            AccesoDatos.Metodos.Mantenimientos mantenimiento = new AccesoDatos.Metodos.Mantenimientos();
-            MantenimientoEmpresaResponse response = new MantenimientoEmpresaResponse();
+            usuario = new AccesoDatos.Metodos.Usuario();
+        }
+
+        public ConsultarUsuarioLoginResponse ConsultarUsuarioLogin(ConsultarUsuarioLoginRequest request)
+        {            
+            ConsultarUsuarioLoginResponse response = new ConsultarUsuarioLoginResponse();
             try
             {
-                response = mantenimiento.MantenimientoEmpresa(request);
+                response = usuario.ConsultarUsuarioLogin(request);
             }
             catch (Exception ex)
             {
@@ -31,11 +39,10 @@ namespace AgroWebPro.LogicaNegocios.Metodos
 
         public MantenimientoUsuarioResponse MantenimientoUsuario(MantenimientoUsuarioRequest request)
         {
-            AccesoDatos.Metodos.Mantenimientos mantenimiento = new AccesoDatos.Metodos.Mantenimientos();
             MantenimientoUsuarioResponse response = new MantenimientoUsuarioResponse();
             try
             {
-                response = mantenimiento.MantenimientoUsuario(request);
+                response = usuario.MantenimientoUsuario(request);
             }
             catch (Exception ex)
             {
@@ -46,13 +53,12 @@ namespace AgroWebPro.LogicaNegocios.Metodos
             return response;
         }
 
-        public MantenimientoCultivoResponse MantenimientoCultivo(MantenimientoCultivoRequest request)
+        public ConsultarUsuarioResponse ConsultarUsuario(ConsultarUsuarioRequest request)
         {
-            AccesoDatos.Metodos.Mantenimientos mantenimiento = new AccesoDatos.Metodos.Mantenimientos();
-            MantenimientoCultivoResponse response = new MantenimientoCultivoResponse();
+            ConsultarUsuarioResponse response = new ConsultarUsuarioResponse();
             try
             {
-                response = mantenimiento.MantenimientoCultivo(request);
+                response = usuario.ConsultarUsuario(request);
             }
             catch (Exception ex)
             {
@@ -62,5 +68,6 @@ namespace AgroWebPro.LogicaNegocios.Metodos
             }
             return response;
         }
+
     }
 }
