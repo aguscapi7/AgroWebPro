@@ -34,6 +34,20 @@
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
+        <Function Name="PA_ConsultarReporteCosechas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FechaInicio" Type="datetime" Mode="In" />
+          <Parameter Name="FechaFin" Type="datetime" Mode="In" />
+          <Parameter Name="IdCultivo" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
+        <Function Name="PA_ConsultarReporteVentas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FechaInicio" Type="datetime" Mode="In" />
+          <Parameter Name="FechaFin" Type="datetime" Mode="In" />
+          <Parameter Name="IdEmpresa" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
         <Function Name="PA_ConsultarRoles" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
@@ -277,6 +291,20 @@
             <Parameter Name="Estado" Mode="InOut" Type="String" />
             <Parameter Name="Mensaje" Mode="InOut" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="PA_ConsultarReporteCosechas" ReturnType="Collection(AgroWebProModel.PA_ConsultarReporteCosechas_Result)">
+            <Parameter Name="FechaInicio" Mode="In" Type="DateTime" />
+            <Parameter Name="FechaFin" Mode="In" Type="DateTime" />
+            <Parameter Name="IdCultivo" Mode="In" Type="Guid" />
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PA_ConsultarReporteVentas" ReturnType="Collection(AgroWebProModel.PA_ConsultarReporteVentas_Result)">
+            <Parameter Name="FechaInicio" Mode="In" Type="DateTime" />
+            <Parameter Name="FechaFin" Mode="In" Type="DateTime" />
+            <Parameter Name="IdEmpresa" Mode="In" Type="Guid" />
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="PA_ConsultarZonasHorarias_Result">
           <Property Type="Guid" Name="IdZonaHoraria" Nullable="false" />
@@ -400,6 +428,31 @@
           <Property Type="Boolean" Name="Activo" Nullable="false" />
           <Property Type="Guid" Name="IdEmpresa" Nullable="false" />
           <Property Type="Boolean" Name="EsCliente" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="PA_ConsultarReporteCosechas_Result">
+          <Property Type="Guid" Name="IdCultivo" Nullable="false" />
+          <Property Type="Guid" Name="IdUsuarioRecolecta" Nullable="false" />
+          <Property Type="DateTime" Name="FechaRecoleccion" Nullable="false" Precision="23" />
+          <Property Type="Decimal" Name="KiilogramosPrimera" Nullable="false" Precision="18" Scale="3" />
+          <Property Type="Decimal" Name="KilogramosSegunda" Nullable="false" Precision="18" Scale="3" />
+          <Property Type="Decimal" Name="KilogramosRechazo" Nullable="false" Precision="18" Scale="3" />
+          <Property Type="String" Name="CausaRechazo" Nullable="true" MaxLength="500" />
+          <Property Type="Guid" Name="IdUsuarioSupervisor" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="PA_ConsultarReporteVentas_Result">
+          <Property Type="Guid" Name="IdMaestroVenta" Nullable="false" />
+          <Property Type="Guid" Name="IdCliente" Nullable="false" />
+          <Property Type="Guid" Name="IdVendedor" Nullable="false" />
+          <Property Type="DateTime" Name="FechaRegistro" Nullable="false" Precision="23" />
+          <Property Type="Decimal" Name="MontoDescuentos" Nullable="false" Precision="18" Scale="3" />
+          <Property Type="Decimal" Name="MontoImpuestos" Nullable="false" Precision="18" Scale="3" />
+          <Property Type="Decimal" Name="MontoTotal" Nullable="false" Precision="18" Scale="3" />
+          <Property Type="Boolean" Name="Contado" Nullable="false" />
+          <Property Type="Decimal" Name="PlazoCredito" Nullable="false" Precision="18" Scale="0" />
+          <Property Type="String" Name="nombreVendedor" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="apellidosVendedor" Nullable="true" MaxLength="80" />
+          <Property Type="String" Name="nombreCliente" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="apellidosCliente" Nullable="true" MaxLength="80" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -574,6 +627,39 @@
                 <ScalarProperty Name="Activo" ColumnName="Activo" />
                 <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
                 <ScalarProperty Name="EsCliente" ColumnName="EsCliente" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PA_ConsultarReporteCosechas" FunctionName="AgroWebProModel.Store.PA_ConsultarReporteCosechas">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AgroWebProModel.PA_ConsultarReporteCosechas_Result">
+                <ScalarProperty Name="IdCultivo" ColumnName="IdCultivo" />
+                <ScalarProperty Name="IdUsuarioRecolecta" ColumnName="IdUsuarioRecolecta" />
+                <ScalarProperty Name="FechaRecoleccion" ColumnName="FechaRecoleccion" />
+                <ScalarProperty Name="KiilogramosPrimera" ColumnName="KiilogramosPrimera" />
+                <ScalarProperty Name="KilogramosSegunda" ColumnName="KilogramosSegunda" />
+                <ScalarProperty Name="KilogramosRechazo" ColumnName="KilogramosRechazo" />
+                <ScalarProperty Name="CausaRechazo" ColumnName="CausaRechazo" />
+                <ScalarProperty Name="IdUsuarioSupervisor" ColumnName="IdUsuarioSupervisor" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PA_ConsultarReporteVentas" FunctionName="AgroWebProModel.Store.PA_ConsultarReporteVentas">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AgroWebProModel.PA_ConsultarReporteVentas_Result">
+                <ScalarProperty Name="IdMaestroVenta" ColumnName="IdMaestroVenta" />
+                <ScalarProperty Name="IdCliente" ColumnName="IdCliente" />
+                <ScalarProperty Name="IdVendedor" ColumnName="IdVendedor" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="MontoDescuentos" ColumnName="MontoDescuentos" />
+                <ScalarProperty Name="MontoImpuestos" ColumnName="MontoImpuestos" />
+                <ScalarProperty Name="MontoTotal" ColumnName="MontoTotal" />
+                <ScalarProperty Name="Contado" ColumnName="Contado" />
+                <ScalarProperty Name="PlazoCredito" ColumnName="PlazoCredito" />
+                <ScalarProperty Name="nombreVendedor" ColumnName="nombreVendedor" />
+                <ScalarProperty Name="apellidosVendedor" ColumnName="apellidosVendedor" />
+                <ScalarProperty Name="nombreCliente" ColumnName="nombreCliente" />
+                <ScalarProperty Name="apellidosCliente" ColumnName="apellidosCliente" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

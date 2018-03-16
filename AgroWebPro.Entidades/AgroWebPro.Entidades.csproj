@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Consultas\Entrada\ConsultarClientesProveedoresEmpresaRequest.cs" />
+    <Compile Include="Consultas\Entrada\ConsultarCultivosEmpresaRequest - Copia.cs" />
     <Compile Include="Consultas\Entrada\ConsultarUsuarioRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarEmpresaRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarTerrenosEmpresaRequest.cs" />
@@ -119,6 +120,12 @@
       <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
     </Compile>
     <Compile Include="PA_ConsultarMonedas_Result.cs">
+      <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PA_ConsultarReporteCosechas_Result.cs">
+      <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PA_ConsultarReporteVentas_Result.cs">
       <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
     </Compile>
     <Compile Include="PA_ConsultarRoles_Result.cs">

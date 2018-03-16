@@ -361,5 +361,39 @@ namespace AgroWebPro.Entidades
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarClientesProveedoresEmpresa_Result>("PA_ConsultarClientesProveedoresEmpresa", idEmpresaParameter, esClienteParameter, estado, mensaje);
         }
+    
+        public virtual ObjectResult<PA_ConsultarReporteCosechas_Result> PA_ConsultarReporteCosechas(Nullable<System.DateTime> fechaInicio, Nullable<System.DateTime> fechaFin, Nullable<System.Guid> idCultivo, ObjectParameter estado, ObjectParameter mensaje)
+        {
+            var fechaInicioParameter = fechaInicio.HasValue ?
+                new ObjectParameter("FechaInicio", fechaInicio) :
+                new ObjectParameter("FechaInicio", typeof(System.DateTime));
+    
+            var fechaFinParameter = fechaFin.HasValue ?
+                new ObjectParameter("FechaFin", fechaFin) :
+                new ObjectParameter("FechaFin", typeof(System.DateTime));
+    
+            var idCultivoParameter = idCultivo.HasValue ?
+                new ObjectParameter("IdCultivo", idCultivo) :
+                new ObjectParameter("IdCultivo", typeof(System.Guid));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarReporteCosechas_Result>("PA_ConsultarReporteCosechas", fechaInicioParameter, fechaFinParameter, idCultivoParameter, estado, mensaje);
+        }
+    
+        public virtual ObjectResult<PA_ConsultarReporteVentas_Result> PA_ConsultarReporteVentas(Nullable<System.DateTime> fechaInicio, Nullable<System.DateTime> fechaFin, Nullable<System.Guid> idEmpresa, ObjectParameter estado, ObjectParameter mensaje)
+        {
+            var fechaInicioParameter = fechaInicio.HasValue ?
+                new ObjectParameter("FechaInicio", fechaInicio) :
+                new ObjectParameter("FechaInicio", typeof(System.DateTime));
+    
+            var fechaFinParameter = fechaFin.HasValue ?
+                new ObjectParameter("FechaFin", fechaFin) :
+                new ObjectParameter("FechaFin", typeof(System.DateTime));
+    
+            var idEmpresaParameter = idEmpresa.HasValue ?
+                new ObjectParameter("IdEmpresa", idEmpresa) :
+                new ObjectParameter("IdEmpresa", typeof(System.Guid));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarReporteVentas_Result>("PA_ConsultarReporteVentas", fechaInicioParameter, fechaFinParameter, idEmpresaParameter, estado, mensaje);
+        }
     }
 }
