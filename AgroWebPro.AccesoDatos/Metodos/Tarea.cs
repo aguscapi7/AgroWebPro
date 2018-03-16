@@ -16,7 +16,7 @@ namespace AgroWebPro.AccesoDatos.Metodos
     {
         public MantenimientoAvanceTareaUsuarioResponse MantenimientoAvanceTareaUsuario(MantenimientoAvanceTareaUsuarioRequest request)
         {
-            MantenimientoUsuarioResponse response = new MantenimientoUsuarioResponse();
+            MantenimientoAvanceTareaUsuarioResponse response = new MantenimientoAvanceTareaUsuarioResponse();
             ObjectParameter estado = new ObjectParameter("Estado", Constantes.EstadoCorrecto);
             ObjectParameter mensaje = new ObjectParameter("Mensaje", string.Empty);
             try
