@@ -51,7 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Consultas\Entrada\ConsultarClientesProveedoresEmpresaRequest.cs" />
-    <Compile Include="Consultas\Entrada\ConsultarCultivosEmpresaRequest - Copia.cs" />
+    <Compile Include="Consultas\Entrada\ConsultarReporteVentasRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarUsuarioRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarEmpresaRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarTerrenosEmpresaRequest.cs" />
@@ -65,6 +65,7 @@
     <Compile Include="Consultas\Entrada\ConsultarUsuarioLoginRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarZonasHorariasRequest.cs" />
     <Compile Include="Consultas\Salida\ConsultarClientesProveedoresEmpresaResponse.cs" />
+    <Compile Include="Consultas\Salida\ConsultarCultivosEmpresaResponse - Copia.cs" />
     <Compile Include="Consultas\Salida\ConsultarUsuarioResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarEmpresaResponse .cs" />
     <Compile Include="Consultas\Salida\ConsultarTerrenosEmpresaResponse.cs" />

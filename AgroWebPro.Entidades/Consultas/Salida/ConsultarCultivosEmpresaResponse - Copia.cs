@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 namespace AgroWebPro.Entidades.Consultas.Salida
 {
     [DataContract]
-    public class ConsultarCultivosEmpresaResponse:RespuestaBase
+    public class ConsultarReporteVentasResponse:RespuestaBase
     {
-        public List<PA_ConsultarCultivosEmpresa_Result> listaCultivosEmpresa { get; set; }
+        public List<PA_ConsultarReporteVentas_Result> listaReporteVentas { get; set; }
     }
 }

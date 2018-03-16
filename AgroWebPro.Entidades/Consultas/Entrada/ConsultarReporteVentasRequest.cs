@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace AgroWebPro.Entidades.Consultas.Entrada
 {
-    public class ConsultarCultivosEmpresaRequest:EntradaBase
+    public class ConsultarReporteVentasRequest : EntradaBase
     {
+        public DateTime fechaInicio { get; set; }
+        public DateTime fechaFin { get; set; }
         public Guid idEmpresa { get; set; }
     }
 }

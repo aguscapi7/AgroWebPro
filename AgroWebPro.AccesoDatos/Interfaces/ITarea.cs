@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AgroWebPro.AccesoDatos.Interfaces
 {
-    interface ITarea
+    public interface ITarea
     {
     }
 }
