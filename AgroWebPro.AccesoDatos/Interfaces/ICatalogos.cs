@@ -15,5 +15,7 @@ namespace AgroWebPro.AccesoDatos.Interfaces
         ConsultarMonedasResponse ConsultarMonedas(ConsultarMonedasRequest request);
         ConsultarUnidadesVentaResponse ConsultarUnidadesVenta(ConsultarUnidadesVentaRequest request);
         ConsultarZonasHorariasResponse ConsultarZonasHorarias(ConsultarZonasHorariasRequest request);
+        ConsultarEstadoTareaResponse ConsultarEstadoTarea(ConsultarEstadoTareaRequest request);
+        ConsultarTiposTareasResponse ConsultarTiposTareas(ConsultarTiposTareasRequest request);
     }
 }

@@ -1,5 +1,5 @@
-﻿using AgroWebPro.Entidades.Consultas.Entrada;
-using AgroWebPro.Entidades.Consultas.Salida;
+﻿using AgroWebPro.Entidades.Mantenimientos.Entrada;
+using AgroWebPro.Entidades.Mantenimientos.Salida;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,27 +12,33 @@ using AgroWebPro.AccesoDatos.Interfaces;
 
 namespace AgroWebPro.AccesoDatos.Metodos
 {
-    public class Reportes:IReportes
+    public class Tarea:ITarea
     {
-        public ConsultarReporteVentasResponse ConsultarReporteVentas(ConsultarReporteVentasRequest request)
+        public MantenimientoAvanceTareaUsuarioResponse MantenimientoAvanceTareaUsuario(MantenimientoAvanceTareaUsuarioRequest request)
         {
-            ConsultarReporteVentasResponse response = new ConsultarReporteVentasResponse();
+            MantenimientoUsuarioResponse response = new MantenimientoUsuarioResponse();
             ObjectParameter estado = new ObjectParameter("Estado", Constantes.EstadoCorrecto);
             ObjectParameter mensaje = new ObjectParameter("Mensaje", string.Empty);
             try
             {
                 using (AgroWebProEntities modelo = new AgroWebProEntities())
                 {
-                    response.listaReporteVentas = modelo.PA_ConsultarReporteVentas(
-                                                     request.fechaInicio
-                                                    ,request.fechaFin
-                                                    ,request.idEmpresa
-                                                    ,estado
-                                                    , mensaje).ToList();
+                    modelo.PA_MantenimientoAvanceTareaUsuario(request.tipoOperacion
+                                                    , request.idTarea
+                                                    , request.idEstadoTarea
+                                                    , request.observaciones
+                                                    , request.horasEstimadas
+                                                    , estado
+                                                    , mensaje);
                     if (estado.Value.ToString().Equals(Constantes.EstadoError))
                     {
                         response.estado = Constantes.EstadoError;
                         response.mensaje = Constantes.MensajeErrorAccesoDatos + mensaje.Value.ToString();
+                    }
+                    else if (estado.Value.ToString().Equals(Constantes.EstadoErrorCustom))
+                    {
+                        response.estado = Constantes.EstadoErrorCustom;
+                        response.mensaje = mensaje.Value.ToString();
                     }
                 }
             }

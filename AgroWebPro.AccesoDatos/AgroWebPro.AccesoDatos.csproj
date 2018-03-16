@@ -57,6 +57,7 @@
     <Compile Include="Metodos\Catalogos.cs" />
     <Compile Include="Metodos\Empresa.cs" />
     <Compile Include="Metodos\Reportes.cs" />
+    <Compile Include="Metodos\Tarea.cs" />
     <Compile Include="Metodos\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

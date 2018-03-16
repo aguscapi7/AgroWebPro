@@ -154,5 +154,61 @@ namespace AgroWebPro.AccesoDatos.Metodos
             return response;
         }
 
+        public ConsultarEstadoTareaResponse ConsultarEstadoTarea(ConsultarEstadoTareaRequest request)
+        {
+            ConsultarEstadoTareaResponse response = new ConsultarEstadoTareaResponse();
+            ObjectParameter estado = new ObjectParameter("Estado", Constantes.EstadoCorrecto);
+            ObjectParameter mensaje = new ObjectParameter("Mensaje", string.Empty);
+            try
+            {
+                using (AgroWebProEntities modelo = new AgroWebProEntities())
+                {
+                    response.listaEstadoTarea = modelo.PA_ConsultarEstadoTarea(
+                                                     estado
+                                                    , mensaje).ToList();
+                    if (estado.Value.ToString().Equals(Constantes.EstadoError))
+                    {
+                        response.estado = Constantes.EstadoError;
+                        response.mensaje = Constantes.MensajeErrorAccesoDatos + mensaje.Value.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorAccesoDatos + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                throw;
+            }
+            return response;
+        }
+
+        public ConsultarTiposTareasResponse ConsultarTiposTareas(ConsultarTiposTareasRequest request)
+        {
+            ConsultarTiposTareasResponse response = new ConsultarTiposTareasResponse();
+            ObjectParameter estado = new ObjectParameter("Estado", Constantes.EstadoCorrecto);
+            ObjectParameter mensaje = new ObjectParameter("Mensaje", string.Empty);
+            try
+            {
+                using (AgroWebProEntities modelo = new AgroWebProEntities())
+                {
+                    response.listaTiposTareas = modelo.PA_ConsultarTiposTareas(
+                                                     estado
+                                                    , mensaje).ToList();
+                    if (estado.Value.ToString().Equals(Constantes.EstadoError))
+                    {
+                        response.estado = Constantes.EstadoError;
+                        response.mensaje = Constantes.MensajeErrorAccesoDatos + mensaje.Value.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorAccesoDatos + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                throw;
+            }
+            return response;
+        }
+
     }
 }

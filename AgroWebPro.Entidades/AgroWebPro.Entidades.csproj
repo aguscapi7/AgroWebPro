@@ -51,7 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Consultas\Entrada\ConsultarClientesProveedoresEmpresaRequest.cs" />
+    <Compile Include="Consultas\Entrada\ConsultarTiposTareasRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarReporteVentasRequest.cs" />
+    <Compile Include="Consultas\Entrada\ConsultarEstadoTareaRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarUsuarioRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarEmpresaRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarTerrenosEmpresaRequest.cs" />
@@ -65,7 +67,9 @@
     <Compile Include="Consultas\Entrada\ConsultarUsuarioLoginRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarZonasHorariasRequest.cs" />
     <Compile Include="Consultas\Salida\ConsultarClientesProveedoresEmpresaResponse.cs" />
-    <Compile Include="Consultas\Salida\ConsultarCultivosEmpresaResponse - Copia.cs" />
+    <Compile Include="Consultas\Salida\ConsultarTiposTareasResponse.cs" />
+    <Compile Include="Consultas\Salida\ConsultarReporteVentasResponse.cs" />
+    <Compile Include="Consultas\Salida\ConsultarEstadoTareaResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarUsuarioResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarEmpresaResponse .cs" />
     <Compile Include="Consultas\Salida\ConsultarTerrenosEmpresaResponse.cs" />
@@ -80,11 +84,13 @@
     <Compile Include="Consultas\Salida\ConsultarZonasHorariasResponse.cs" />
     <Compile Include="Generales\EntradaBase.cs" />
     <Compile Include="Generales\RespuestaBase.cs" />
+    <Compile Include="Mantenimientos\Entrada\MantenimientoAvanceTareaUsuarioRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoTareaRequest .cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoTerrenoRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoCultivoRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoEmpresaRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoUsuarioRequest.cs" />
+    <Compile Include="Mantenimientos\Salida\MantenimientoAvanceTareaUsuarioResponse.cs" />
     <Compile Include="Mantenimientos\Salida\MantenimientoTareaResponse.cs" />
     <Compile Include="Mantenimientos\Salida\MantenimientoTerrenoResponse.cs" />
     <Compile Include="Mantenimientos\Salida\MantenimientoCultivoResponse.cs" />
@@ -117,6 +123,9 @@
     <Compile Include="PA_ConsultarEmpresa_Result.cs">
       <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
     </Compile>
+    <Compile Include="PA_ConsultarEstadoTarea_Result.cs">
+      <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
+    </Compile>
     <Compile Include="PA_ConsultarFamilias_Result.cs">
       <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
     </Compile>
@@ -136,6 +145,9 @@
       <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
     </Compile>
     <Compile Include="PA_ConsultarTerreno_Result.cs">
+      <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PA_ConsultarTiposTareas_Result.cs">
       <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
     </Compile>
     <Compile Include="PA_ConsultarUnidadesVenta_Result.cs">

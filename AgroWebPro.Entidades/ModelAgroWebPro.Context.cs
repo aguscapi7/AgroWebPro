@@ -395,5 +395,40 @@ namespace AgroWebPro.Entidades
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarReporteVentas_Result>("PA_ConsultarReporteVentas", fechaInicioParameter, fechaFinParameter, idEmpresaParameter, estado, mensaje);
         }
+    
+        public virtual ObjectResult<PA_ConsultarEstadoTarea_Result> PA_ConsultarEstadoTarea(ObjectParameter estado, ObjectParameter mensaje)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarEstadoTarea_Result>("PA_ConsultarEstadoTarea", estado, mensaje);
+        }
+    
+        public virtual ObjectResult<PA_ConsultarTiposTareas_Result> PA_ConsultarTiposTareas(ObjectParameter estado, ObjectParameter mensaje)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarTiposTareas_Result>("PA_ConsultarTiposTareas", estado, mensaje);
+        }
+    
+        public virtual int PA_MantenimientoAvanceTareaUsuario(Nullable<int> tipoOperacion, Nullable<System.Guid> idTarea, Nullable<int> idEstadoTarea, string observaciones, Nullable<decimal> horas, ObjectParameter estado, ObjectParameter mensaje)
+        {
+            var tipoOperacionParameter = tipoOperacion.HasValue ?
+                new ObjectParameter("TipoOperacion", tipoOperacion) :
+                new ObjectParameter("TipoOperacion", typeof(int));
+    
+            var idTareaParameter = idTarea.HasValue ?
+                new ObjectParameter("IdTarea", idTarea) :
+                new ObjectParameter("IdTarea", typeof(System.Guid));
+    
+            var idEstadoTareaParameter = idEstadoTarea.HasValue ?
+                new ObjectParameter("IdEstadoTarea", idEstadoTarea) :
+                new ObjectParameter("IdEstadoTarea", typeof(int));
+    
+            var observacionesParameter = observaciones != null ?
+                new ObjectParameter("Observaciones", observaciones) :
+                new ObjectParameter("Observaciones", typeof(string));
+    
+            var horasParameter = horas.HasValue ?
+                new ObjectParameter("Horas", horas) :
+                new ObjectParameter("Horas", typeof(decimal));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_MantenimientoAvanceTareaUsuario", tipoOperacionParameter, idTareaParameter, idEstadoTareaParameter, observacionesParameter, horasParameter, estado, mensaje);
+        }
     }
 }

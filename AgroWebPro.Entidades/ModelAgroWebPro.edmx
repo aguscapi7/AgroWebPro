@@ -26,6 +26,10 @@
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
+        <Function Name="PA_ConsultarEstadoTarea" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
         <Function Name="PA_ConsultarFamilias" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
@@ -62,6 +66,10 @@
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
+        <Function Name="PA_ConsultarTiposTareas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
         <Function Name="PA_ConsultarUnidadesVenta" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
@@ -78,6 +86,15 @@
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
         <Function Name="PA_ConsultarZonasHorarias" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
+        <Function Name="PA_MantenimientoAvanceTareaUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TipoOperacion" Type="int" Mode="In" />
+          <Parameter Name="IdTarea" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="IdEstadoTarea" Type="int" Mode="In" />
+          <Parameter Name="Observaciones" Type="varchar" Mode="In" />
+          <Parameter Name="Horas" Type="decimal" Mode="In" />
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
@@ -305,6 +322,23 @@
             <Parameter Name="Estado" Mode="InOut" Type="String" />
             <Parameter Name="Mensaje" Mode="InOut" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="PA_ConsultarEstadoTarea" ReturnType="Collection(AgroWebProModel.PA_ConsultarEstadoTarea_Result)">
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PA_ConsultarTiposTareas" ReturnType="Collection(AgroWebProModel.PA_ConsultarTiposTareas_Result)">
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PA_MantenimientoAvanceTareaUsuario">
+            <Parameter Name="TipoOperacion" Mode="In" Type="Int32" />
+            <Parameter Name="IdTarea" Mode="In" Type="Guid" />
+            <Parameter Name="IdEstadoTarea" Mode="In" Type="Int32" />
+            <Parameter Name="Observaciones" Mode="In" Type="String" />
+            <Parameter Name="Horas" Mode="In" Type="Decimal" />
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="PA_ConsultarZonasHorarias_Result">
           <Property Type="Guid" Name="IdZonaHoraria" Nullable="false" />
@@ -453,6 +487,17 @@
           <Property Type="String" Name="apellidosVendedor" Nullable="true" MaxLength="80" />
           <Property Type="String" Name="nombreCliente" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="apellidosCliente" Nullable="true" MaxLength="80" />
+        </ComplexType>
+        <ComplexType Name="PA_ConsultarEstadoTarea_Result">
+          <Property Type="Int32" Name="IdEstadoTarea" Nullable="false" />
+          <Property Type="String" Name="NombreEstadoTarea" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Orden" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="PA_ConsultarTiposTareas_Result">
+          <Property Type="Int32" Name="IdTipoTarea" Nullable="false" />
+          <Property Type="String" Name="NombreTarea" Nullable="false" MaxLength="50" />
+          <Property Type="Boolean" Name="Recoleccion" Nullable="false" />
+          <Property Type="Int32" Name="Orden" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -663,6 +708,26 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PA_ConsultarEstadoTarea" FunctionName="AgroWebProModel.Store.PA_ConsultarEstadoTarea">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AgroWebProModel.PA_ConsultarEstadoTarea_Result">
+                <ScalarProperty Name="IdEstadoTarea" ColumnName="IdEstadoTarea" />
+                <ScalarProperty Name="NombreEstadoTarea" ColumnName="NombreEstadoTarea" />
+                <ScalarProperty Name="Orden" ColumnName="Orden" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PA_ConsultarTiposTareas" FunctionName="AgroWebProModel.Store.PA_ConsultarTiposTareas">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AgroWebProModel.PA_ConsultarTiposTareas_Result">
+                <ScalarProperty Name="IdTipoTarea" ColumnName="IdTipoTarea" />
+                <ScalarProperty Name="NombreTarea" ColumnName="NombreTarea" />
+                <ScalarProperty Name="Recoleccion" ColumnName="Recoleccion" />
+                <ScalarProperty Name="Orden" ColumnName="Orden" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PA_MantenimientoAvanceTareaUsuario" FunctionName="AgroWebProModel.Store.PA_MantenimientoAvanceTareaUsuario" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
