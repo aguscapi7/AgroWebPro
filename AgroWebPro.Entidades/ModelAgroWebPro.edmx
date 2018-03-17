@@ -128,7 +128,6 @@
           <Parameter Name="IdTarea" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="IdUsuario" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="IdTerreno" Type="uniqueidentifier" Mode="In" />
-          <Parameter Name="FechaAsignacion" Type="datetime" Mode="In" />
           <Parameter Name="AsignadaPor" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="FechaInicio" Type="datetime" Mode="In" />
           <Parameter Name="FechaFinalizacion" Type="datetime" Mode="In" />
@@ -257,7 +256,6 @@
             <Parameter Name="IdTarea" Mode="In" Type="Guid" />
             <Parameter Name="IdUsuario" Mode="In" Type="Guid" />
             <Parameter Name="IdTerreno" Mode="In" Type="Guid" />
-            <Parameter Name="FechaAsignacion" Mode="In" Type="DateTime" />
             <Parameter Name="AsignadaPor" Mode="In" Type="Guid" />
             <Parameter Name="FechaInicio" Mode="In" Type="DateTime" />
             <Parameter Name="FechaFinalizacion" Mode="In" Type="DateTime" />
@@ -425,6 +423,7 @@
           <Property Type="DateTime" Name="FechaIngreso" Nullable="false" Precision="23" />
           <Property Type="Guid" Name="IdCultivo" Nullable="false" />
           <Property Type="String" Name="NombreCultivo" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Coordenadas" Nullable="true" MaxLength="1" />
         </ComplexType>
         <ComplexType Name="PA_ConsultarEmpresa_Result">
           <Property Type="Guid" Name="IdEmpresa" Nullable="false" />
@@ -623,6 +622,7 @@
                 <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
                 <ScalarProperty Name="IdCultivo" ColumnName="IdCultivo" />
                 <ScalarProperty Name="NombreCultivo" ColumnName="NombreCultivo" />
+                <ScalarProperty Name="Coordenadas" ColumnName="Coordenadas" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

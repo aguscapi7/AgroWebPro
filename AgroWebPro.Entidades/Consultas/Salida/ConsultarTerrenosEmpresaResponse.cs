@@ -11,6 +11,6 @@ namespace AgroWebPro.Entidades.Consultas.Salida
     [DataContract]
     public class ConsultarTerrenosEmpresaResponse:RespuestaBase
     {
-        public List<PA_ConsultarCultivosEmpresa_Result> listaCultivosEmpresa { get; set; }
+        public List<PA_ConsultarTerrenosEmpresa_Result> listaTerrenosEmpresa { get; set; }
     }
 }

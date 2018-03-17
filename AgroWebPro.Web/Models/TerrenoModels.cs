@@ -20,6 +20,9 @@ namespace AgroWebPro.Web.Models
         public Guid idCultivo { get; set; }
         public string listaCoordenadas { get; set; }
         public List<TerrenoModels> listaTerrenosEmpresa { get; set; }
+        public string nombreCultivo { get; set; }
+        public string coordenadas { get; set; }
+        public bool actualizarCoordenadas { get; set; }
 
         public void CopiarCultivosEmpresa(ConsultarCultivosEmpresaResponse cultivosEmpresaResponse)
         {
@@ -47,21 +50,24 @@ namespace AgroWebPro.Web.Models
             }
         }
 
-        public void CopiarTerrenosEmpresa(ConsultarTerrenoResponse cultivosEmpresaResponse)
+        public void CopiarTerrenosEmpresa(ConsultarTerrenosEmpresaResponse cultivosEmpresaResponse)
         {
             try
             {
                 listaTerrenosEmpresa = new List<TerrenoModels>();
-                if (cultivosEmpresaResponse != null && cultivosEmpresaResponse.estado.Equals(Constantes.EstadoCorrecto) && cultivosEmpresaResponse.listaTerreno.Count >= 0)
+                if (cultivosEmpresaResponse != null && cultivosEmpresaResponse.estado.Equals(Constantes.EstadoCorrecto) && cultivosEmpresaResponse.listaTerrenosEmpresa.Count >= 0)
                 {
                     TerrenoModels terreno = null;
-                    foreach (var cultivoItem in cultivosEmpresaResponse.listaTerreno)
+                    foreach (var terrenoItem in cultivosEmpresaResponse.listaTerrenosEmpresa)
                     {
                         terreno = new TerrenoModels();
-                        terreno.idTerreno = cultivoItem.IdTerreno;
-                        terreno.nombreTerreno = cultivoItem.NombreTerreno;
-                        terreno.descripcionTerreno = cultivoItem.Descripcion;
-                        terreno.listaCoordenadas = cultivoItem.Coordenadas;
+                        terreno.idTerreno = terrenoItem.IdTerreno;
+                        terreno.nombreTerreno = terrenoItem.NombreTerreno;
+                        terreno.descripcionTerreno = terrenoItem.DescripcionTerreno;
+                        terreno.listaCoordenadas = terrenoItem.Coordenadas;
+                        terreno.nombreCultivo = terrenoItem.NombreCultivo;
+                        terreno.coordenadas = terrenoItem.Coordenadas;
+                        terreno.idCultivo = terrenoItem.IdCultivo;
                         listaTerrenosEmpresa.Add(terreno);
                     }
                 }

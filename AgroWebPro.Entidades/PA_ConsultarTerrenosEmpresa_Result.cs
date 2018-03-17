@@ -20,5 +20,6 @@ namespace AgroWebPro.Entidades
         public System.DateTime FechaIngreso { get; set; }
         public System.Guid IdCultivo { get; set; }
         public string NombreCultivo { get; set; }
+        public string Coordenadas { get; set; }
     }
 }

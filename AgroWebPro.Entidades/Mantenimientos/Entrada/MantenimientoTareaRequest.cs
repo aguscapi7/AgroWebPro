@@ -11,6 +11,7 @@ namespace AgroWebPro.Entidades.Mantenimientos.Entrada
     {        
         public int tipoOperacion { get; set; }
         public Guid idTarea { get; set; }
+        public Guid idUsuario { get; set; }
         public Guid idTerreno { get; set; }
         public DateTime fechaAsignacion { get; set; }
         public Guid asignadaPor { get; set; }

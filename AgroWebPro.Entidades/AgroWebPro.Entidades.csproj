@@ -85,7 +85,7 @@
     <Compile Include="Generales\EntradaBase.cs" />
     <Compile Include="Generales\RespuestaBase.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoAvanceTareaUsuarioRequest.cs" />
-    <Compile Include="Mantenimientos\Entrada\MantenimientoTareaRequest .cs" />
+    <Compile Include="Mantenimientos\Entrada\MantenimientoTareaRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoTerrenoRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoCultivoRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoEmpresaRequest.cs" />

@@ -25,6 +25,9 @@ namespace AgroWebPro.Web.Controllers
 
             ConsultarCultivosEmpresaRequest cultivosEmpresaRequest = null;
             ConsultarCultivosEmpresaResponse cultivosEmpresaResponse = null;
+
+            ConsultarTerrenosEmpresaRequest terrenosEmpresaRequest = null;
+            ConsultarTerrenosEmpresaResponse terrenosEmpresaResponse = null;
             try
             {
                 if (Request.Cookies["usuario"] != null)
@@ -36,6 +39,11 @@ namespace AgroWebPro.Web.Controllers
                     cultivosEmpresaRequest.idEmpresa = idEmpresa;
                     cultivosEmpresaResponse = empresa.ConsultarCultivosEmpresa(cultivosEmpresaRequest);
                     terrenoModels.CopiarCultivosEmpresa(cultivosEmpresaResponse);
+
+                    terrenosEmpresaRequest = new ConsultarTerrenosEmpresaRequest();
+                    terrenosEmpresaRequest.idEmpresa = idEmpresa;
+                    terrenosEmpresaResponse = empresa.ConsultarTerrenosEmpresa(terrenosEmpresaRequest);
+                    terrenoModels.CopiarTerrenosEmpresa(terrenosEmpresaResponse);
                     
                 }
                 else
@@ -51,6 +59,7 @@ namespace AgroWebPro.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult Mantenimiento(TerrenoModels terrenoModels, string btnGuardar, string btnEditar)
         {
             IEmpresa empresa = new Empresa();
@@ -58,6 +67,12 @@ namespace AgroWebPro.Web.Controllers
 
             MantenimientoTerrenoRequest terrenoRequest = null;
             MantenimientoTerrenoResponse terrenoResponse = null;
+
+            ConsultarCultivosEmpresaRequest cultivosEmpresaRequest = null;
+            ConsultarCultivosEmpresaResponse cultivosEmpresaResponse = null;
+
+            ConsultarTerrenosEmpresaRequest terrenosEmpresaRequest = null;
+            ConsultarTerrenosEmpresaResponse terrenosEmpresaResponse = null;
             try
             {
                 string idEmpresaCookie = Request.Cookies["usuario"]["idEmpresa"];
@@ -76,10 +91,10 @@ namespace AgroWebPro.Web.Controllers
                     terrenoRequest = new MantenimientoTerrenoRequest()
                     {
                         tipoOperacion = Constantes.operacionCrear,
-                        idCultivo = Guid.NewGuid(),
+                        idTerreno = Guid.NewGuid(),
                         nombre = terrenoModels.nombreTerreno,
                         descripcion = terrenoModels.descripcionTerreno,
-                        idTerreno = terrenoModels.idTerreno,
+                        idCultivo = terrenoModels.idCultivo,
                         actualizarCoordenadas = true,
                         coordenadas = terrenoModels.listaCoordenadas,
                         idEmpresa = idEmpresa,
@@ -93,11 +108,11 @@ namespace AgroWebPro.Web.Controllers
                     terrenoRequest = new MantenimientoTerrenoRequest()
                     {
                         tipoOperacion = Constantes.operacionModificar,
-                        idCultivo = Guid.Parse(btnEditar),
+                        idTerreno = Guid.Parse(btnEditar),
                         nombre = terrenoModels.nombreTerreno,
                         descripcion = terrenoModels.descripcionTerreno,
-                        idTerreno = terrenoModels.idTerreno,
-                        actualizarCoordenadas = true,
+                        idCultivo = terrenoModels.idCultivo,
+                        actualizarCoordenadas = terrenoModels.actualizarCoordenadas,
                         coordenadas = terrenoModels.listaCoordenadas,
                         idEmpresa = idEmpresa,
                         ingresadoPor = idUsuario
@@ -119,6 +134,17 @@ namespace AgroWebPro.Web.Controllers
                     ViewBag.respuesta = Constantes.EstadoError;
                     ViewBag.mensaje = mensajeError;
                 }
+
+
+                cultivosEmpresaRequest = new ConsultarCultivosEmpresaRequest();
+                cultivosEmpresaRequest.idEmpresa = idEmpresa;
+                cultivosEmpresaResponse = empresa.ConsultarCultivosEmpresa(cultivosEmpresaRequest);
+                terrenoModels.CopiarCultivosEmpresa(cultivosEmpresaResponse);
+
+                terrenosEmpresaRequest = new ConsultarTerrenosEmpresaRequest();
+                terrenosEmpresaRequest.idEmpresa = idEmpresa;
+                terrenosEmpresaResponse = empresa.ConsultarTerrenosEmpresa(terrenosEmpresaRequest);
+                terrenoModels.CopiarTerrenosEmpresa(terrenosEmpresaResponse);
             }
             catch(Exception ex)
             {

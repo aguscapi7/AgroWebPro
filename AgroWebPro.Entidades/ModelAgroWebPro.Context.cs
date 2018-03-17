@@ -215,7 +215,7 @@ namespace AgroWebPro.Entidades
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarUnidadesVenta_Result>("PA_ConsultarUnidadesVenta", estado, mensaje);
         }
     
-        public virtual int PA_MantenimientoTarea(Nullable<int> tipoOperacion, Nullable<System.Guid> idTarea, Nullable<System.Guid> idUsuario, Nullable<System.Guid> idTerreno, Nullable<System.DateTime> fechaAsignacion, Nullable<System.Guid> asignadaPor, Nullable<System.DateTime> fechaInicio, Nullable<System.DateTime> fechaFinalizacion, Nullable<decimal> horasEstimadas, string resumen, string observaciones, Nullable<int> idTipoTarea, ObjectParameter estado, ObjectParameter mensaje)
+        public virtual int PA_MantenimientoTarea(Nullable<int> tipoOperacion, Nullable<System.Guid> idTarea, Nullable<System.Guid> idUsuario, Nullable<System.Guid> idTerreno, Nullable<System.Guid> asignadaPor, Nullable<System.DateTime> fechaInicio, Nullable<System.DateTime> fechaFinalizacion, Nullable<decimal> horasEstimadas, string resumen, string observaciones, Nullable<int> idTipoTarea, ObjectParameter estado, ObjectParameter mensaje)
         {
             var tipoOperacionParameter = tipoOperacion.HasValue ?
                 new ObjectParameter("TipoOperacion", tipoOperacion) :
@@ -232,10 +232,6 @@ namespace AgroWebPro.Entidades
             var idTerrenoParameter = idTerreno.HasValue ?
                 new ObjectParameter("IdTerreno", idTerreno) :
                 new ObjectParameter("IdTerreno", typeof(System.Guid));
-    
-            var fechaAsignacionParameter = fechaAsignacion.HasValue ?
-                new ObjectParameter("FechaAsignacion", fechaAsignacion) :
-                new ObjectParameter("FechaAsignacion", typeof(System.DateTime));
     
             var asignadaPorParameter = asignadaPor.HasValue ?
                 new ObjectParameter("AsignadaPor", asignadaPor) :
@@ -265,7 +261,7 @@ namespace AgroWebPro.Entidades
                 new ObjectParameter("IdTipoTarea", idTipoTarea) :
                 new ObjectParameter("IdTipoTarea", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_MantenimientoTarea", tipoOperacionParameter, idTareaParameter, idUsuarioParameter, idTerrenoParameter, fechaAsignacionParameter, asignadaPorParameter, fechaInicioParameter, fechaFinalizacionParameter, horasEstimadasParameter, resumenParameter, observacionesParameter, idTipoTareaParameter, estado, mensaje);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_MantenimientoTarea", tipoOperacionParameter, idTareaParameter, idUsuarioParameter, idTerrenoParameter, asignadaPorParameter, fechaInicioParameter, fechaFinalizacionParameter, horasEstimadasParameter, resumenParameter, observacionesParameter, idTipoTareaParameter, estado, mensaje);
         }
     
         public virtual ObjectResult<PA_ConsultarTerreno_Result> PA_ConsultarTerreno(Nullable<System.Guid> idTerreno, ObjectParameter estado, ObjectParameter mensaje)

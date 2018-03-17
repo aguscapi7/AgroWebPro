@@ -9,7 +9,7 @@ namespace AgroWebPro.Web.Controllers
 {
     public class BaseController : Controller
     {
-        public UsuarioModels ConsultarUsuarioActivo()
+        public UsuarioModels ConsultarOpcionPorUsuario(string url, Guid idUsuario)
         {
             UsuarioModels usuario = new UsuarioModels();
             try

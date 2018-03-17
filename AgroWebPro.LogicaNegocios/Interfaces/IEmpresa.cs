@@ -20,5 +20,6 @@ namespace AgroWebPro.LogicaNegocios.Interfaces
         ConsultarTerrenoResponse ConsultarTerreno(ConsultarTerrenoRequest request);
         ConsultarCultivosEmpresaResponse ConsultarCultivosEmpresa(ConsultarCultivosEmpresaRequest request); ConsultarEmpleadosEmpresaResponse ConsultarEmpleadosEmpresa(ConsultarEmpleadosEmpresaRequest request);
         ConsultarClientesProveedoresEmpresaResponse ConsultarClientesProveedoresEmpresa(ConsultarClientesProveedoresEmpresaRequest request);
+        ConsultarTerrenosEmpresaResponse ConsultarTerrenosEmpresa(ConsultarTerrenosEmpresaRequest request);
     }
 }

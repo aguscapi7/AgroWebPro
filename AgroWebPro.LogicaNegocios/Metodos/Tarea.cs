@@ -34,5 +34,21 @@ namespace AgroWebPro.LogicaNegocios.Metodos
             }
             return response;
         }
+
+        public MantenimientoTareaResponse MantenimientoTarea(MantenimientoTareaRequest request)
+        {
+            MantenimientoTareaResponse response = new MantenimientoTareaResponse();
+            try
+            {
+                response = tarea.MantenimientoTarea(request);
+            }
+            catch (Exception ex)
+            {
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorLogicaNegocios + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                throw;
+            }
+            return response;
+        }
     }
 }

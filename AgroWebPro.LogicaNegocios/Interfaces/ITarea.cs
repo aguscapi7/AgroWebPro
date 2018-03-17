@@ -11,5 +11,6 @@ namespace AgroWebPro.LogicaNegocios.Interfaces
     public interface ITarea
     {
         MantenimientoAvanceTareaUsuarioResponse MantenimientoAvanceTareaUsuario(MantenimientoAvanceTareaUsuarioRequest request);
+        MantenimientoTareaResponse MantenimientoTarea(MantenimientoTareaRequest request);
     }
 }
