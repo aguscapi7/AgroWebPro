@@ -19,6 +19,7 @@ namespace AgroWebPro.Web.Controllers
         
         public ActionResult Mantenimiento()
         {
+            Session[Constantes.MenuActivo] = Constantes.MenuTerreno;
             IEmpresa empresa = new Empresa();
 
             TerrenoModels terrenoModels = new TerrenoModels();

@@ -197,6 +197,12 @@ namespace AgroWebPro.Web.Controllers
             return Json(new { respuesta = respuesta });
         }
 
+        public ActionResult Perfil()
+        {
+            Session[Constantes.MenuActivo] = Constantes.MenuMantenimientoUsuarios;
+            return View();
+        }
+
 
     }
 }

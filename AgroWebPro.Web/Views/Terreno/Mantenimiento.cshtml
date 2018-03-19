@@ -20,6 +20,7 @@
 <link href="~/Content/sweetalert.css" rel="stylesheet" />
 <script src="~/Scripts/sweetalert.js"></script>
 <script src="~/Scripts/bootstrap-table-locale-all.min.js"></script>
+
 @using (Html.BeginForm("Mantenimiento", "Terreno", FormMethod.Post, new { id = "formTerreno", role = "form", @data_toggle = "validator" }))
 {
     @Html.AntiForgeryToken();
@@ -35,15 +36,6 @@
             <div class="col-md-6">
                 @Html.LabelFor(model => model.idCultivo)<br />
                 @Html.DropDownListFor(model => model.idCultivo, new SelectList(Model.listaCultivosEmpresa, "idCultivo", "nombreCultivo"), new { @id = "ddlCultivos", @class = "form-control", @required = "required" })
-                @*<select class="form-control col-md-6" id="ddlCultivos" name="listaCultivosSeleccionados" multiple>
-                    @if (Model.listaCultivosEmpresa != null && Model.listaCultivosEmpresa.Count() > 0)
-                    {
-                        foreach (var itemCultivo in Model.listaCultivosEmpresa)
-                        {
-                            <option value="@itemCultivo.idCultivo">@itemCultivo.nombreCultivo</option>
-                        }
-                    }
-                </select>*@
             </div>
         </div>
         
@@ -61,7 +53,7 @@
         <div class="row">
             <div class="col-md-8"></div>
             <div class="col-md-4">
-                <button id="btnEditar" name="btnEditar" class="btn btn-primary pull-right btn-guardar hidden" type="submit">Editar&nbsp;<span><i class="fa fa-refresh"></i></span></button>
+                <button id="btnEditar" name="btnEditar" class="btn btn-primary pull-right btn-guardar hidden" disabled type="submit">Editar&nbsp;<span><i class="fa fa-refresh"></i></span></button>
                 <button id="btnGuardar" name="btnGuardar" class="btn btn-primary pull-right btn-guardar" value="btnGuardar" disabled type="submit">Guardar&nbsp;<span><i class="fa fa-plus"></i></span></button>
                 <button class="btn btn-danger pull-right" id="btnCancelar" type="button" onclick="Cancelar()">Cancelar</button>
             </div>
@@ -77,7 +69,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
-                <table class="table table-hover" data-show-toggle="true" data-search="true"
+                <table class="table table-sm table-hover" data-show-toggle="true" data-search="true"
                        data-show-export="true"
                        data-detail-formatter="detailFormatter"
                        data-minimum-count-columns="2"
@@ -85,7 +77,7 @@
                        data-pagination="true"
                        data-page-list="[10, 25, 50, 100, ALL]"
                        data-locale="es-CR">
-                    <thead>
+                    <thead class="thead-default">
                         <tr>
                             <th>Nombre</th>
                             <th>Descripción</th>
@@ -166,46 +158,7 @@
         </div>
     </div>
 </div>
-@*<div class="modal fade" id="myModalTareas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Agregar tarea</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <label>Empleado</label>
-                        <select class="form-control"><option>Seleccione...</option><option>Usuario 1</option><option>Usuario 2</option><option>Usuario 3</option></select>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <label>Tarea</label><select class="form-control"><option>Seleccione...</option><option>Tarea 1</option><option>Tarea 2</option><option>Tarea 3</option></select>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <label>Cultivo</label><select class="form-control"><option>Seleccione...</option><option>Cultivo 1</option><option>Cultivo 2</option><option>Cultivo 3</option></select>
-                    </div>
-                </div>
-                <div class="row" style="margin-top:20px;">
-                    <div class="col-md-12"><table class="table table-hover"><thead><tr><th>Empleado</th><th>Tarea</th><th>Cultivo</th><th>Estado</th></tr></thead><tbody><tr><td>Empleado 1</td><td>Tarea 1</td><td>Cultivo 1</td><td>En proceso</td></tr></tbody></table></div>
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary">Guardar cambios</button>
-            </div>
-        </div>
-    </div>
-</div>*@
 @if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoCorrecto)
 {
     <script>
@@ -231,114 +184,89 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
     </script>
 }
 <script>
-    //$('#ddlCultivos')
-    //    .multiselect({
-    //        enableFiltering: true,
-    //        includeSelectAllOption: true,
-    //        // Re-validate the multiselect field when it is changed
-    //        onChange: function (element, checked) {
-    //        },
-    //        onDropdownShown: function (e) {
-    //        },
-    //        onDropdownHidden: function (e) {
-    //        }, nonSelectedText: 'Seleccione los cultivos'
-    //    })
-    //    .end();
-    
-        var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            osm = L.tileLayer(osmUrl, { maxZoom: 29, attribution: osmAttrib });
-        var map = L.map('map').setView([9.842405, -83.9317569], 29),
-            drawnItems = new L.FeatureGroup().addTo(map);
 
-        L.tileLayer("http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}", {
-            attribution: ''
-        }).addTo(map);
+    $('table').bootstrapTable({
+        editable: true
+    });
+    var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        osm = L.tileLayer(osmUrl, { maxZoom: 29, attribution: osmAttrib });
+    var map = L.map('map').setView([9.842405, -83.9317569], 29),
+        drawnItems = new L.FeatureGroup().addTo(map);
+
+    L.tileLayer("http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}", {
+        attribution: ''
+    }).addTo(map);
 
 
-        new LeafletToolbar.DrawToolbar({
-            position: 'topleft'
-        }).addTo(map);
+    new LeafletToolbar.DrawToolbar({
+        position: 'topleft'
+    }).addTo(map);
 
-        new LeafletToolbar.EditToolbar.Control({
-            position: 'topleft'
-        }).addTo(map, drawnItems);
+    new LeafletToolbar.EditToolbar.Control({
+        position: 'topleft'
+    }).addTo(map, drawnItems);
 
-        map.on('draw:created', function (evt) {
-            var type = evt.layerType,
-                layer = evt.layer;
+    map.on('draw:created', function (evt) {
+        var type = evt.layerType,
+            layer = evt.layer;
 
-            drawnItems.addLayer(layer);
-        });
+        drawnItems.addLayer(layer);
+    });
 
-        L.control.layers({
-            'osm': osm.addTo(map),
-            "google": L.tileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}', {
-                maxZoom: 29, attribution: 'google'
-            })
-        }, { 'drawlayer': drawnItems }, { position: 'topleft', collapsed: false }).addTo(map);
+    L.control.layers({
+        'osm': osm.addTo(map),
+        "google": L.tileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}', {
+            maxZoom: 29, attribution: 'google'
+        })
+    }, { 'drawlayer': drawnItems }, { position: 'topleft', collapsed: false }).addTo(map);
 
 
-        map.on('draw:created', function (e) {
-            debugger;
-            var type = e.layerType,
-                layer = e.layer;
+    map.on('draw:created', function (e) {
 
-            if (type === 'polygon') {
-                // structure the geojson object
-                var geojson = {};
-                geojson['type'] = 'Feature';
-                geojson['geometry'] = {};
-                geojson['geometry']['type'] = "Polygon";
+        var type = e.layerType,
+            layer = e.layer;
 
-                // export the coordinates from the layer
-                coordinates = [];
-                var coordenadas = "";
-                latlngs = layer.getLatLngs();
-                for (var i = 0; i < latlngs[0].length; i++) {
-                    coordinates.push([latlngs[0][i].lng, latlngs[0][i].lat])
-                    var orden = i + 1;
-                    coordenadas += '<coordenada><longitud>' + latlngs[0][i].lng + "</longitud><latitud>" + latlngs[0][i].lat + '</latitud><orden>' + orden + '</orden></coordenada>';
-                }
+        if (type === 'polygon') {
 
-                coordenadas = '<coordenadas>' + coordenadas + '</coordenadas>';
-                // push the coordinates to the json geometry
-                geojson['geometry']['coordinates'] = [coordinates];
+            var geojson = {};
+            geojson['type'] = 'Feature';
+            geojson['geometry'] = {};
+            geojson['geometry']['type'] = "Polygon";
 
-                //layer.bindPopup(
 
-                //    '<div><div class="row">' +
-                //        '<div class="col-md-12"><h4>Terreno<span style="float:right;cursor:pointer;" class="fa fa-pencil" onclick="AgregarCultivo()"></span></h4></div>' +
-                //    '</div>'+
-                //    '<div class="row">' +
-                //        '<div class="col-md-12"><table class="table table-condensed"><thead><tr><th>Cultivo</th></tr></thead><tbody><tr><td><center>No hay cultivos agregados</center></td></tr></tbody></table></div>'+
-                //    '</div>' +
-                //    '<div class="row" style="margin-top:20px">' +
-                //        '<div class="col-md-12"><button class="btn btn-primary" onclick="AgregarTarea()">Agregar tarea<span class="fa fa-plus" style="margin-left:20px;"></span></button></div>' +
-                //    '</div>', { maxWidth: "auto" }
-                //);
-                $("#hdnActualizarCoordenadas").val(true);
-                $("#hdnListaCoordenadas").val(coordenadas);
-                $("#btnGuardar").removeAttr("disabled");
-
+            coordinates = [];
+            var coordenadas = "";
+            latlngs = layer.getLatLngs();
+            for (var i = 0; i < latlngs[0].length; i++) {
+                coordinates.push([latlngs[0][i].lng, latlngs[0][i].lat])
+                var orden = i + 1;
+                coordenadas += '<coordenada><longitud>' + latlngs[0][i].lng + "</longitud><latitud>" + latlngs[0][i].lat + '</latitud><orden>' + orden + '</orden></coordenada>';
             }
 
-            drawnItems.addLayer(layer);
-        });
-        map.on('draw:deleted', function (e) {
-            var type = e.layerType,
-                layer = e.layer;
+            coordenadas = '<coordenadas>' + coordenadas + '</coordenadas>';
 
-            if (type === 'polygon') {
-                
-                $("#hdnActualizarCoordenadas").val(true);
-                $("#hdnListaCoordenadas").val("");
-                $("#btnGuardar").attr("disabled");
-                $("#btnEditar").attr("disabled");
-                
-            }
+            geojson['geometry']['coordinates'] = [coordinates];
+
             
-        });
+            $("#hdnActualizarCoordenadas").val(true);
+            $("#hdnListaCoordenadas").val(coordenadas);
+            $("#btnGuardar").removeAttr("disabled");
+            $("#btnEditar").removeAttr("disabled");
+
+        }
+
+        drawnItems.addLayer(layer);
+    });
+    map.on('draw:deleted', function (e) {
+        debugger;
+        $("#hdnActualizarCoordenadas").val(true);
+        $("#hdnListaCoordenadas").val("");
+        $("#btnGuardar").attr("disabled");
+        $("#btnEditar").attr("disabled", "disabled");
+            
+            
+    });
 
 
     function EliminarTerreno() {
@@ -418,6 +346,7 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
         $("#hdnListaCoordenadas").val(coordenadas);
         $("#hdnActualizarCoordenadas").val(false);
         $("#btnEditar").removeClass("hidden");
+        $("#btnEditar").removeProp("disabled");
         $("#btnGuardar").addClass("hidden");
         $("#btnEditar").val(idTerreno);
 

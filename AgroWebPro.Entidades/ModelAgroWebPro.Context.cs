@@ -215,7 +215,7 @@ namespace AgroWebPro.Entidades
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarUnidadesVenta_Result>("PA_ConsultarUnidadesVenta", estado, mensaje);
         }
     
-        public virtual int PA_MantenimientoTarea(Nullable<int> tipoOperacion, Nullable<System.Guid> idTarea, Nullable<System.Guid> idUsuario, Nullable<System.Guid> idTerreno, Nullable<System.Guid> asignadaPor, Nullable<System.DateTime> fechaInicio, Nullable<System.DateTime> fechaFinalizacion, Nullable<decimal> horasEstimadas, string resumen, string observaciones, Nullable<int> idTipoTarea, ObjectParameter estado, ObjectParameter mensaje)
+        public virtual int PA_MantenimientoTarea(Nullable<int> tipoOperacion, Nullable<System.Guid> idTarea, Nullable<System.Guid> idUsuario, Nullable<System.Guid> idTerreno, Nullable<System.Guid> asignadaPor, Nullable<System.DateTime> fechaInicio, Nullable<System.DateTime> fechaFinalizacion, Nullable<decimal> horasEstimadas, string resumen, string observaciones, Nullable<int> idTipoTarea, Nullable<bool> activa, ObjectParameter estado, ObjectParameter mensaje)
         {
             var tipoOperacionParameter = tipoOperacion.HasValue ?
                 new ObjectParameter("TipoOperacion", tipoOperacion) :
@@ -261,7 +261,11 @@ namespace AgroWebPro.Entidades
                 new ObjectParameter("IdTipoTarea", idTipoTarea) :
                 new ObjectParameter("IdTipoTarea", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_MantenimientoTarea", tipoOperacionParameter, idTareaParameter, idUsuarioParameter, idTerrenoParameter, asignadaPorParameter, fechaInicioParameter, fechaFinalizacionParameter, horasEstimadasParameter, resumenParameter, observacionesParameter, idTipoTareaParameter, estado, mensaje);
+            var activaParameter = activa.HasValue ?
+                new ObjectParameter("Activa", activa) :
+                new ObjectParameter("Activa", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_MantenimientoTarea", tipoOperacionParameter, idTareaParameter, idUsuarioParameter, idTerrenoParameter, asignadaPorParameter, fechaInicioParameter, fechaFinalizacionParameter, horasEstimadasParameter, resumenParameter, observacionesParameter, idTipoTareaParameter, activaParameter, estado, mensaje);
         }
     
         public virtual ObjectResult<PA_ConsultarTerreno_Result> PA_ConsultarTerreno(Nullable<System.Guid> idTerreno, ObjectParameter estado, ObjectParameter mensaje)
@@ -425,6 +429,33 @@ namespace AgroWebPro.Entidades
                 new ObjectParameter("Horas", typeof(decimal));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_MantenimientoAvanceTareaUsuario", tipoOperacionParameter, idTareaParameter, idEstadoTareaParameter, observacionesParameter, horasParameter, estado, mensaje);
+        }
+    
+        public virtual ObjectResult<PA_ConsultarTareasEmpresa_Result> PA_ConsultarTareasEmpresa(Nullable<System.Guid> idEmpresa, ObjectParameter estado, ObjectParameter mensaje)
+        {
+            var idEmpresaParameter = idEmpresa.HasValue ?
+                new ObjectParameter("IdEmpresa", idEmpresa) :
+                new ObjectParameter("IdEmpresa", typeof(System.Guid));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarTareasEmpresa_Result>("PA_ConsultarTareasEmpresa", idEmpresaParameter, estado, mensaje);
+        }
+    
+        public virtual ObjectResult<PA_ConsultarTareasUsuario_Result> PA_ConsultarTareasUsuario(Nullable<System.Guid> idUsuario, ObjectParameter estado, ObjectParameter mensaje)
+        {
+            var idUsuarioParameter = idUsuario.HasValue ?
+                new ObjectParameter("IdUsuario", idUsuario) :
+                new ObjectParameter("IdUsuario", typeof(System.Guid));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarTareasUsuario_Result>("PA_ConsultarTareasUsuario", idUsuarioParameter, estado, mensaje);
+        }
+    
+        public virtual ObjectResult<PA_ConsultarOpcionesRol_Result> PA_ConsultarOpcionesRol(Nullable<System.Guid> idRol, ObjectParameter estado, ObjectParameter mensaje)
+        {
+            var idRolParameter = idRol.HasValue ?
+                new ObjectParameter("IdRol", idRol) :
+                new ObjectParameter("IdRol", typeof(System.Guid));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarOpcionesRol_Result>("PA_ConsultarOpcionesRol", idRolParameter, estado, mensaje);
         }
     }
 }

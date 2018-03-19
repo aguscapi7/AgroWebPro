@@ -21,5 +21,6 @@ namespace AgroWebPro.Entidades.Mantenimientos.Entrada
         public string resumen { get; set; }
         public string observaciones { get; set; }
         public int idTipoTarea { get; set; }
+        public bool activa { get; set; }
     }
 }

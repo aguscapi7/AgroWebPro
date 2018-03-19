@@ -1,4 +1,6 @@
-﻿using AgroWebPro.Entidades.Mantenimientos.Entrada;
+﻿using AgroWebPro.Entidades.Consultas.Entrada;
+using AgroWebPro.Entidades.Consultas.Salida;
+using AgroWebPro.Entidades.Mantenimientos.Entrada;
 using AgroWebPro.Entidades.Mantenimientos.Salida;
 using AgroWebPro.LogicaNegocios.Interfaces;
 using AgroWebPro.Utilitarios;
@@ -41,6 +43,38 @@ namespace AgroWebPro.LogicaNegocios.Metodos
             try
             {
                 response = tarea.MantenimientoTarea(request);
+            }
+            catch (Exception ex)
+            {
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorLogicaNegocios + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                throw;
+            }
+            return response;
+        }
+
+        public ConsultarTareasEmpresaResponse ConsultarTareasEmpresa(ConsultarTareasEmpresaRequest request)
+        {
+            ConsultarTareasEmpresaResponse response = new ConsultarTareasEmpresaResponse();
+            try
+            {
+                response = tarea.ConsultarTareasEmpresa(request);
+            }
+            catch (Exception ex)
+            {
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorLogicaNegocios + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                throw;
+            }
+            return response;
+        }
+
+        public ConsultarTareasUsuarioResponse ConsultarTareasUsuario(ConsultarTareasUsuarioRequest request)
+        {
+            ConsultarTareasUsuarioResponse response = new ConsultarTareasUsuarioResponse();
+            try
+            {
+                response = tarea.ConsultarTareasUsuario(request);
             }
             catch (Exception ex)
             {

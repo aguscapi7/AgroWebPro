@@ -43,8 +43,12 @@ namespace AgroWebPro.Web.Controllers
         public ActionResult Login(UsuarioModels usuarioModels)
         {
             IUsuario usuario = new Usuario();
+            ISeguridad seguridad = new Seguridad();
             ConsultarUsuarioLoginResponse consultarUsuarioResponse = null;
             ConsultarUsuarioLoginRequest consultarUsuarioRequest = null;
+
+            ConsultarOpcionesRolResponse opcionesRolResponse = null;
+            ConsultarOpcionesRolRequest opcionesRolRequest = null;
             try
             {
                 consultarUsuarioRequest = new ConsultarUsuarioLoginRequest()
@@ -67,6 +71,14 @@ namespace AgroWebPro.Web.Controllers
                     cookie.Values["idEmpresa"] = consultaUsuario.IdEmpresa.ToString();
                     cookie.Expires = DateTime.Now.AddDays(1);
                     Response.Cookies.Add(cookie);
+
+                    opcionesRolRequest = new ConsultarOpcionesRolRequest();
+                    opcionesRolRequest.idRol = consultaUsuario.IdRol;
+                    opcionesRolResponse = seguridad.ConsultarOpcionesRol(opcionesRolRequest);
+                    if(opcionesRolResponse != null && opcionesRolResponse.estado.Equals(Constantes.EstadoCorrecto) && opcionesRolResponse.listaOpcionesRol.Count > 0)
+                    {
+                        Session[Constantes.OpcionesRol] = usuarioModels.CopiarOpcionesRol(opcionesRolResponse);
+                    }
 
                     return RedirectToAction("Inicio", "Home");
                 }
@@ -191,12 +203,32 @@ namespace AgroWebPro.Web.Controllers
 
         public ActionResult Inicio()
         {
+            Session[Constantes.MenuActivo] = Constantes.MenuInicio;
             EmpresaModels empresaModels = new EmpresaModels();
-            try
-            {
-                empresaModels.usuario = new UsuarioModels() { nombre = Request.Cookies["usuario"]["nombre"] };
-                Session[Constantes.MenuActivo] = Constantes.MenuInicio;
+            IEmpresa empresa = new Empresa();
 
+            ConsultarTerrenosEmpresaRequest terrenosEmpresaRequest = null;
+            ConsultarTerrenosEmpresaResponse terrenosEmpresaResponse = null;
+
+            try
+            {                
+                if (Request.Cookies["usuario"] != null)
+                {
+                    string idEmpresaCookie = Request.Cookies["usuario"]["idEmpresa"];
+                    Guid idEmpresa = Guid.Parse(idEmpresaCookie);
+
+                    empresaModels.usuario = new UsuarioModels() { nombre = Request.Cookies["usuario"]["nombre"] };
+
+                    terrenosEmpresaRequest = new ConsultarTerrenosEmpresaRequest();
+                    terrenosEmpresaRequest.idEmpresa = idEmpresa;
+                    terrenosEmpresaResponse = empresa.ConsultarTerrenosEmpresa(terrenosEmpresaRequest);
+                    empresaModels.CopiarTerrenosEmpresa(terrenosEmpresaResponse);
+
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
 
             }
             catch (Exception ex)

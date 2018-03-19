@@ -9,6 +9,8 @@ using AgroWebPro.Utilitarios;
 using System.Data.Entity.Core.Objects;
 using AgroWebPro.Entidades;
 using AgroWebPro.AccesoDatos.Interfaces;
+using AgroWebPro.Entidades.Consultas.Salida;
+using AgroWebPro.Entidades.Consultas.Entrada;
 
 namespace AgroWebPro.AccesoDatos.Metodos
 {
@@ -71,6 +73,7 @@ namespace AgroWebPro.AccesoDatos.Metodos
                                                     , request.resumen
                                                     , request.observaciones
                                                     , request.idTipoTarea
+                                                    , request.activa
                                                     , estado
                                                     , mensaje);
                     if (estado.Value.ToString().Equals(Constantes.EstadoError))
@@ -93,6 +96,65 @@ namespace AgroWebPro.AccesoDatos.Metodos
             }
             return response;
         }
+
+        public ConsultarTareasEmpresaResponse ConsultarTareasEmpresa(ConsultarTareasEmpresaRequest request)
+        {
+            ConsultarTareasEmpresaResponse response = new ConsultarTareasEmpresaResponse();
+            ObjectParameter estado = new ObjectParameter("Estado", Constantes.EstadoCorrecto);
+            ObjectParameter mensaje = new ObjectParameter("Mensaje", string.Empty);
+            try
+            {
+                using (AgroWebProEntities modelo = new AgroWebProEntities())
+                {
+                    response.listaTareasEmpresa = modelo.PA_ConsultarTareasEmpresa(
+                                                    request.idEmpresa
+                                                    , estado
+                                                    , mensaje).ToList();
+                    if (estado.Value.ToString().Equals(Constantes.EstadoError))
+                    {
+                        response.estado = Constantes.EstadoError;
+                        response.mensaje = Constantes.MensajeErrorAccesoDatos + mensaje.Value.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorAccesoDatos + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                throw;
+            }
+            return response;
+        }
+
+        public ConsultarTareasUsuarioResponse ConsultarTareasUsuario(ConsultarTareasUsuarioRequest request)
+        {
+            ConsultarTareasUsuarioResponse response = new ConsultarTareasUsuarioResponse();
+            ObjectParameter estado = new ObjectParameter("Estado", Constantes.EstadoCorrecto);
+            ObjectParameter mensaje = new ObjectParameter("Mensaje", string.Empty);
+            try
+            {
+                using (AgroWebProEntities modelo = new AgroWebProEntities())
+                {
+                    response.listaTareasUsuario = modelo.PA_ConsultarTareasUsuario(
+                                                    request.idUsuario
+                                                    , estado
+                                                    , mensaje).ToList();
+                    if (estado.Value.ToString().Equals(Constantes.EstadoError))
+                    {
+                        response.estado = Constantes.EstadoError;
+                        response.mensaje = Constantes.MensajeErrorAccesoDatos + mensaje.Value.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorAccesoDatos + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                throw;
+            }
+            return response;
+        }
+
 
     }
 }

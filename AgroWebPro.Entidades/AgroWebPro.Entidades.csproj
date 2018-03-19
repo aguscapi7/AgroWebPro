@@ -51,6 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Consultas\Entrada\ConsultarClientesProveedoresEmpresaRequest.cs" />
+    <Compile Include="Consultas\Entrada\ConsultarTareasUsuarioRequest.cs" />
+    <Compile Include="Consultas\Entrada\ConsultarTareaEmpresaRequest.cs" />
+    <Compile Include="Consultas\Entrada\ConsultarOpcionesRolRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarTiposTareasRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarReporteVentasRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarEstadoTareaRequest.cs" />
@@ -67,9 +70,12 @@
     <Compile Include="Consultas\Entrada\ConsultarUsuarioLoginRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarZonasHorariasRequest.cs" />
     <Compile Include="Consultas\Salida\ConsultarClientesProveedoresEmpresaResponse.cs" />
+    <Compile Include="Consultas\Salida\ConsultarTareasUsuarioResponse.cs" />
+    <Compile Include="Consultas\Salida\ConsultarTareasEmpresaResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarTiposTareasResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarReporteVentasResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarEstadoTareaResponse.cs" />
+    <Compile Include="Consultas\Salida\ConsultarOpcionesRolResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarUsuarioResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarEmpresaResponse .cs" />
     <Compile Include="Consultas\Salida\ConsultarTerrenosEmpresaResponse.cs" />
@@ -132,6 +138,9 @@
     <Compile Include="PA_ConsultarMonedas_Result.cs">
       <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
     </Compile>
+    <Compile Include="PA_ConsultarOpcionesRol_Result.cs">
+      <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
+    </Compile>
     <Compile Include="PA_ConsultarReporteCosechas_Result.cs">
       <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
     </Compile>
@@ -139,6 +148,12 @@
       <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
     </Compile>
     <Compile Include="PA_ConsultarRoles_Result.cs">
+      <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PA_ConsultarTareasEmpresa_Result.cs">
+      <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PA_ConsultarTareasUsuario_Result.cs">
       <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
     </Compile>
     <Compile Include="PA_ConsultarTerrenosEmpresa_Result.cs">

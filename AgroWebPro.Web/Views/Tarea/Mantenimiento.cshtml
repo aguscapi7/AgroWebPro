@@ -1,0 +1,323 @@
+﻿@model AgroWebPro.Web.Models.TareaModels
+@using AgroWebPro.Utilitarios;
+@{
+    ViewBag.Title = "Tareas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-table.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/bootstrap-table.js"></script>
+<link href="~/Content/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert.js"></script>
+<script src="~/Scripts/bootstrap-table-locale-all.min.js"></script>
+
+@using (Html.BeginForm("Mantenimiento", "Tarea", FormMethod.Post, new { id = "formCultivo", role = "form", @data_toggle = "validator" }))
+{
+    @Html.AntiForgeryToken();
+    @Html.ValidationSummary(true);
+    <div class="form-group hidden" id="divMantenimiento">
+        <h2 id="tituloMantenimiento">Agregar tarea</h2>
+
+        <div class="row form-group">
+            <input type="hidden" id="hdnIdTarea" />
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.idTerreno)
+                @Html.DropDownListFor(model => model.idTerreno, new SelectList(Model.listaTerrenosEmpresa, "IdTerreno", "NombreTerreno"), new { @id = "ddlTerrenos", @class = "form-control" })
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.idUsuarioTarea)
+                @Html.DropDownListFor(model => model.idUsuarioTarea, new SelectList(Model.listaEmpleadosEmpresa, "IdUsuario", "Nombre"), new { @id = "ddlEmpleados", @class = "form-control" })
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.fechaInicio)
+                @Html.TextBoxFor(model => model.fechaInicio, new { @id = "txtFechaInicio", @class = "form-control", @required = "required", @placeholder = "Nombre" })
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.fechaFinalizacion)
+                @Html.TextBoxFor(model => model.fechaFinalizacion, new { @id = "txtFechaFinalizacion", @class = "form-control", @required = "required", @placeholder = "Nombre" })
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.idTipoTarea)
+                @Html.DropDownListFor(model => model.idTipoTarea, new SelectList(Model.listaTiposTareas, "IdTipoTarea", "NombreTarea"), new { @id = "ddlTiposTareas", @class = "form-control" })
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.horasEstimadas)
+                @Html.TextBoxFor(model => model.horasEstimadas, new { @id = "txtHorasEstimadas", @class = "form-control", @required = "required", @placeholder = "Horas estimadas" })
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.resumen)
+                @Html.TextAreaFor(model => model.resumen, new { @id = "txtResumen", @class = "form-control", @required = "required", @placeholder = "Resumen" })
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.observaciones)
+                @Html.TextAreaFor(model => model.observaciones, new { @id = "txtObservaciones", @class = "form-control", @placeholder = "Descripción" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8"></div>
+            <div class="col-md-4">
+                <button id="btnEditar" name="btnEditar" class="btn btn-primary pull-right btn-guardar hidden" type="submit">Editar&nbsp;<span><i class="fa fa-refresh"></i></span></button>
+                <button id="btnGuardar" name="btnGuardar" class="btn btn-primary pull-right btn-guardar" value="btnGuardar" type="submit">Guardar&nbsp;<span><i class="fa fa-plus"></i></span></button>
+                <button class="btn btn-danger pull-right" id="btnCancelar" type="button" onclick="Cancelar()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+}
+
+
+<div class="form-group" id="divTablaTareas">
+    <h2>Listado de tareas</h2>
+    <br />
+    <div class="row">
+        <div class="col-md-12"><button class="btn btn-orange" onclick="MostrarDivMantenimiento()">Agregar tarea&nbsp;<span class="fa fa-plus"></span></button></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-sm table-hover" data-show-toggle="true" data-search="true"
+                       data-show-export="true"
+                       data-detail-formatter="detailFormatter"
+                       data-minimum-count-columns="2"
+                       data-show-pagination-switch="true"
+                       data-pagination="true"
+                       data-page-list="[10, 25, 50, 100, ALL]"
+                       data-locale="es-CR">
+                    <thead class="thead-default">
+                        <tr>
+                            <th>Terreno</th>
+                            <th>Empleado</th>
+                            <th>Tipo de tarea</th>
+                            <th>Fecha de inicio</th>
+                            <th>Fecha de finalización</th>
+                            <th>Horas estimadas</th>
+                            <th>Resumen</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.listaTareas != null && Model.listaTareas.Count() > 0)
+                        {
+                            foreach (var itemTarea in Model.listaTareas)
+                            {
+                                <tr>
+                                    <td>@itemTarea.nombreTerreno</td>
+                                    <td>@itemTarea.nombreEmpleado @itemTarea.apellidoEmpleado</td>
+                                    <td>@itemTarea.nombreTipoTarea</td>
+                                    <td>@itemTarea.fechaInicio.ToString("dd/MMM/yyyy")</td>
+                                    <td>@itemTarea.fechaFinalizacion.ToString("dd/MMM/yyyy")</td>
+                                    <td>@itemTarea.horasEstimadas</td>
+                                    <td>@itemTarea.resumen</td>
+                                    <td>
+                                        <button class="btn btn-danger" onclick="EliminarTareaPaso1('@itemTarea.idTarea')"><span class="fa fa-trash"></span> </button>&nbsp;
+                                        <button class="btn btn-primary"
+                                                data-idtarea="@itemTarea.idTarea"
+                                                data-idtipotarea="@itemTarea.idTipoTarea"
+                                                data-idterreno="@itemTarea.idTerreno"
+                                                data-idempleado="@itemTarea.idUsuarioTarea"
+                                                data-fechainicio="@itemTarea.fechaInicio"
+                                                data-fechafinalizacion="@itemTarea.fechaFinalizacion"
+                                                data-horasestimadas="@itemTarea.horasEstimadas"
+                                                data-resumen="@itemTarea.resumen"
+                                                data-observaciones="@itemTarea.observaciones"
+                                                onclick="CargarDatosTarea(this)">
+                                            <span class="fa fa-pencil"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr><td colspan="8"><center>Aún no ha agregado tareas</center></td></tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+<script src="~/Scripts/sweetalert.min.js"></script>
+<script src="~/Scripts/jquery.numeric.js"></script>
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+@if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoCorrecto)
+{
+    <script>
+            swal({
+                title: 'Correcto',
+                text: "@ViewBag.mensaje",
+                type: 'success',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Aceptar'
+            });</script>
+}
+else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoError)
+{
+    <script>
+            swal({
+                title: 'Error',
+                text: "@ViewBag.mensaje",
+                type: 'danger',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Aceptar'
+            });</script>
+}
+
+<script>
+    $('#txtFechaInicio').datepicker({
+
+        changeMonth: true,
+        changeYear: true,
+        format: "dd/mm/yyyy",
+        todayHighlight: true,
+        todayBtn: "linked",
+        onSelect: function (date) {
+        }
+    }).on('changeDate', function (e) {
+        $(this).datepicker('hide');
+    });
+
+    $('#txtFechaFinalizacion').datepicker({
+
+        changeMonth: true,
+        changeYear: true,
+        format: "dd/mm/yyyy",
+        todayHighlight: true,
+        todayBtn: "linked",
+        onSelect: function (date) {
+        }
+    }).on('changeDate', function (e) {
+        $(this).datepicker('hide');
+        });
+
+    $('#txtPrecio').numeric(",");
+    $('table').bootstrapTable({
+        editable: true
+    });
+
+    function EliminarTarea() {
+        var parametros = {
+            idCultivo: $("#hdnIdTarea").val()
+        };
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: '@Url.Action("Eliminar", "Tarea")',
+            data: parametros,
+            success: function (data) {
+                if (data.respuesta == '@Constantes.EstadoCorrecto')
+                {
+                    swal({
+                        title: 'Correcto',
+                        text: "La tarea se ha borrado correctamente",
+                        type: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Aceptar'
+                    }).then(function (isConfirm) {
+                        window.location.href = window.location.href;
+                    });
+
+
+                }
+                else
+                {
+                    swal({
+                        title: 'Error',
+                        text: "Ocurrió un error al borrar la tarea",
+                        type: 'danger',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Aceptar'
+                    }).then(function (isConfirm) {
+                        window.location.href = window.location.href;
+                    });
+                }
+
+            }
+        });
+    }
+
+    function EliminarTareaPaso1(idCultivo)
+    {
+        swal({
+            title: '',
+            text: "Esta acción eliminará la tarea",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Borrar',
+            cancelButtonText: 'Cancelar'
+        }).then(function (isConfirm) {
+            if (isConfirm)
+            {
+                $("#hdnIdTarea").val(idCultivo);
+                EliminarTarea();
+            }
+
+        })
+    }
+
+    function CargarDatosTarea(tarea)
+    {
+        var idCultivo = $(tarea).data("idcultivo");
+        var nombreCultivo = $(tarea).data("nombrecultivo");
+        var descripcionCultivo = $(tarea).data("descripcioncultivo");
+        var idFamilia = $(tarea).data("idfamilia");
+
+        $("#txtNombreCultivo").val(nombreCultivo);
+        $("#txtDescripcionCultivo").val(descripcionCultivo);
+        $("#ddlFamilias").val(idFamilia);
+        $("#btnEditar").removeClass("hidden");
+        $("#btnGuardar").addClass("hidden");
+        $("#btnEditar").val(idCultivo);
+
+        $("#divMantenimiento").removeClass("hidden");
+        $("#divTablaTareas").addClass("hidden");
+        $("#tituloMantenimiento").html("Editar tarea");
+    }
+
+    function Cancelar()
+    {
+        $("#txtNombreCultivo").val("");
+        $("#txtDescripcionCultivo").val("");
+        $("#dllFamilias").val("@Guid.Empty");
+        $("#btnEditar").addClass("hidden");
+        $("#btnGuardar").removeClass("hidden");
+        $("#btnEditar").val("");
+
+        $("#divMantenimiento").addClass("hidden");
+        $("#divTablaTareas").removeClass("hidden");
+        $("#tituloMantenimiento").html("Editar tarea");
+    }
+
+    function MostrarDivMantenimiento() {
+        $("#divMantenimiento").removeClass("hidden");
+        $("#divTablaTareas").addClass("hidden");
+        $("#tituloMantenimiento").html("Agregar tarea");
+
+    }
+
+    function OcultarDivMantenimiento() {
+        $("#divMantenimiento").removeClass("hidden");
+        $("#divTablaTareas").addClass("hidden");
+    }
+
+</script>
+<style>
+    #btnCancelar {
+        margin-right: 10px;
+    }
+</style>

@@ -1,4 +1,6 @@
-﻿using AgroWebPro.Entidades.Mantenimientos.Entrada;
+﻿using AgroWebPro.Entidades.Consultas.Entrada;
+using AgroWebPro.Entidades.Consultas.Salida;
+using AgroWebPro.Entidades.Mantenimientos.Entrada;
 using AgroWebPro.Entidades.Mantenimientos.Salida;
 using System;
 using System.Collections.Generic;
@@ -12,5 +14,7 @@ namespace AgroWebPro.AccesoDatos.Interfaces
     {
         MantenimientoAvanceTareaUsuarioResponse MantenimientoAvanceTareaUsuario(MantenimientoAvanceTareaUsuarioRequest request);
         MantenimientoTareaResponse MantenimientoTarea(MantenimientoTareaRequest request);
+        ConsultarTareasEmpresaResponse ConsultarTareasEmpresa(ConsultarTareasEmpresaRequest request);
+        ConsultarTareasUsuarioResponse ConsultarTareasUsuario(ConsultarTareasUsuarioRequest request);
     }
 }

@@ -106,11 +106,47 @@ namespace AgroWebPro.Web.Models
 
             }
         }
+
+        public List<OpcionModels> CopiarOpcionesRol(ConsultarOpcionesRolResponse opcionesRolResponse)
+        {
+            List<OpcionModels> listaOpciones = new List<OpcionModels>();
+            try
+            {
+                if(opcionesRolResponse != null && opcionesRolResponse.estado.Equals(Constantes.EstadoCorrecto) && opcionesRolResponse.listaOpcionesRol.Count > 0)
+                {
+                    OpcionModels opcion = null;
+                    foreach (var item in opcionesRolResponse.listaOpcionesRol)
+                    {
+                        opcion = new OpcionModels();
+                        opcion.idOpcion = item.idOpcion;
+                        opcion.controlador = item.controlador;
+                        opcion.accion = item.accion;
+                        opcion.nombre = item.nombre;
+                        opcion.icono = item.icono;
+                        listaOpciones.Add(opcion);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+            return listaOpciones;
+        }
     }
 
     public class RolModels
     {
         public Guid idRol { get; set; }
         public string nombreRol { get; set; }
+    }
+
+    public class OpcionModels
+    {
+        public Guid idOpcion { get; set; }
+        public string nombre { get; set; }
+        public string controlador { get; set; }
+        public string accion { get; set; }
+        public string icono { get; set; }
     }
 }

@@ -26,10 +26,15 @@ namespace AgroWebPro.Utilitarios
 
         //Definicion de las opciones de menu
         public static readonly String MenuActivo = "menu-activo";
-        public static readonly String MenuInicio = "inicio";
-        public static readonly String MenuCultivo = "cultivo";
-        public static readonly String MenuTerreno = "terreno";
-        public static readonly String MenuReportes = "reportes";
-        public static readonly String MenuMantenimientoUsuarios = "mantenimiento-usuarios";
+        public static readonly String MenuInicio = "Home-Inicio";
+        public static readonly String MenuCultivo = "Cultivo-Mantenimiento";
+        public static readonly String MenuTerreno = "Terreno-Mantenimiento";
+        public static readonly String MenuReportes = "Reportes";
+        public static readonly String MenuMantenimientoUsuarios = "Usuario-Mantenimiento";
+        public static readonly String MenuTarea = "Tarea-Mantenimiento";
+        public static readonly String MenuAvanceTarea = "Tarea-AvanceTarea";
+        public static readonly String MenuPerfil = "Usuario-Perfil";
+
+        public static readonly String OpcionesRol = "OpcionesRol";
     }
 }
