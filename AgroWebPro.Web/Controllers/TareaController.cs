@@ -215,5 +215,11 @@ namespace AgroWebPro.Web.Controllers
             return Json(new { respuesta = respuesta });
         }
 
+        public ActionResult AvanceTarea()
+        {
+            Session[Constantes.MenuActivo] = Constantes.MenuAvanceTarea;
+            return View();
+        }
+
     }
 }

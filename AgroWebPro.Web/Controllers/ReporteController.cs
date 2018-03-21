@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace AgroWebPro.Web.Controllers
 {
-    public class ReporteController : Controller
+    public class ReporteController : BaseController
     {
         public ActionResult Resumen()
         {
@@ -16,6 +16,12 @@ namespace AgroWebPro.Web.Controllers
         }
         
         public ActionResult Ventas()
+        {
+            Session[Constantes.MenuActivo] = Constantes.MenuReportes;
+            return View();
+        }
+
+        public ActionResult General()
         {
             Session[Constantes.MenuActivo] = Constantes.MenuReportes;
             return View();

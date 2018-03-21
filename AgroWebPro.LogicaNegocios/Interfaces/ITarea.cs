@@ -16,5 +16,6 @@ namespace AgroWebPro.LogicaNegocios.Interfaces
         MantenimientoTareaResponse MantenimientoTarea(MantenimientoTareaRequest request);
         ConsultarTareasEmpresaResponse ConsultarTareasEmpresa(ConsultarTareasEmpresaRequest request);
         ConsultarTareasUsuarioResponse ConsultarTareasUsuario(ConsultarTareasUsuarioRequest request);
+        CrearRecoleccionCultivoResponse CrearRecoleccionCultivo(CrearRecoleccionCultivoRequest request);
     }
 }

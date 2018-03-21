@@ -14,7 +14,7 @@ using System.Web.Mvc;
 
 namespace AgroWebPro.Web.Controllers
 {
-    public class UsuarioController : Controller
+    public class UsuarioController : BaseController
     {
         public ActionResult Mantenimiento()
         {
@@ -199,10 +199,14 @@ namespace AgroWebPro.Web.Controllers
 
         public ActionResult Perfil()
         {
-            Session[Constantes.MenuActivo] = Constantes.MenuMantenimientoUsuarios;
+            Session[Constantes.MenuActivo] = Constantes.MenuPerfil;
             return View();
         }
 
-
+        [HttpPost]
+        public ActionResult Perfil(UsuarioModels usuarioModels)
+        {
+            return View();
+        }
     }
 }

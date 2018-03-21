@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Consultas\Entrada\ConsultarClientesProveedoresEmpresaRequest.cs" />
+    <Compile Include="Consultas\Entrada\ConsultarOpcionUsuarioRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarTareasUsuarioRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarTareaEmpresaRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarOpcionesRolRequest.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Consultas\Entrada\ConsultarUsuarioLoginRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarZonasHorariasRequest.cs" />
     <Compile Include="Consultas\Salida\ConsultarClientesProveedoresEmpresaResponse.cs" />
+    <Compile Include="Consultas\Salida\ConsultarOpcionUsuarioResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarTareasUsuarioResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarTareasEmpresaResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarTiposTareasResponse.cs" />
@@ -90,17 +92,23 @@
     <Compile Include="Consultas\Salida\ConsultarZonasHorariasResponse.cs" />
     <Compile Include="Generales\EntradaBase.cs" />
     <Compile Include="Generales\RespuestaBase.cs" />
+    <Compile Include="Mantenimientos\Entrada\CrearRecoleccionCultivoRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoAvanceTareaUsuarioRequest.cs" />
+    <Compile Include="Mantenimientos\Entrada\CrearVentaRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoTareaRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoTerrenoRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoCultivoRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoEmpresaRequest.cs" />
+    <Compile Include="Mantenimientos\Entrada\MantenimientoClienteProveedorRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoUsuarioRequest.cs" />
+    <Compile Include="Mantenimientos\Salida\CrearRecoleccionCultivoResponse.cs" />
     <Compile Include="Mantenimientos\Salida\MantenimientoAvanceTareaUsuarioResponse.cs" />
+    <Compile Include="Mantenimientos\Salida\CrearVentaResponse.cs" />
     <Compile Include="Mantenimientos\Salida\MantenimientoTareaResponse.cs" />
     <Compile Include="Mantenimientos\Salida\MantenimientoTerrenoResponse.cs" />
     <Compile Include="Mantenimientos\Salida\MantenimientoCultivoResponse.cs" />
     <Compile Include="Mantenimientos\Salida\MantenimientoEmpresaResponse.cs" />
+    <Compile Include="Mantenimientos\Salida\MantenimientoClienteProveedorResponse.cs" />
     <Compile Include="Mantenimientos\Salida\MantenimientoUsuarioResponse.cs" />
     <Compile Include="ModelAgroWebPro.Context.cs">
       <AutoGen>True</AutoGen>

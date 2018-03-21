@@ -10,9 +10,10 @@ using System.Threading.Tasks;
 
 namespace AgroWebPro.LogicaNegocios.Interfaces
 {
-    public interface ISeguridad
+    public interface IVenta
     {
-        ConsultarOpcionesRolResponse ConsultarOpcionesRol(ConsultarOpcionesRolRequest request);
-        ConsultarOpcionUsuarioResponse ConsultarOpcionUsuario(ConsultarOpcionUsuarioRequest request);
+        CrearVentaResponse CrearVenta(CrearVentaRequest request);
+        MantenimientoClienteProveedorResponse MantenimientoClienteProveedor(MantenimientoClienteProveedorRequest request);
+        ConsultarClientesProveedoresEmpresaResponse ConsultarClientesProveedoresEmpresa(ConsultarClientesProveedoresEmpresaRequest request);
     }
 }

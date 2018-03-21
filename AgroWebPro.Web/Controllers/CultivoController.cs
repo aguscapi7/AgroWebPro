@@ -14,7 +14,7 @@ using System.Web.Mvc;
 
 namespace AgroWebPro.Web.Controllers
 {
-    public class CultivoController : Controller
+    public class CultivoController : BaseController
     {
         [HttpGet]
         public ActionResult Mantenimiento()

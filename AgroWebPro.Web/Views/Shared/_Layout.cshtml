@@ -28,9 +28,11 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
                 <ul class="nav navbar-nav">
-                    @if (Session[AgroWebPro.Utilitarios.Constantes.OpcionesRol] != null)
+                    @if (Request.Cookies["usuario"] != null && Request.Cookies["usuario"].Values["opciones-menu"] != null)
                     {
-                        foreach (var item in (List<AgroWebPro.Web.Models.OpcionModels>)Session[AgroWebPro.Utilitarios.Constantes.OpcionesRol])
+                        System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                        List<AgroWebPro.Web.Models.OpcionModels> listaOpciones = serializer.Deserialize<List<AgroWebPro.Web.Models.OpcionModels>>(Request.Cookies["usuario"].Values["opciones-menu"].ToString());
+                        foreach (var item in listaOpciones)
                         {
                             <li id="li-@item.controlador-@item.accion" onclick="AbrirEnlace('@Url.Action(item.accion, item.controlador)')" class="li-menu"><a><i class="@item.icono"></i> @item.nombre</a></li>
 

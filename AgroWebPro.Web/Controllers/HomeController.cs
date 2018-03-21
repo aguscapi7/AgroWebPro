@@ -12,10 +12,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Web.Script.Serialization;
 
 namespace AgroWebPro.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         public ActionResult Index()
         {
@@ -69,7 +70,7 @@ namespace AgroWebPro.Web.Controllers
                     cookie.Values["rol"] = consultaUsuario.IdRol.ToString();
                     cookie.Values["password"] = consultaUsuario.Password;
                     cookie.Values["idEmpresa"] = consultaUsuario.IdEmpresa.ToString();
-                    cookie.Expires = DateTime.Now.AddDays(1);
+                    cookie.Expires = DateTime.Now.AddDays(30);
                     Response.Cookies.Add(cookie);
 
                     opcionesRolRequest = new ConsultarOpcionesRolRequest();
@@ -77,6 +78,8 @@ namespace AgroWebPro.Web.Controllers
                     opcionesRolResponse = seguridad.ConsultarOpcionesRol(opcionesRolRequest);
                     if(opcionesRolResponse != null && opcionesRolResponse.estado.Equals(Constantes.EstadoCorrecto) && opcionesRolResponse.listaOpcionesRol.Count > 0)
                     {
+                        JavaScriptSerializer serializer = new JavaScriptSerializer();
+                        cookie.Values["opciones-menu"] = serializer.Serialize(usuarioModels.CopiarOpcionesRol(opcionesRolResponse));
                         Session[Constantes.OpcionesRol] = usuarioModels.CopiarOpcionesRol(opcionesRolResponse);
                     }
 

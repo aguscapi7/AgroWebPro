@@ -84,5 +84,21 @@ namespace AgroWebPro.LogicaNegocios.Metodos
             }
             return response;
         }
+
+        public CrearRecoleccionCultivoResponse CrearRecoleccionCultivo(CrearRecoleccionCultivoRequest request)
+        {
+            CrearRecoleccionCultivoResponse response = new CrearRecoleccionCultivoResponse();
+            try
+            {
+                response = tarea.CrearRecoleccionCultivo(request);
+            }
+            catch (Exception ex)
+            {
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorLogicaNegocios + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                throw;
+            }
+            return response;
+        }
     }
 }

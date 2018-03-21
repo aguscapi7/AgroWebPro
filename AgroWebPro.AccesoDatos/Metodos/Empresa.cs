@@ -250,35 +250,6 @@ namespace AgroWebPro.AccesoDatos.Metodos
             return response;
         }
         
-        public ConsultarClientesProveedoresEmpresaResponse ConsultarClientesProveedoresEmpresa(ConsultarClientesProveedoresEmpresaRequest request)
-        {
-            ConsultarClientesProveedoresEmpresaResponse response = new ConsultarClientesProveedoresEmpresaResponse();
-            ObjectParameter estado = new ObjectParameter("Estado", Constantes.EstadoCorrecto);
-            ObjectParameter mensaje = new ObjectParameter("Mensaje", string.Empty);
-            try
-            {
-                using (AgroWebProEntities modelo = new AgroWebProEntities())
-                {
-                    response.listaClientesProveedores = modelo.PA_ConsultarClientesProveedoresEmpresa(
-                                                    request.idEmpresa
-                                                    , request.esCliente
-                                                    , estado
-                                                    , mensaje).ToList();
-                    if (estado.Value.ToString().Equals(Constantes.EstadoError))
-                    {
-                        response.estado = Constantes.EstadoError;
-                        response.mensaje = Constantes.MensajeErrorAccesoDatos + mensaje.Value.ToString();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                response.estado = Constantes.EstadoError;
-                response.mensaje = Constantes.MensajeErrorAccesoDatos + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
-                throw;
-            }
-            return response;
-        }
 
         public ConsultarTerrenosEmpresaResponse ConsultarTerrenosEmpresa(ConsultarTerrenosEmpresaRequest request)
         {

@@ -14,19 +14,21 @@ using AgroWebPro.Entidades.Consultas.Entrada;
 
 namespace AgroWebPro.AccesoDatos.Metodos
 {
-    public class Seguridad:ISeguridad
+    public class Venta:IVenta
     {
-        public ConsultarOpcionesRolResponse ConsultarOpcionesRol(ConsultarOpcionesRolRequest request)
+
+        public ConsultarClientesProveedoresEmpresaResponse ConsultarClientesProveedoresEmpresa(ConsultarClientesProveedoresEmpresaRequest request)
         {
-            ConsultarOpcionesRolResponse response = new ConsultarOpcionesRolResponse();
+            ConsultarClientesProveedoresEmpresaResponse response = new ConsultarClientesProveedoresEmpresaResponse();
             ObjectParameter estado = new ObjectParameter("Estado", Constantes.EstadoCorrecto);
             ObjectParameter mensaje = new ObjectParameter("Mensaje", string.Empty);
             try
             {
                 using (AgroWebProEntities modelo = new AgroWebProEntities())
                 {
-                    response.listaOpcionesRol = modelo.PA_ConsultarOpcionesRol(
-                                                     request.idRol
+                    response.listaClientesProveedores = modelo.PA_ConsultarClientesProveedoresEmpresa(
+                                                    request.idEmpresa
+                                                    , request.esCliente
                                                     , estado
                                                     , mensaje).ToList();
                     if (estado.Value.ToString().Equals(Constantes.EstadoError))
@@ -45,21 +47,20 @@ namespace AgroWebPro.AccesoDatos.Metodos
             return response;
         }
 
-        public ConsultarOpcionUsuarioResponse ConsultarOpcionUsuario(ConsultarOpcionUsuarioRequest request)
+        public CrearVentaResponse CrearVenta(CrearVentaRequest request)
         {
-            ConsultarOpcionUsuarioResponse response = new ConsultarOpcionUsuarioResponse();
+            CrearVentaResponse response = new CrearVentaResponse();
             ObjectParameter estado = new ObjectParameter("Estado", Constantes.EstadoCorrecto);
             ObjectParameter mensaje = new ObjectParameter("Mensaje", string.Empty);
             try
             {
                 using (AgroWebProEntities modelo = new AgroWebProEntities())
                 {
-                    //response.listaOpcionUsuario = modelo.PA_ConsultarOpcionUsuario(
-                    //                                 request.idUsuario
-                    //                                , request.controladdor
-                    //                                , request.accion
-                    //                                , estado
-                    //                                , mensaje).ToList();
+                    //modelo.PA_CrearVenta(
+                    //                request.idEmpresa
+                    //                , request.esCliente
+                    //                , estado
+                    //                , mensaje);
                     if (estado.Value.ToString().Equals(Constantes.EstadoError))
                     {
                         response.estado = Constantes.EstadoError;
@@ -76,6 +77,35 @@ namespace AgroWebPro.AccesoDatos.Metodos
             return response;
         }
 
+        public MantenimientoClienteProveedorResponse MantenimientoClienteProveedor(MantenimientoClienteProveedorRequest request)
+        {
+            MantenimientoClienteProveedorResponse response = new MantenimientoClienteProveedorResponse();
+            ObjectParameter estado = new ObjectParameter("Estado", Constantes.EstadoCorrecto);
+            ObjectParameter mensaje = new ObjectParameter("Mensaje", string.Empty);
+            try
+            {
+                using (AgroWebProEntities modelo = new AgroWebProEntities())
+                {
+                    //modelo.PA_MantenimientoClienteProveedor(
+                    //                request.idEmpresa
+                    //                , request.esCliente
+                    //                , estado
+                    //                , mensaje);
+                    if (estado.Value.ToString().Equals(Constantes.EstadoError))
+                    {
+                        response.estado = Constantes.EstadoError;
+                        response.mensaje = Constantes.MensajeErrorAccesoDatos + mensaje.Value.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorAccesoDatos + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                throw;
+            }
+            return response;
+        }
 
     }
 }

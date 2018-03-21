@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="AgroWebPro.LogicaNegocios.Metodos.Catalogos" BaseTypeListCollapsed="true">
+    <Position X="10" Y="0.5" Width="2" />
+    <Members>
+      <Method Name="ConsultarEstadoTarea" Hidden="true" />
+      <Method Name="ConsultarFamilias" Hidden="true" />
+      <Method Name="ConsultarMonedas" Hidden="true" />
+      <Method Name="ConsultarRoles" Hidden="true" />
+      <Method Name="ConsultarTiposTareas" Hidden="true" />
+      <Method Name="ConsultarUnidadesVenta" Hidden="true" />
+      <Method Name="ConsultarZonasHorarias" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAgAAAACAAAAIAAAAAYAAAAgACAA=</HashCode>
+      <FileName>Metodos\Catalogos.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.133" />
+  </Class>
+  <Class Name="AgroWebPro.LogicaNegocios.Metodos.Empresa" BaseTypeListCollapsed="true">
+    <Position X="10" Y="8.5" Width="2" />
+    <Members>
+      <Method Name="ConsultarCultivosEmpresa" Hidden="true" />
+      <Method Name="ConsultarEmpleadosEmpresa" Hidden="true" />
+      <Method Name="ConsultarEmpresa" Hidden="true" />
+      <Method Name="ConsultarTerreno" Hidden="true" />
+      <Method Name="ConsultarTerrenosEmpresa" Hidden="true" />
+      <Method Name="MantenimientoCultivo" Hidden="true" />
+      <Method Name="MantenimientoEmpresa" Hidden="true" />
+      <Method Name="MantenimientoTerreno" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAABAAQAAAAAAAEIIAAAgUAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Metodos\Empresa.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.1" />
+  </Class>
+  <Class Name="AgroWebPro.LogicaNegocios.Metodos.Reportes" BaseTypeListCollapsed="true">
+    <Position X="10" Y="13" Width="2" />
+    <Members>
+      <Method Name="ConsultarReporteVentas" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Metodos\Reportes.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.1" />
+  </Class>
+  <Class Name="AgroWebPro.LogicaNegocios.Metodos.Seguridad" BaseTypeListCollapsed="true">
+    <Position X="10" Y="4.75" Width="2" />
+    <Members>
+      <Method Name="ConsultarOpcionesRol" Hidden="true" />
+      <Method Name="ConsultarOpcionUsuario" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAQAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Metodos\Seguridad.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.1" />
+  </Class>
+  <Class Name="AgroWebPro.LogicaNegocios.Metodos.Tarea" BaseTypeListCollapsed="true">
+    <Position X="10" Y="6.5" Width="2" />
+    <Members>
+      <Method Name="ConsultarTareasEmpresa" Hidden="true" />
+      <Method Name="ConsultarTareasUsuario" Hidden="true" />
+      <Method Name="CrearRecoleccionCultivo" Hidden="true" />
+      <Method Name="MantenimientoAvanceTareaUsuario" Hidden="true" />
+      <Method Name="MantenimientoTarea" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAACAAQAAAAAAAAAAAAAAAABAAwAAA=</HashCode>
+      <FileName>Metodos\Tarea.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.1" />
+  </Class>
+  <Class Name="AgroWebPro.LogicaNegocios.Metodos.Usuario" BaseTypeListCollapsed="true">
+    <Position X="10" Y="11.25" Width="2" />
+    <Members>
+      <Method Name="ConsultarUsuario" Hidden="true" />
+      <Method Name="ConsultarUsuarioLogin" Hidden="true" />
+      <Method Name="MantenimientoUsuario" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAADAAQAAAAgAAAAAAA=</HashCode>
+      <FileName>Metodos\Usuario.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.32" />
+  </Class>
+  <Class Name="AgroWebPro.LogicaNegocios.Metodos.Venta" BaseTypeListCollapsed="true">
+    <Position X="10" Y="3" Width="2" />
+    <Members>
+      <Method Name="ConsultarClientesProveedoresEmpresa" Hidden="true" />
+      <Method Name="CrearVenta" Hidden="true" />
+      <Method Name="MantenimientoClienteProveedor" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEABAAAAAAAAAAAAAAAAAAAAAAIAAAAACAAA=</HashCode>
+      <FileName>Metodos\Venta.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.1" />
+  </Class>
+  <Interface Name="AgroWebPro.LogicaNegocios.Interfaces.ICatalogos">
+    <Position X="1.25" Y="0.5" Width="7.75" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAgAAAACAAAAAAAAAAYAAAAgACAA=</HashCode>
+      <FileName>Interfaces\ICatalogos.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="AgroWebPro.LogicaNegocios.Interfaces.IEmpresa">
+    <Position X="1.25" Y="8.5" Width="7.75" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAEIIAAAgUAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IEmpresa.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="AgroWebPro.LogicaNegocios.Interfaces.IReportes">
+    <Position X="1.25" Y="13" Width="7.75" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IReportes.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="AgroWebPro.LogicaNegocios.Interfaces.ISeguridad">
+    <Position X="1.25" Y="4.75" Width="7.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\ISeguridad.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="AgroWebPro.LogicaNegocios.Interfaces.ITarea">
+    <Position X="1.25" Y="6.5" Width="7.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAQAAAAAAAAAAAAAAAABAAwAAA=</HashCode>
+      <FileName>Interfaces\ITarea.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="AgroWebPro.LogicaNegocios.Interfaces.IUsuario">
+    <Position X="1.25" Y="11.25" Width="7.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Interfaces\IUsuario.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="AgroWebPro.LogicaNegocios.Interfaces.IVenta">
+    <Position X="1.25" Y="3" Width="7.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAIAAAAACAAA=</HashCode>
+      <FileName>Interfaces\IVenta.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

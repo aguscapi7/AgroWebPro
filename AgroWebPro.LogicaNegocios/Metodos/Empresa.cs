@@ -131,23 +131,7 @@ namespace AgroWebPro.LogicaNegocios.Metodos
             }
             return response;
         }
-
-        public ConsultarClientesProveedoresEmpresaResponse ConsultarClientesProveedoresEmpresa(ConsultarClientesProveedoresEmpresaRequest request)
-        {
-            ConsultarClientesProveedoresEmpresaResponse response = new ConsultarClientesProveedoresEmpresaResponse();
-            try
-            {
-                response = empresa.ConsultarClientesProveedoresEmpresa(request);
-            }
-            catch (Exception ex)
-            {
-                response.estado = Constantes.EstadoError;
-                response.mensaje = Constantes.MensajeErrorLogicaNegocios + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
-                throw;
-            }
-            return response;
-        }
-
+        
         public ConsultarTerrenosEmpresaResponse ConsultarTerrenosEmpresa(ConsultarTerrenosEmpresaRequest request)
         {
             ConsultarTerrenosEmpresaResponse response = new ConsultarTerrenosEmpresaResponse();

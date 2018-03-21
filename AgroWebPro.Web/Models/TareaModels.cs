@@ -35,7 +35,13 @@ namespace AgroWebPro.Web.Models
         public string nombreTipoTarea { get; set; }
         public string nombreEmpleado { get; set; }
         public string apellidoEmpleado { get; set; }
-
+        public decimal kilogramosPrimera { get; set; }
+        public decimal kilogramosSegunda { get; set; }
+        public decimal kilogramosRechazo { get; set; }
+        public string causaRechazo { get; set; }
+        public Guid idUsuarioSupervisor { get; set; }
+        public string codigoVerificadorSupervisor { get; set; }
+        
         public void CopiarTiposTareas(ConsultarTiposTareasResponse tiposTareasResponse)
         {
             try
@@ -158,4 +164,6 @@ namespace AgroWebPro.Web.Models
         public string nombreTarea { get; set; }
         public bool recoleccion { get; set; }
     }
+    
+
 }

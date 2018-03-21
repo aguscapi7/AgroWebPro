@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="AgroWebPro.AccesoDatos.Metodos.Catalogos" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAgAAAACAAAAAAAAAAYAAAAgACAA=</HashCode>
+      <FileName>Metodos\Catalogos.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.268" />
+  </Class>
+  <Class Name="AgroWebPro.AccesoDatos.Metodos.Empresa" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAEIIAAAgUAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Metodos\Empresa.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.1" />
+  </Class>
+  <Class Name="AgroWebPro.AccesoDatos.Metodos.Reportes" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.75" Y="12.75" Width="1.5" />
+    <Members>
+      <Method Name="ConsultarReporteVentas" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Metodos\Reportes.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.1" />
+  </Class>
+  <Class Name="AgroWebPro.AccesoDatos.Metodos.Seguridad" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Metodos\Seguridad.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.289" />
+  </Class>
+  <Class Name="AgroWebPro.AccesoDatos.Metodos.Tarea" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAQAAAAAAAAAAAAAAAABAAwAAA=</HashCode>
+      <FileName>Metodos\Tarea.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.1" />
+  </Class>
+  <Class Name="AgroWebPro.AccesoDatos.Metodos.Usuario" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.75" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Metodos\Usuario.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.101" />
+  </Class>
+  <Class Name="AgroWebPro.AccesoDatos.Metodos.Venta" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAIAAAAACAAA=</HashCode>
+      <FileName>Metodos\Venta.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.133" />
+  </Class>
+  <Interface Name="AgroWebPro.AccesoDatos.Interfaces.ICatalogos">
+    <Position X="1.25" Y="0.5" Width="7.25" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAgAAAACAAAAAAAAAAYAAAAgACAA=</HashCode>
+      <FileName>Interfaces\ICatalogos.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="AgroWebPro.AccesoDatos.Interfaces.IEmpresa">
+    <Position X="1.25" Y="6.5" Width="7.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAEIIAAAgUAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IEmpresa.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="AgroWebPro.AccesoDatos.Interfaces.IReportes">
+    <Position X="1.25" Y="12.75" Width="7.25" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IReportes.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="AgroWebPro.AccesoDatos.Interfaces.ISeguridad">
+    <Position X="1.25" Y="3.25" Width="7.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\ISeguridad.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="AgroWebPro.AccesoDatos.Interfaces.ITarea">
+    <Position X="1.25" Y="9" Width="7.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAQAAAAAAAAAAAAAAAABAAwAAA=</HashCode>
+      <FileName>Interfaces\ITarea.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="AgroWebPro.AccesoDatos.Interfaces.IUsuario">
+    <Position X="1.25" Y="11" Width="7.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Interfaces\IUsuario.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="AgroWebPro.AccesoDatos.Interfaces.IVenta">
+    <Position X="1.25" Y="4.75" Width="7.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAIAAAAACAAA=</HashCode>
+      <FileName>Interfaces\IVenta.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

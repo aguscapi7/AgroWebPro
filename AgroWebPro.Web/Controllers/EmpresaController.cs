@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace AgroWebPro.Web.Controllers
 {
-    public class EmpresaController : Controller
+    public class EmpresaController : BaseController
     {
         public ActionResult Mantenimiento()
         {

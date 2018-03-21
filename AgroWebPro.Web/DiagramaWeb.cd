@@ -1,0 +1,296 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="AgroWebPro.Web.Controllers.CultivoController">
+    <Position X="42.5" Y="2.75" Width="7" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\CultivoController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AgroWebPro.Web.Controllers.EmpresaController">
+    <Position X="35.25" Y="2.75" Width="7" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Controllers\EmpresaController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AgroWebPro.Web.Controllers.HomeController">
+    <Position X="21.75" Y="2.75" Width="6.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEQCIAAAAA=</HashCode>
+      <FileName>Controllers\HomeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AgroWebPro.Web.Controllers.ReporteController">
+    <Position X="28.5" Y="2.75" Width="6.5" />
+    <InheritanceLine Type="AgroWebPro.Web.Controllers.BaseController" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="11.5" Y="1.983" />
+        <Point X="11.5" Y="2.375" />
+        <Point X="32" Y="2.375" />
+        <Point X="32" Y="2.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>ACAAEAAAAAAAABAAAAAAACAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Controllers\ReporteController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AgroWebPro.Web.Controllers.TareaController">
+    <Position X="0.5" Y="2.75" Width="7" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAACAAAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\TareaController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AgroWebPro.Web.Controllers.TerrenoController">
+    <Position X="7.75" Y="2.75" Width="7" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\TerrenoController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AgroWebPro.Web.Controllers.UsuarioController">
+    <Position X="15" Y="2.75" Width="6.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAQAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\UsuarioController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AgroWebPro.Web.Models.CultivoModels">
+    <Position X="9" Y="10.75" Width="5.75" />
+    <TypeIdentifier>
+      <HashCode>gABBAQAAAQAQAAAQJBAABACICABBUAAAAAAAIAACAAg=</HashCode>
+      <FileName>Models\CultivoModels.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="listaFamilias" />
+      <Property Name="listaCultivos" />
+      <Property Name="listaUnidadVenta" />
+      <Property Name="listaMonedas" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="AgroWebPro.Web.Models.FamiliaModels">
+    <Position X="17" Y="11.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\CultivoModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AgroWebPro.Web.Models.MonedaModels">
+    <Position X="17" Y="13.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAAAAAAAAICAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Models\CultivoModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AgroWebPro.Web.Models.ZonaHoraria">
+    <Position X="30.25" Y="9.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAABAAIAAAAAAAEAAAAAAgAAAgAAAAAAAAAABCAAAAA=</HashCode>
+      <FileName>Models\EmpresaModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AgroWebPro.Web.Models.TipoTarea">
+    <Position X="0.5" Y="11.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAIAAAAAAAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\TareaModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AgroWebPro.Web.Models.TerrenoModels">
+    <Position X="8.5" Y="5.25" Width="6" />
+    <AssociationLine Name="listaCultivosEmpresa" Type="AgroWebPro.Web.Models.CultivoModels" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="14.5" Y="5.875" />
+        <Point X="14.75" Y="5.875" />
+        <Point X="14.75" Y="8.594" />
+        <Point X="11.875" Y="8.594" />
+        <Point X="11.875" Y="10.75" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="listaTerrenosEmpresa" Type="AgroWebPro.Web.Models.TerrenoModels" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.5" Y="5.875" />
+        <Point X="8.25" Y="5.875" />
+        <Point X="8.25" Y="7.268" />
+        <Point X="8.5" Y="7.268" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAABBQBAgAAAAAAAAAAAAgAAAgDCAg=</HashCode>
+      <FileName>Models\TerrenoModels.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="listaCultivosEmpresa" />
+      <Property Name="listaTerrenosEmpresa" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="AgroWebPro.Web.Models.UsuarioModels">
+    <Position X="15" Y="6" Width="6.5" />
+    <AssociationLine Name="empresaModels" Type="AgroWebPro.Web.Models.EmpresaModels" FixedToPoint="true">
+      <Path>
+        <Point X="21.5" Y="6.125" />
+        <Point X="27.5" Y="6.125" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="listaEmpleadosEmpresa" Type="AgroWebPro.Web.Models.UsuarioModels" ManuallyRouted="true">
+      <Path>
+        <Point X="17.272" Y="10.247" />
+        <Point X="17.272" Y="10.622" />
+        <Point X="19.275" Y="10.622" />
+        <Point X="19.275" Y="10.247" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.463" Y="0.508" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAABQEIACBQAAABABAAAAAACSAAAAAIjAIAAI=</HashCode>
+      <FileName>Models\UsuarioModels.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="empresaModels" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="listaEmpleadosEmpresa" />
+      <Property Name="listaRoles" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="AgroWebPro.Web.Models.RolModels">
+    <Position X="24" Y="7.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\UsuarioModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AgroWebPro.Web.Models.OpcionModels">
+    <Position X="24" Y="10.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AIAABAAAAAAAAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Models\UsuarioModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AgroWebPro.Web.Models.TareaModels">
+    <Position X="0.5" Y="5.25" Width="6.5" />
+    <AssociationLine Name="listaEmpleadosEmpresa" Type="AgroWebPro.Web.Models.UsuarioModels" FixedToPoint="true">
+      <Path>
+        <Point X="7" Y="9.229" />
+        <Point X="10.167" Y="9.229" Type="JumpStart" />
+        <Point X="10.333" Y="9.229" Type="JumpEnd" />
+        <Point X="11.792" Y="9.229" Type="JumpStart" />
+        <Point X="11.958" Y="9.229" Type="JumpEnd" />
+        <Point X="15" Y="9.229" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="listaTerrenosEmpresa" Type="AgroWebPro.Web.Models.TerrenoModels" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7" Y="10.063" />
+        <Point X="10.25" Y="10.063" />
+        <Point X="10.25" Y="8.344" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AiAAQIAIAAAAQOgRCAQDAABAgAABIIAAAFgAAAgBAAA=</HashCode>
+      <FileName>Models\TareaModels.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="listaTiposTareas" />
+      <Property Name="listaEmpleadosEmpresa" />
+      <Property Name="listaTerrenosEmpresa" />
+      <Property Name="listaTareas" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="AgroWebPro.Web.Models.EmpresaModels">
+    <Position X="27.5" Y="5.75" Width="6" />
+    <AssociationLine Name="usuario" Type="AgroWebPro.Web.Models.UsuarioModels" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="27.5" Y="6.492" />
+        <Point X="27.125" Y="6.492" />
+        <Point X="27.125" Y="9.412" />
+        <Point X="21.5" Y="9.412" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="listaTerrenosEmpresa" Type="AgroWebPro.Web.Models.TerrenoModels" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="30.562" Y="5.75" />
+        <Point X="30.562" Y="5.375" />
+        <Point X="14.875" Y="5.375" />
+        <Point X="14.875" Y="4.875" />
+        <Point X="11.5" Y="4.875" />
+        <Point X="11.5" Y="5.25" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AoAEAAAAgAAAIQAAAAABAAAAAAAAQAQAAAgAACAAAII=</HashCode>
+      <FileName>Models\EmpresaModels.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="usuario" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="listaZonasHorarias" />
+      <Property Name="listaTerrenosEmpresa" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="AgroWebPro.Web.Models.UnidadVentaModels" Collapsed="true">
+    <Position X="17" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAACAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\CultivoModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AgroWebPro.Web.Models.DetalleVentaModels">
+    <Position X="40" Y="5.75" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>ARAAAAAAAAAAAAABAAAAAAAAAAAAABAAAAAAAAACIAA=</HashCode>
+      <FileName>Models\VentaModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AgroWebPro.Web.Controllers.VentaController">
+    <Position X="50.75" Y="2.75" Width="6.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>Controllers\VentaController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AgroWebPro.Web.Models.ClienteProveedorModels">
+    <Position X="35.5" Y="9.5" Width="6.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAACAAAAQAIgCAAIAAAAEAAAAAQACCAAAAAAAAAAI=</HashCode>
+      <FileName>Models\ClienteProveedorModels.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="listaClienteProveedor" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="AgroWebPro.Web.Models.VentaModels">
+    <Position X="35.5" Y="5.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAIBAACAAAIBAQEAAACAAAQAAEgAAAAAAAIAA=</HashCode>
+      <FileName>Models\VentaModels.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="listaDetalleVenta" />
+      <Property Name="listaClienteProveedor" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="AgroWebPro.Web.Models.ReporteModels">
+    <Position X="44.75" Y="5.75" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAAAICAAAAAAAAQAAAACAAAAACAAA=</HashCode>
+      <FileName>Models\ReporteModels.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="listaVentas" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="AgroWebPro.Web.Controllers.BaseController">
+    <Position X="10.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\BaseController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

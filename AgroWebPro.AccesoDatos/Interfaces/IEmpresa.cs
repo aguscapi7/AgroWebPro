@@ -19,8 +19,8 @@ namespace AgroWebPro.AccesoDatos.Interfaces
 
         ConsultarEmpresaResponse ConsultarEmpresa(ConsultarEmpresaRequest request);
         ConsultarTerrenoResponse ConsultarTerreno(ConsultarTerrenoRequest request);
-        ConsultarCultivosEmpresaResponse ConsultarCultivosEmpresa(ConsultarCultivosEmpresaRequest request); ConsultarEmpleadosEmpresaResponse ConsultarEmpleadosEmpresa(ConsultarEmpleadosEmpresaRequest request);
-        ConsultarClientesProveedoresEmpresaResponse ConsultarClientesProveedoresEmpresa(ConsultarClientesProveedoresEmpresaRequest request);
+        ConsultarCultivosEmpresaResponse ConsultarCultivosEmpresa(ConsultarCultivosEmpresaRequest request);
+        ConsultarEmpleadosEmpresaResponse ConsultarEmpleadosEmpresa(ConsultarEmpleadosEmpresaRequest request);
         ConsultarTerrenosEmpresaResponse ConsultarTerrenosEmpresa(ConsultarTerrenosEmpresaRequest request);
 
     }

@@ -14,7 +14,7 @@ using System.Web.Mvc;
 
 namespace AgroWebPro.Web.Controllers
 {
-    public class TerrenoController : Controller
+    public class TerrenoController : BaseController
     {
         
         public ActionResult Mantenimiento()
@@ -152,6 +152,40 @@ namespace AgroWebPro.Web.Controllers
 
             }
             return View(terrenoModels);
+        }
+
+        public ActionResult Eliminar(Guid idTerreno)
+        {
+            IEmpresa empresa = new Empresa();
+
+            MantenimientoTerrenoResponse terrenoResponse = null;
+            MantenimientoTerrenoRequest terrenoRequest = null;
+
+            string respuesta = string.Empty;
+
+            try
+            {
+                terrenoRequest = new MantenimientoTerrenoRequest()
+                {
+                    tipoOperacion = Constantes.operacionDesactivar,
+                    idTerreno = idTerreno
+                };
+
+                terrenoResponse = empresa.MantenimientoTerreno(terrenoRequest);
+                if (terrenoResponse != null && terrenoResponse.estado.Equals(Constantes.EstadoCorrecto))
+                {
+                    respuesta = Constantes.EstadoCorrecto;
+                }
+                else
+                {
+                    respuesta = Constantes.EstadoError;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return Json(new { respuesta = respuesta });
         }
     }
 }
