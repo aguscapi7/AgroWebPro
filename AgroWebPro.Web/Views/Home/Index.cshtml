@@ -1,8 +1,26 @@
-﻿@{
+﻿
+@{
     ViewBag.Title = "Home Page";
     Layout = "~/Views/Shared/_LayoutInicio.cshtml";
 }
 
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/bootstrap-table.js"></script>
+<link href="~/Content/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert.js"></script>
+@if (Session["errorCredenciales"] != null)
+{
+    Session["errorCredenciales"] = null;
+        <script>
+            swal({
+                title: 'Error',
+                text: "Las credenciales no son válidas",
+                type: 'error',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Aceptar'
+            });</script>
+}
 <!-- Section: intro -->
 <section id="intro" class="intro">
     <div class="intro-content">

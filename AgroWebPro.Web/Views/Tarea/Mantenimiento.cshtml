@@ -5,56 +5,68 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
 <link href="~/Content/bootstrap-table.css" rel="stylesheet" />
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/bootstrap-table.js"></script>
 <link href="~/Content/sweetalert.css" rel="stylesheet" />
 <script src="~/Scripts/sweetalert.js"></script>
 <script src="~/Scripts/bootstrap-table-locale-all.min.js"></script>
-
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+<div class="row">
+    <br>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <h3 style="margin-left:10px;"><span class="fa fa-tasks fa-lg"></span>&nbsp;<span id="tituloMantenimiento">Listado de tareas </span></h3>
+            </div>
+        </div>
+    </nav>
+</div>
 @using (Html.BeginForm("Mantenimiento", "Tarea", FormMethod.Post, new { id = "formCultivo", role = "form", @data_toggle = "validator" }))
 {
     @Html.AntiForgeryToken();
     @Html.ValidationSummary(true);
-    <div class="form-group hidden" id="divMantenimiento">
-        <h2 id="tituloMantenimiento">Agregar tarea</h2>
-
+    <div class="form-group  @(Model.errorValidacion ? "" : "hidden")" id="divMantenimiento">
         <div class="row form-group">
-            <input type="hidden" id="hdnIdTarea" />
+            @Html.HiddenFor(m => m.idTarea, new { @id = "hdnIdTarea" })
             <div class="col-md-6">
                 @Html.LabelFor(model => model.idTerreno)
                 @Html.DropDownListFor(model => model.idTerreno, new SelectList(Model.listaTerrenosEmpresa, "IdTerreno", "NombreTerreno"), new { @id = "ddlTerrenos", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.idTerreno, "", new { @class = "text-danger" })
             </div>
             <div class="col-md-6">
                 @Html.LabelFor(model => model.idUsuarioTarea)
                 @Html.DropDownListFor(model => model.idUsuarioTarea, new SelectList(Model.listaEmpleadosEmpresa, "IdUsuario", "Nombre"), new { @id = "ddlEmpleados", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.idUsuarioTarea, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="row form-group">
             <div class="col-md-6">
                 @Html.LabelFor(model => model.fechaInicio)
-                @Html.TextBoxFor(model => model.fechaInicio, new { @id = "txtFechaInicio", @class = "form-control", @required = "required", @placeholder = "Nombre" })
+                @Html.TextBoxFor(model => model.fechaInicio, new { @id = "txtFechaInicio", @readonly = "readonly", @class = "form-control", @required = "required", @placeholder = "Nombre", value = DateTime.Now.ToShortDateString() })
             </div>
             <div class="col-md-6">
                 @Html.LabelFor(model => model.fechaFinalizacion)
-                @Html.TextBoxFor(model => model.fechaFinalizacion, new { @id = "txtFechaFinalizacion", @class = "form-control", @required = "required", @placeholder = "Nombre" })
+                @Html.TextBoxFor(model => model.fechaFinalizacion, new { @id = "txtFechaFinalizacion", @readonly = "readonly", @class = "form-control", @required = "required", @placeholder = "Nombre" })
             </div>
         </div>
         <div class="row form-group">
             <div class="col-md-6">
                 @Html.LabelFor(model => model.idTipoTarea)
                 @Html.DropDownListFor(model => model.idTipoTarea, new SelectList(Model.listaTiposTareas, "IdTipoTarea", "NombreTarea"), new { @id = "ddlTiposTareas", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.idTipoTarea, "", new { @class = "text-danger" })
             </div>
             <div class="col-md-6">
                 @Html.LabelFor(model => model.horasEstimadas)
-                @Html.TextBoxFor(model => model.horasEstimadas, new { @id = "txtHorasEstimadas", @class = "form-control", @required = "required", @placeholder = "Horas estimadas" })
+                @Html.TextBoxFor(model => model.horasEstimadas, new { @id = "txtHorasEstimadas", @class = "form-control",  @placeholder = "Horas estimadas" })
+                @Html.ValidationMessageFor(model => model.horasEstimadas, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="row form-group">
             <div class="col-md-12">
                 @Html.LabelFor(model => model.resumen)
-                @Html.TextAreaFor(model => model.resumen, new { @id = "txtResumen", @class = "form-control", @required = "required", @placeholder = "Resumen" })
+                @Html.TextAreaFor(model => model.resumen, new { @id = "txtResumen", @class = "form-control", @placeholder = "Resumen" })
+                @Html.ValidationMessageFor(model => model.resumen, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="row form-group">
@@ -66,85 +78,81 @@
         <div class="row">
             <div class="col-md-8"></div>
             <div class="col-md-4">
-                <button id="btnEditar" name="btnEditar" class="btn btn-primary pull-right btn-guardar hidden" type="submit">Editar&nbsp;<span><i class="fa fa-refresh"></i></span></button>
-                <button id="btnGuardar" name="btnGuardar" class="btn btn-primary pull-right btn-guardar" value="btnGuardar" type="submit">Guardar&nbsp;<span><i class="fa fa-plus"></i></span></button>
                 <button class="btn btn-danger pull-right" id="btnCancelar" type="button" onclick="Cancelar()">Cancelar</button>
+                <button id="btnGuardar" name="btnGuardar" class="btn btn-primary pull-right btn-guardar" type="submit">Guardar&nbsp;<span><i class="fa fa-plus"></i></span></button>
             </div>
         </div>
     </div>
 }
 
 
-<div class="form-group" id="divTablaTareas">
-    <h2>Listado de tareas</h2>
-    <br />
+<div class="form-group  @(Model.errorValidacion ? "hidden" : "")" id="divTablaTareas">
     <div class="row">
         <div class="col-md-12"><button class="btn btn-orange" onclick="MostrarDivMantenimiento()">Agregar tarea&nbsp;<span class="fa fa-plus"></span></button></div>
     </div>
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
-                <table class="table table-sm table-hover" data-show-toggle="true" data-search="true"
-                       data-show-export="true"
-                       data-detail-formatter="detailFormatter"
-                       data-minimum-count-columns="2"
-                       data-show-pagination-switch="true"
-                       data-pagination="true"
-                       data-page-list="[10, 25, 50, 100, ALL]"
-                       data-locale="es-CR">
-                    <thead class="thead-default">
-                        <tr>
-                            <th>Terreno</th>
-                            <th>Empleado</th>
-                            <th>Tipo de tarea</th>
-                            <th>Fecha de inicio</th>
-                            <th>Fecha de finalización</th>
-                            <th>Horas estimadas</th>
-                            <th>Resumen</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.listaTareas != null && Model.listaTareas.Count() > 0)
-                        {
-                            foreach (var itemTarea in Model.listaTareas)
-                            {
+                        <table class="table table-sm" data-show-toggle="true" data-search="true"
+                               data-show-export="true"
+                               data-minimum-count-columns="2"
+                               data-show-pagination-switch="true"
+                               data-pagination="true"
+                               data-page-list="[10, 25, 50, 100, ALL]"
+                               data-locale="es-CR">
+                            <thead  class="thead-dark">
                                 <tr>
-                                    <td>@itemTarea.nombreTerreno</td>
-                                    <td>@itemTarea.nombreEmpleado @itemTarea.apellidoEmpleado</td>
-                                    <td>@itemTarea.nombreTipoTarea</td>
-                                    <td>@itemTarea.fechaInicio.ToString("dd/MMM/yyyy")</td>
-                                    <td>@itemTarea.fechaFinalizacion.ToString("dd/MMM/yyyy")</td>
-                                    <td>@itemTarea.horasEstimadas</td>
-                                    <td>@itemTarea.resumen</td>
-                                    <td>
-                                        <button class="btn btn-danger" onclick="EliminarTareaPaso1('@itemTarea.idTarea')"><span class="fa fa-trash"></span> </button>&nbsp;
-                                        <button class="btn btn-primary"
-                                                data-idtarea="@itemTarea.idTarea"
-                                                data-idtipotarea="@itemTarea.idTipoTarea"
-                                                data-idterreno="@itemTarea.idTerreno"
-                                                data-idempleado="@itemTarea.idUsuarioTarea"
-                                                data-fechainicio="@itemTarea.fechaInicio"
-                                                data-fechafinalizacion="@itemTarea.fechaFinalizacion"
-                                                data-horasestimadas="@itemTarea.horasEstimadas"
-                                                data-resumen="@itemTarea.resumen"
-                                                data-observaciones="@itemTarea.observaciones"
-                                                onclick="CargarDatosTarea(this)">
-                                            <span class="fa fa-pencil"></span>
-                                        </button>
-                                    </td>
+                                    <th>Terreno</th>
+                                    <th>Empleado</th>
+                                    <th>Tipo de tarea</th>
+                                    <th>Fecha de inicio</th>
+                                    <th>Fecha de finalización</th>
+                                    <th>Horas estimadas</th>
+                                    <th>Resumen</th>
+                                    <th></th>
                                 </tr>
-                            }
-                        }
-                        else
-                        {
-                            <tr><td colspan="8"><center>Aún no ha agregado tareas</center></td></tr>
-                        }
+                            </thead>
+                            <tbody>
+                                @if (Model.listaTareas != null && Model.listaTareas.Count() > 0)
+                                {
+                                    foreach (var itemTarea in Model.listaTareas)
+                                    {
+                                        <tr>
+                                            <td>@itemTarea.nombreTerreno</td>
+                                            <td>@itemTarea.nombreEmpleado @itemTarea.apellidoEmpleado</td>
+                                            <td>@itemTarea.nombreTipoTarea</td>
+                                            <td>@itemTarea.fechaInicio</td>
+                                            <td>@itemTarea.fechaFinalizacion</td>
+                                            <td>@itemTarea.horasEstimadas</td>
+                                            <td>@itemTarea.resumen</td>
+                                            <td>
+                                                <button class="btn btn-primary"
+                                                        data-idtarea="@itemTarea.idTarea"
+                                                        data-idtipotarea="@itemTarea.idTipoTarea"
+                                                        data-idterreno="@itemTarea.idTerreno"
+                                                        data-idempleado="@itemTarea.idUsuarioTarea"
+                                                        data-fechainicio="@itemTarea.fechaInicio"
+                                                        data-fechafinalizacion="@itemTarea.fechaFinalizacion"
+                                                        data-horasestimadas="@itemTarea.horasEstimadas"
+                                                        data-resumen="@itemTarea.resumen"
+                                                        data-observaciones="@itemTarea.observaciones"
+                                                        onclick="CargarDatosTarea(this)">
+                                                    <span class="fa fa-pencil"></span>
+                                                </button>
+                                                <button class="btn btn-danger" onclick="EliminarTareaPaso1('@itemTarea.idTarea')"><span class="fa fa-trash"></span> </button>&nbsp;
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr><td colspan="8"><center>Aún no ha agregado tareas</center></td></tr>
+                                }
 
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
     </div>
 </div>
 
@@ -178,27 +186,19 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
 
 <script>
     $('#txtFechaInicio').datepicker({
-
         changeMonth: true,
         changeYear: true,
         format: "dd/mm/yyyy",
-        todayHighlight: true,
-        todayBtn: "linked",
-        onSelect: function (date) {
-        }
+        todayBtn: "linked"
     }).on('changeDate', function (e) {
         $(this).datepicker('hide');
     });
 
     $('#txtFechaFinalizacion').datepicker({
-
         changeMonth: true,
         changeYear: true,
         format: "dd/mm/yyyy",
-        todayHighlight: true,
-        todayBtn: "linked",
-        onSelect: function (date) {
-        }
+        todayBtn: "linked"
     }).on('changeDate', function (e) {
         $(this).datepicker('hide');
         });
@@ -210,7 +210,7 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
 
     function EliminarTarea() {
         var parametros = {
-            idCultivo: $("#hdnIdTarea").val()
+            idTarea: $("#hdnIdTarea").val()
         };
         $.ajax({
             dataType: "json",
@@ -249,7 +249,7 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
         });
     }
 
-    function EliminarTareaPaso1(idCultivo)
+    function EliminarTareaPaso1(idTarea)
     {
         swal({
             title: '',
@@ -263,7 +263,7 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
         }).then(function (isConfirm) {
             if (isConfirm)
             {
-                $("#hdnIdTarea").val(idCultivo);
+                $("#hdnIdTarea").val(idTarea);
                 EliminarTarea();
             }
 
@@ -272,17 +272,27 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
 
     function CargarDatosTarea(tarea)
     {
-        var idCultivo = $(tarea).data("idcultivo");
-        var nombreCultivo = $(tarea).data("nombrecultivo");
-        var descripcionCultivo = $(tarea).data("descripcioncultivo");
-        var idFamilia = $(tarea).data("idfamilia");
+        var idTarea = $(tarea).data("idtarea");
+        var idTerreno = $(tarea).data("idterreno");
+        var idEmpleado = $(tarea).data("idempleado");
+        var fechaInicio = $(tarea).data("fechainicio");
+        var fechafinalizacion = $(tarea).data("fechafinalizacion");
+        var horasEstimadas = $(tarea).data("horasestimadas");
+        var resumen = $(tarea).data("resumen");
+        var observaciones = $(tarea).data("observaciones");
+        var idTipoTarea = $(tarea).data("idtipotarea");
 
-        $("#txtNombreCultivo").val(nombreCultivo);
-        $("#txtDescripcionCultivo").val(descripcionCultivo);
-        $("#ddlFamilias").val(idFamilia);
-        $("#btnEditar").removeClass("hidden");
-        $("#btnGuardar").addClass("hidden");
-        $("#btnEditar").val(idCultivo);
+
+        $("#hdnIdTarea").val(idTarea);
+        $("#ddlTerrenos").val(idTerreno);
+        $("#ddlEmpleados").val(idEmpleado);
+        $("#ddlTiposTareas").val(idTipoTarea);        
+        $('#txtFechaInicio').datepicker('setDate', fechaInicio);
+        $('#txtFechaFinalizacion').datepicker('setDate', fechafinalizacion);
+        $("#txtHorasEstimadas").val(horasEstimadas);
+        $("#txtResumen").val(resumen);
+        $("#txtObservaciones").val(observaciones);
+        $("#hdnIdTarea").val(idTarea);
 
         $("#divMantenimiento").removeClass("hidden");
         $("#divTablaTareas").addClass("hidden");
@@ -291,16 +301,19 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
 
     function Cancelar()
     {
-        $("#txtNombreCultivo").val("");
-        $("#txtDescripcionCultivo").val("");
-        $("#dllFamilias").val("@Guid.Empty");
-        $("#btnEditar").addClass("hidden");
-        $("#btnGuardar").removeClass("hidden");
-        $("#btnEditar").val("");
+        $("#hdnIdTarea").val("");
+        $("#ddlTerrenos").val("");
+        $("#ddlEmpleados").val("");
+        $("#txtFechaInicio").val("@DateTime.Now.ToString("dd/MM/yyyy")");
+        $("#txtFechaFinalizacion").val("@DateTime.Now.AddDays(1).ToString("dd/MM/yyyy")");
+        $("#txtHorasEstimadas").val(0);
+        $("#txtResumen").val("");
+        $("#txtObservaciones").val("");
+        $("#hdnIdTarea").val("@Guid.Empty");
 
         $("#divMantenimiento").addClass("hidden");
         $("#divTablaTareas").removeClass("hidden");
-        $("#tituloMantenimiento").html("Editar tarea");
+        $("#tituloMantenimiento").html("Listado de tareas");
     }
 
     function MostrarDivMantenimiento() {
@@ -315,7 +328,10 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
         $("#divTablaTareas").addClass("hidden");
     }
 
+    
+
 </script>
+
 <style>
     #btnCancelar {
         margin-right: 10px;

@@ -11,5 +11,6 @@ namespace AgroWebPro.LogicaNegocios.Interfaces
     public interface IReportes
     {
         ConsultarReporteVentasResponse ConsultarReporteVentas(ConsultarReporteVentasRequest request);
+        ConsultarReporteTareasResponse ConsultarReporteTareas(ConsultarReporteTareasRequest request);
     }
 }

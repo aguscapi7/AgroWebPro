@@ -50,6 +50,14 @@
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
+        <Function Name="PA_ConsultarReporteTareas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdEmpresa" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="FechaInicio" Type="date" Mode="In" />
+          <Parameter Name="FechaFinalizacion" Type="date" Mode="In" />
+          <Parameter Name="IdTerreno" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
         <Function Name="PA_ConsultarReporteVentas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FechaInicio" Type="datetime" Mode="In" />
           <Parameter Name="FechaFin" Type="datetime" Mode="In" />
@@ -369,6 +377,14 @@
             <Parameter Name="Estado" Mode="InOut" Type="String" />
             <Parameter Name="Mensaje" Mode="InOut" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="PA_ConsultarReporteTareas" ReturnType="Collection(AgroWebProModel.PA_ConsultarReporteTareas_Result)">
+            <Parameter Name="IdEmpresa" Mode="In" Type="Guid" />
+            <Parameter Name="FechaInicio" Mode="In" Type="DateTime" />
+            <Parameter Name="FechaFinalizacion" Mode="In" Type="DateTime" />
+            <Parameter Name="IdTerreno" Mode="In" Type="Guid" />
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="PA_ConsultarZonasHorarias_Result">
           <Property Type="Guid" Name="IdZonaHoraria" Nullable="false" />
@@ -573,6 +589,20 @@
           <Property Type="String" Name="accion" Nullable="false" MaxLength="100" />
           <Property Type="Boolean" Name="activo" Nullable="false" />
           <Property Type="String" Name="icono" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="PA_ConsultarReporteTareas_Result">
+          <Property Type="Guid" Name="idTarea" Nullable="false" />
+          <Property Type="String" Name="Resumen" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Observaciones" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="nombreTerreno" Nullable="false" MaxLength="50" />
+          <Property Type="Guid" Name="idUsuario" Nullable="false" />
+          <Property Type="String" Name="nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="apellidos" Nullable="true" MaxLength="80" />
+          <Property Type="Int32" Name="idEstadoTarea" Nullable="false" />
+          <Property Type="Decimal" Name="horasReportadas" Nullable="false" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="HorasEstimadas" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="DateTime" Name="FechaInicio" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="FechaFinalizacion" Nullable="false" Precision="23" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -857,6 +887,24 @@
                 <ScalarProperty Name="accion" ColumnName="accion" />
                 <ScalarProperty Name="activo" ColumnName="activo" />
                 <ScalarProperty Name="icono" ColumnName="icono" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PA_ConsultarReporteTareas" FunctionName="AgroWebProModel.Store.PA_ConsultarReporteTareas">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AgroWebProModel.PA_ConsultarReporteTareas_Result">
+                <ScalarProperty Name="idTarea" ColumnName="idTarea" />
+                <ScalarProperty Name="Resumen" ColumnName="Resumen" />
+                <ScalarProperty Name="Observaciones" ColumnName="Observaciones" />
+                <ScalarProperty Name="nombreTerreno" ColumnName="nombreTerreno" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="apellidos" ColumnName="apellidos" />
+                <ScalarProperty Name="idEstadoTarea" ColumnName="idEstadoTarea" />
+                <ScalarProperty Name="horasReportadas" ColumnName="horasReportadas" />
+                <ScalarProperty Name="HorasEstimadas" ColumnName="HorasEstimadas" />
+                <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
+                <ScalarProperty Name="FechaFinalizacion" ColumnName="FechaFinalizacion" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

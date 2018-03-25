@@ -1,4 +1,5 @@
 ﻿@model AgroWebPro.Web.Models.EmpresaModels
+@using AgroWebPro.Utilitarios;
 @{
     ViewBag.Title = "Inicio";
 }
@@ -10,15 +11,22 @@
 <link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
 <link href="~/Content/reportes.css" rel="stylesheet" />
 
-<h2>Bienvenido, @Model.usuario.nombre</h2>
-
 <script>
     debugger;
     var coordenadasTerrenos = "@(Html.Raw(Model.coordenadasTerrenos))";
     var listaCoordenadas = coordenadasTerrenos.split('|');
 </script>
     
-
+<div class="row">
+    <br>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <h3 style="margin-left:10px;"><span class="fa fa-home fa-lg"></span>&nbsp;<span id="tituloMantenimiento">Bienvenido, @Model.usuario.nombre</span></h3>
+            </div>
+        </div>
+    </nav>
+</div>
     <div class="row">
     <div class="col-lg-8"><div id="map" style="height:580px;"></div>
 
@@ -27,12 +35,35 @@
         <!-- Example Pie Chart Card-->
         <div class="card mb-3">
             <div class="card-header">
-                <i class="fa fa-pie-chart"></i> Resumen de tareas
+                <i class="fa fa-pie-chart"></i> Resumen de tareas&nbsp;
+                
             </div>
             <div class="card-body">
-                <canvas id="myPieChart" width="100%" height="150"></canvas>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Periodo</label>
+                        <select id="ddlTiempo" onchange="CargarTareas()" class="form-control">
+                            <option value="1" selected>Día</option>
+                            <option value="2">Semana</option>
+                            <option value="3">Mes</option>
+                            <option value="4">Año</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6" onchange="CargarTareas()">
+                        <label>Terreno</label>
+                        @Html.DropDownListFor(m => Model.idTerreno, new SelectList(Model.listaTerrenosEmpresa, "IdTerreno", "NombreTerreno", Guid.Empty.ToString()), new { @id = "ddlTerrenos", @class = "form-control" })
+                    </div>
+                </div>
+                
+                <div id="divContenedor">
+                    <canvas id="canvasGrafico" width="100%" height="150"></canvas>
+                </div>
+                <br />
+                <div id="divSinDatos" class="alert alert-warning hidden">
+                    <p><center><strong>No hay datos disponibles</strong></center></p>
+                </div>
             </div>
-            <div class="card-footer small text-muted">Actualizado ayer a las 11:59 PM</div>
+            <div class="card-footer small text-muted"></div>
         </div>
     </div>
     </div>
@@ -44,17 +75,53 @@
 
 <script>
 
-    var ctx = document.getElementById("myPieChart");
-    var myPieChart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: ["Para asignar", "Atrasadas", "En proceso", "Realizadas"],
-            datasets: [{
-                data: [12.21, 15.58, 11.25, 8.32],
-                backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
-            }],
-        },
-    });
+    var ctx = document.getElementById("canvasGrafico");
+
+    CargarTareas();
+
+    function CargarTareas() {
+        var parametros = {
+            tiempo: $("#ddlTiempo").val(),
+            idTerreno: $("#ddlTerrenos").val()
+        };
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: '@Url.Action("ResumenTareas", "Reporte")',
+            data: parametros,
+            success: function (data) {
+                if (data.respuesta == '@Constantes.EstadoCorrecto' && data.agrupada.length > 0)
+                {
+                    $('#canvasGrafico').remove(); // this is my <canvas> element
+                    $('#divContenedor').append('<canvas id="canvasGrafico" width="100%" height="150"><canvas>');
+                    ctx = document.getElementById("canvasGrafico");
+
+                    $("#divSinDatos").addClass("hidden");
+                    $("#canvasGrafico").removeClass("hidden");
+                    var cantidades = [0, 0, 0, 0];
+                    for (var i = 0; i < data.agrupada.length; i++) {
+                        cantidades[data.agrupada[i][0].idEstadoTarea] = data.agrupada[i].length;
+                    }
+                    var canvasGrafico = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: ["Sin iniciar", "Iniciadas", "En proceso", "Finalizadas"],
+                            datasets: [{
+                                data: cantidades,
+                                backgroundColor: ['#dc3545', '#007bff', '#ffc107', '#28a745'],
+                            }],
+                        },
+                    });
+                }
+                else {                    
+                    $("#canvasGrafico").addClass("hidden");
+                    $("#divSinDatos").removeClass("hidden");
+                }
+
+            }
+        });
+    }
+
 
     var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -79,7 +146,7 @@
     }
 
     function DeserealizarXML(contenido) {
-        
+
         var xmlDoc = $.parseXML(contenido),
             $xml = $(xmlDoc),
             $coordenadas = $xml.find("coordenada");
@@ -87,9 +154,8 @@
         if ($coordenadas.length > 0) {
             map.setView([$($coordenadas[0].childNodes[0]).html(), $($coordenadas[0].childNodes[1]).html()], 18);
             var nombreTerreno = "";
-            debugger;
             for (var i = 0; i < $coordenadas.length; i++) {
-                nombreTerreno = $($coordenadas[i].childNodes[3]).html();                
+                nombreTerreno = $($coordenadas[i].childNodes[3]).html();
                 coor.push([$($coordenadas[i].childNodes[0]).html(), $($coordenadas[i].childNodes[1]).html()]);
             }
             var polygon = L.polygon(coor);

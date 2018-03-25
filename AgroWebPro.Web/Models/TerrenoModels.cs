@@ -10,19 +10,26 @@ namespace AgroWebPro.Web.Models
 {
     public class TerrenoModels
     {
-        public Guid idTerreno { get; set; }
+        public Guid? idTerreno { get; set; }
         [Display(Name = "Nombre")]
+        [Required(ErrorMessage = "El nombre es requerido")]
         public string nombreTerreno { get; set; }
+
         [Display(Name = "Descripción")]
         public string descripcionTerreno { get; set; }
+
         public List<CultivoModels> listaCultivosEmpresa { get; set; }
+
         [Display(Name = "Cultivo")]
-        public Guid idCultivo { get; set; }
+        [Required(ErrorMessage = "Seleccione el cultivo")]
+        public Guid? idCultivo { get; set; }
+
         public string listaCoordenadas { get; set; }
         public List<TerrenoModels> listaTerrenosEmpresa { get; set; }
         public string nombreCultivo { get; set; }
         public string coordenadas { get; set; }
         public bool actualizarCoordenadas { get; set; }
+        public bool errorValidacion { get; set; }
 
         public void CopiarCultivosEmpresa(ConsultarCultivosEmpresaResponse cultivosEmpresaResponse)
         {

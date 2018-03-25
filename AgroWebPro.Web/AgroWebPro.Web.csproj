@@ -17,7 +17,7 @@
     <AssemblyName>AgroWebPro.Web</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -40,7 +40,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -171,6 +171,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AvanceTareaModels.cs" />
     <Compile Include="Models\ClienteProveedorModels.cs" />
     <Compile Include="Models\CultivoModels.cs" />
     <Compile Include="Models\EmpresaModels.cs" />
@@ -235,6 +236,7 @@
     <Content Include="Content\leaflet.toolbar.css" />
     <Content Include="Content\login.css" />
     <Content Include="Content\mantenimiento.css" />
+    <Content Include="Content\mdb.min.css" />
     <Content Include="Content\menu.css" />
     <Content Include="Content\navbar-fixed-left.css" />
     <Content Include="Content\reportes.css" />
@@ -394,6 +396,7 @@
     <Content Include="Scripts\leaflet\Toolbar.js" />
     <Content Include="Scripts\leaflet\Tooltip.js" />
     <Content Include="Scripts\leaflet\TouchEvents.js" />
+    <Content Include="Scripts\mdb.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\respond.js" />
@@ -482,7 +485,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>56234</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:17161/</IISUrl>
+          <IISUrl>http://localhost/AgroWebPro/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

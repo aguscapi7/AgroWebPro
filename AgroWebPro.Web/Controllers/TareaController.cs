@@ -46,21 +46,27 @@ namespace AgroWebPro.Web.Controllers
                     tiposTareasRequest = new ConsultarTiposTareasRequest();
                     tiposTareasResponse = catalogos.ConsultarTiposTareas(tiposTareasRequest);
                     tareaModels.CopiarTiposTareas(tiposTareasResponse);
+                    tareaModels.listaTiposTareas.Insert(0, new TipoTarea { idTipoTarea = 0, nombreTarea = "Seleccione" });
 
                     empleadosEmpresaRequest = new ConsultarEmpleadosEmpresaRequest();
                     empleadosEmpresaRequest.idEmpresa = idEmpresa;
                     empleadosEmpresaResponse = empresa.ConsultarEmpleadosEmpresa(empleadosEmpresaRequest);
                     tareaModels.CopiarEmpleadosEmpresa(empleadosEmpresaResponse);
+                    tareaModels.listaEmpleadosEmpresa.Insert(0, new UsuarioModels { idUsuario = null, nombre = "Seleccione" });
 
                     terrenosEmpresaRequest = new ConsultarTerrenosEmpresaRequest();
                     terrenosEmpresaRequest.idEmpresa = idEmpresa;
                     terrenosEmpresaResponse = empresa.ConsultarTerrenosEmpresa(terrenosEmpresaRequest);
                     tareaModels.CopiarTerrenosEmpresa(terrenosEmpresaResponse);
+                    tareaModels.listaTerrenosEmpresa.Insert(0, new TerrenoModels { idTerreno = null, nombreTerreno = "Seleccione" });
 
                     tareasEmpresaRequest = new ConsultarTareasEmpresaRequest();
                     tareasEmpresaRequest.idEmpresa = idEmpresa;
                     tareasEmpresaResponse = tarea.ConsultarTareasEmpresa(tareasEmpresaRequest);
                     tareaModels.CopiarTareasEmpresa(tareasEmpresaResponse);
+
+                    tareaModels.fechaInicio = DateTime.Now.ToString("dd/MM/yyyy");
+                    tareaModels.fechaFinalizacion = DateTime.Now.AddDays(1).ToString("dd/MM/yyyy");
 
                 }
                 else
@@ -78,7 +84,7 @@ namespace AgroWebPro.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Mantenimiento(TareaModels tareaModels, string btnGuardar, string btnEditar)
+        public ActionResult Mantenimiento(TareaModels tareaModels, string btnBuscar)
         {
             IEmpresa empresa = new Empresa();
             ITarea tarea = new Tarea();
@@ -96,6 +102,9 @@ namespace AgroWebPro.Web.Controllers
             ConsultarTerrenosEmpresaRequest terrenosEmpresaRequest = null;
             ConsultarTerrenosEmpresaResponse terrenosEmpresaResponse = null;
 
+            ConsultarTareasEmpresaRequest tareasEmpresaRequest = null;
+            ConsultarTareasEmpresaResponse tareasEmpresaResponse = null;
+
             try
             {
                 string idEmpresaCookie = Request.Cookies["usuario"]["idEmpresa"];
@@ -105,74 +114,94 @@ namespace AgroWebPro.Web.Controllers
                 Guid idEmpresa = Guid.Parse(idEmpresaCookie);
                 Guid idUsuario = Guid.Parse(idUsuarioCookie);
 
-
-                string mensajeCorrecto = "La tarea se ha {0} correctamente.";
-                string mensajeError = "Ocurrió un error al {0} la tarea.";
-
-                if (!string.IsNullOrEmpty(btnGuardar))
+                if (ModelState.IsValid)
                 {
-                    tareaRequest = new MantenimientoTareaRequest()
+                    string mensajeCorrecto = "La tarea se ha {0} correctamente.";
+                    string mensajeError = "Ocurrió un error al {0} la tarea.";
+
+                    if (tareaModels.idTarea == Guid.Empty || tareaModels.idTarea == null)
                     {
-                        tipoOperacion = Constantes.operacionCrear,
-                        idTarea = Guid.NewGuid(),
-                        asignadaPor = idUsuario,
-                        idUsuario = tareaModels.idUsuarioTarea,
-                        idTerreno = tareaModels.idTerreno,
-                        idTipoTarea = tareaModels.idTipoTarea,
-                        resumen = tareaModels.resumen,
-                        observaciones = tareaModels.observaciones,
-                        fechaInicio = tareaModels.fechaInicio,
-                        fechaFinalizacion = tareaModels.fechaFinalizacion,
-                        horasEstimadas = tareaModels.horasEstimadas
-                        
-                    };
-                    mensajeCorrecto = string.Format(mensajeCorrecto, "guardado");
-                    mensajeError = string.Format(mensajeError, "guardar");
-                }
-                else if (!string.IsNullOrEmpty(btnEditar))
-                {
-                    tareaRequest = new MantenimientoTareaRequest()
-                    {
-                        tipoOperacion = Constantes.operacionModificar,
-                        idTarea = Guid.Parse(btnEditar),
-                        idTerreno = tareaModels.idTerreno,
-                        idTipoTarea = tareaModels.idTipoTarea,
-                        resumen = tareaModels.resumen,
-                        observaciones = tareaModels.observaciones,
-                        fechaInicio = tareaModels.fechaInicio,
-                        fechaFinalizacion = tareaModels.fechaFinalizacion
-                    };
-                    mensajeCorrecto = string.Format(mensajeCorrecto, "editado");
-                    mensajeError = string.Format(mensajeError, "editar");
-                }
+                        tareaRequest = new MantenimientoTareaRequest()
+                        {
+                            tipoOperacion = Constantes.operacionCrear,
+                            idTarea = Guid.NewGuid(),
+                            asignadaPor = idUsuario,
+                            idUsuario = (Guid)tareaModels.idUsuarioTarea,
+                            idTerreno = (Guid)tareaModels.idTerreno,
+                            idTipoTarea = tareaModels.idTipoTarea,
+                            resumen = tareaModels.resumen,
+                            observaciones = tareaModels.observaciones,
+                            fechaInicio = DateTime.Parse(tareaModels.fechaInicio),
+                            fechaFinalizacion = DateTime.Parse(tareaModels.fechaFinalizacion),
+                            horasEstimadas = tareaModels.horasEstimadas
 
-                tareaResponse = tarea.MantenimientoTarea(tareaRequest);
-                if (tareaResponse != null && tareaResponse.estado.Equals(Constantes.EstadoCorrecto))
-                {
-                    ModelState.Clear();
-                    tareaModels = new TareaModels();
-                    ViewBag.respuesta = Constantes.EstadoCorrecto;
-                    ViewBag.mensaje = mensajeCorrecto;
+                        };
+                        mensajeCorrecto = string.Format(mensajeCorrecto, "guardado");
+                        mensajeError = string.Format(mensajeError, "guardar");
+                    }
+                    else
+                    {
+                        tareaRequest = new MantenimientoTareaRequest()
+                        {
+                            tipoOperacion = Constantes.operacionModificar,
+                            idTarea = tareaModels.idTarea,
+                            idUsuario = (Guid)tareaModels.idUsuarioTarea,
+                            idTerreno = (Guid)tareaModels.idTerreno,
+                            idTipoTarea = tareaModels.idTipoTarea,
+                            resumen = tareaModels.resumen,
+                            observaciones = tareaModels.observaciones,
+                            fechaInicio = DateTime.Parse(tareaModels.fechaInicio),
+                            fechaFinalizacion = DateTime.Parse(tareaModels.fechaFinalizacion),
+                            horasEstimadas = tareaModels.horasEstimadas
+                        };
+                        mensajeCorrecto = string.Format(mensajeCorrecto, "editado");
+                        mensajeError = string.Format(mensajeError, "editar");
+                    }
+
+                    tareaResponse = tarea.MantenimientoTarea(tareaRequest);
+                    if (tareaResponse != null && tareaResponse.estado.Equals(Constantes.EstadoCorrecto))
+                    {
+                        ModelState.Clear();
+                        tareaModels = new TareaModels();
+                        ViewBag.respuesta = Constantes.EstadoCorrecto;
+                        ViewBag.mensaje = mensajeCorrecto;
+                    }
+                    else
+                    {
+                        ViewBag.respuesta = Constantes.EstadoError;
+                        ViewBag.mensaje = mensajeError;
+                    }
                 }
                 else
                 {
-                    ViewBag.respuesta = Constantes.EstadoError;
-                    ViewBag.mensaje = mensajeError;
+                    tareaModels.errorValidacion = true;
                 }
+                
 
                 tiposTareasRequest = new ConsultarTiposTareasRequest();
                 tiposTareasResponse = catalogos.ConsultarTiposTareas(tiposTareasRequest);
                 tareaModels.CopiarTiposTareas(tiposTareasResponse);
+                tareaModels.listaTiposTareas.Insert(0, new TipoTarea { idTipoTarea = 0, nombreTarea = "Seleccione" });
 
                 empleadosEmpresaRequest = new ConsultarEmpleadosEmpresaRequest();
                 empleadosEmpresaRequest.idEmpresa = idEmpresa;
                 empleadosEmpresaResponse = empresa.ConsultarEmpleadosEmpresa(empleadosEmpresaRequest);
                 tareaModels.CopiarEmpleadosEmpresa(empleadosEmpresaResponse);
+                tareaModels.listaEmpleadosEmpresa.Insert(0, new UsuarioModels { idUsuario = null, nombre = "Seleccione" });
 
                 terrenosEmpresaRequest = new ConsultarTerrenosEmpresaRequest();
                 terrenosEmpresaRequest.idEmpresa = idEmpresa;
                 terrenosEmpresaResponse = empresa.ConsultarTerrenosEmpresa(terrenosEmpresaRequest);
                 tareaModels.CopiarTerrenosEmpresa(terrenosEmpresaResponse);
+                tareaModels.listaTerrenosEmpresa.Insert(0, new TerrenoModels { idTerreno = null, nombreTerreno = "Seleccione" });
+
+                tareasEmpresaRequest = new ConsultarTareasEmpresaRequest();
+                tareasEmpresaRequest.idEmpresa = idEmpresa;
+                tareasEmpresaResponse = tarea.ConsultarTareasEmpresa(tareasEmpresaRequest);
+                tareaModels.CopiarTareasEmpresa(tareasEmpresaResponse);
+
+                tareaModels.fechaInicio = DateTime.Now.ToString("dd/MM/yyyy");
+                tareaModels.fechaFinalizacion = DateTime.Now.AddDays(1).ToString("dd/MM/yyyy");
             }
             catch(Exception ex)
             {

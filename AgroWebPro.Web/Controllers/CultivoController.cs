@@ -46,6 +46,7 @@ namespace AgroWebPro.Web.Controllers
                     familiasRequest = new ConsultarFamiliasRequest();
                     familiasResponse = catalogos.ConsultarFamilias(familiasRequest);
                     cultivoModels.CopiarFamilias(familiasResponse);
+                    cultivoModels.listaFamilias.Insert(0,new FamiliaModels { idFamilia = 0, nombreFamilia = "Seleccione" });
                 }
                 else
                 {
@@ -62,7 +63,7 @@ namespace AgroWebPro.Web.Controllers
         }
         
         [HttpPost]
-        public ActionResult Mantenimiento(CultivoModels cultivoModels, string btnGuardar, string btnEditar, string btnEliminar)
+        public ActionResult Mantenimiento(CultivoModels cultivoModels)
         {
             IEmpresa empresa = new Empresa();
             ICatalogos catalogos = new Catalogos();
@@ -80,66 +81,74 @@ namespace AgroWebPro.Web.Controllers
 
             try
             {
-
                 string idEmpresaCookie = Request.Cookies["usuario"]["idEmpresa"];
                 string idUsuarioCookie = Request.Cookies["usuario"]["idUsuario"];
                 string idRol = Request.Cookies["usuario"]["idRol"];
 
                 Guid idEmpresa = Guid.Parse(idEmpresaCookie);
                 Guid idUsuario = Guid.Parse(idUsuarioCookie);
-
-
-                string mensajeCorrecto = "El cultivo se ha {0} correctamente.";
-                string mensajeError = "Ocurrió un error al {0} el cultivo.";
-
-                if (!string.IsNullOrEmpty(btnGuardar))
+                
+                if (ModelState.IsValid)
                 {
-                    cultivoRequest = new MantenimientoCultivoRequest()
+
+                    string mensajeCorrecto = "El cultivo se ha {0} correctamente.";
+                    string mensajeError = "Ocurrió un error al {0} el cultivo.";
+
+                    if (cultivoModels.idCultivo == null || cultivoModels.idCultivo == Guid.Empty)
                     {
-                        tipoOperacion = Constantes.operacionCrear,
-                        idCultivo = Guid.NewGuid(),
-                        nombreCultivo = cultivoModels.nombreCultivo,
-                        descripcionCultivo = cultivoModels.descripcionCultivo,
-                        idFamilia = cultivoModels.idFamilia,
-                        idEmpresa = idEmpresa,
-                        ingresadoPor = idUsuario
-                    };
-                    mensajeCorrecto = string.Format(mensajeCorrecto, "guardado");
-                    mensajeError = string.Format(mensajeError, "guardar");
-                }
-                else if (!string.IsNullOrEmpty(btnEditar))
-                {
-                    cultivoRequest = new MantenimientoCultivoRequest()
+                        cultivoRequest = new MantenimientoCultivoRequest()
+                        {
+                            tipoOperacion = Constantes.operacionCrear,
+                            idCultivo = Guid.NewGuid(),
+                            nombreCultivo = cultivoModels.nombreCultivo,
+                            descripcionCultivo = cultivoModels.descripcionCultivo,
+                            idFamilia = cultivoModels.idFamilia,
+                            idEmpresa = idEmpresa,
+                            ingresadoPor = idUsuario
+                        };
+                        mensajeCorrecto = string.Format(mensajeCorrecto, "guardado");
+                        mensajeError = string.Format(mensajeError, "guardar");
+                    }
+                    else
                     {
-                        tipoOperacion = Constantes.operacionModificar,
-                        idCultivo = Guid.Parse(btnEditar),
-                        nombreCultivo = cultivoModels.nombreCultivo,
-                        descripcionCultivo = cultivoModels.descripcionCultivo,
-                        idFamilia = cultivoModels.idFamilia,
-                        idEmpresa = idEmpresa,
-                        ingresadoPor = idUsuario
-                    };
-                    mensajeCorrecto = string.Format(mensajeCorrecto, "editado");
-                    mensajeError = string.Format(mensajeError, "editar");
-                }
+                        cultivoRequest = new MantenimientoCultivoRequest()
+                        {
+                            tipoOperacion = Constantes.operacionModificar,
+                            idCultivo = (Guid)cultivoModels.idCultivo,
+                            nombreCultivo = cultivoModels.nombreCultivo,
+                            descripcionCultivo = cultivoModels.descripcionCultivo,
+                            idFamilia = cultivoModels.idFamilia,
+                            idEmpresa = idEmpresa,
+                            ingresadoPor = idUsuario
+                        };
+                        mensajeCorrecto = string.Format(mensajeCorrecto, "editado");
+                        mensajeError = string.Format(mensajeError, "editar");
+                    }
 
-                cultivoResponse = empresa.MantenimientoCultivo(cultivoRequest);
-                if (cultivoResponse != null && cultivoResponse.estado.Equals(Constantes.EstadoCorrecto))
-                {
-                    ModelState.Clear();
-                    cultivoModels = new CultivoModels();
-                    ViewBag.respuesta = Constantes.EstadoCorrecto;
-                    ViewBag.mensaje = mensajeCorrecto;
+                    cultivoResponse = empresa.MantenimientoCultivo(cultivoRequest);
+                    if (cultivoResponse != null && cultivoResponse.estado.Equals(Constantes.EstadoCorrecto))
+                    {
+                        ModelState.Clear();
+                        cultivoModels = new CultivoModels();
+                        ViewBag.respuesta = Constantes.EstadoCorrecto;
+                        ViewBag.mensaje = mensajeCorrecto;
+                    }
+                    else
+                    {
+                        ViewBag.respuesta = Constantes.EstadoError;
+                        ViewBag.mensaje = mensajeError;
+                    }
                 }
                 else
                 {
-                    ViewBag.respuesta = Constantes.EstadoError;
-                    ViewBag.mensaje = mensajeError;
+                    cultivoModels.errorValidacion = true;
                 }
+                
 
                 familiasRequest = new ConsultarFamiliasRequest();
                 familiasResponse = catalogos.ConsultarFamilias(familiasRequest);
                 cultivoModels.CopiarFamilias(familiasResponse);
+                cultivoModels.listaFamilias.Insert(0, new FamiliaModels { idFamilia = 0, nombreFamilia = "Seleccione" });
 
                 cultivosEmpresaRequest = new ConsultarCultivosEmpresaRequest();
                 cultivosEmpresaRequest.idEmpresa = idEmpresa;

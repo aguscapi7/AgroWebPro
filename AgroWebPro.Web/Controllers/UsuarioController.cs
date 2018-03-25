@@ -8,6 +8,7 @@ using AgroWebPro.Utilitarios;
 using AgroWebPro.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -46,6 +47,9 @@ namespace AgroWebPro.Web.Controllers
 
                     rolesResponse = catalogos.ConsultarRoles(rolesRequest);
                     usuarioModels.CopiarRoles(rolesResponse);
+
+                    usuarioModels.password = "password";
+                    usuarioModels.passwordRepetir = "password";
                 }
                 else
                 {
@@ -60,7 +64,7 @@ namespace AgroWebPro.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Mantenimiento(UsuarioModels usuarioModels, string btnGuardar, string btnEditar)
+        public ActionResult Mantenimiento(UsuarioModels usuarioModels)
         {
             IUsuario usuario = new Usuario();
             IEmpresa empresa = new Empresa();
@@ -87,62 +91,78 @@ namespace AgroWebPro.Web.Controllers
                 Guid idEmpresa = Guid.Parse(idEmpresaCookie);
                 Guid idUsuario = Guid.Parse(idUsuarioCookie);
 
-
-                string mensajeCorrecto = "El empleado se ha {0} correctamente.";
-                string mensajeError = "Ocurrió un error al {0} el empleado.";
-
-                if (!string.IsNullOrEmpty(btnGuardar))
+                if (ModelState.IsValid)
                 {
-                    empleadoRequest = new MantenimientoUsuarioRequest()
+                    string mensajeCorrecto = "El empleado se ha {0} correctamente.";
+                    string mensajeError = "Ocurrió un error al {0} el empleado.";
+
+                    if (usuarioModels.idUsuario == null || usuarioModels.idUsuario == Guid.Empty)
                     {
-                        tipoOperacion = Constantes.operacionCrear,
-                        idUsuario = Guid.NewGuid(),
-                        nombre = usuarioModels.nombre,
-                        apellidos = usuarioModels.apellidos,
-                        rol = (Guid)usuarioModels.idRol,
-                        correo = usuarioModels.correo,
-                        direccion = usuarioModels.direccion,
-                        password = "P@ssw0rd123",
-                        telefono = usuarioModels.telefono,
-                        idEmpresa = idEmpresa,
-                        ingresadoPor = idUsuario
-                    };
-                    mensajeCorrecto = string.Format(mensajeCorrecto, "guardado");
-                    mensajeError = string.Format(mensajeError, "guardar");
-                }
-                else if (!string.IsNullOrEmpty(btnEditar))
-                {
-                    empleadoRequest = new MantenimientoUsuarioRequest()
+                        string[] partesClave = Guid.NewGuid().ToString().Split('-');
+                        string claveTemporal = partesClave[0] + partesClave[1];
+                        empleadoRequest = new MantenimientoUsuarioRequest()
+                        {
+                            tipoOperacion = Constantes.operacionCrear,
+                            idUsuario = Guid.NewGuid(),
+                            nombre = usuarioModels.nombre,
+                            apellidos = usuarioModels.apellidos,
+                            rol = (Guid)usuarioModels.idRol,
+                            correo = usuarioModels.correo,
+                            direccion = usuarioModels.direccion,
+                            password = claveTemporal,
+                            telefono = usuarioModels.telefono,
+                            idEmpresa = idEmpresa,
+                            ingresadoPor = idUsuario
+                        };
+                        mensajeCorrecto = string.Format(mensajeCorrecto, "guardado");
+                        mensajeError = string.Format(mensajeError, "guardar");
+                    }
+                    else
                     {
-                        tipoOperacion = Constantes.operacionModificar,
-                        idUsuario = Guid.Parse(btnEditar),
-                        nombre = usuarioModels.nombre,
-                        apellidos = usuarioModels.apellidos,
-                        rol = (Guid)usuarioModels.idRol,
-                        correo = usuarioModels.correo,
-                        direccion = usuarioModels.direccion,
-                        telefono = usuarioModels.telefono,
-                        ingresadoPor = idUsuario,
-                        idEmpresa = idEmpresa
-                    };
-                    mensajeCorrecto = string.Format(mensajeCorrecto, "editado");
-                    mensajeError = string.Format(mensajeError, "editar");
-                }
+                        empleadoRequest = new MantenimientoUsuarioRequest()
+                        {
+                            tipoOperacion = Constantes.operacionModificar,
+                            idUsuario = (Guid)usuarioModels.idUsuario,
+                            nombre = usuarioModels.nombre,
+                            apellidos = usuarioModels.apellidos,
+                            rol = (Guid)usuarioModels.idRol,
+                            correo = usuarioModels.correo,
+                            direccion = usuarioModels.direccion,
+                            telefono = usuarioModels.telefono,
+                            ingresadoPor = idUsuario,
+                            idEmpresa = idEmpresa
+                        };
+                        mensajeCorrecto = string.Format(mensajeCorrecto, "editado");
+                        mensajeError = string.Format(mensajeError, "editar");
+                    }
 
-                empleadoResponse = usuario.MantenimientoUsuario(empleadoRequest);
-                if (empleadoResponse != null && empleadoResponse.estado.Equals(Constantes.EstadoCorrecto))
-                {
-                    ModelState.Clear();
-                    usuarioModels = new UsuarioModels();
-                    ViewBag.respuesta = Constantes.EstadoCorrecto;
-                    ViewBag.mensaje = mensajeCorrecto;
+                    empleadoResponse = usuario.MantenimientoUsuario(empleadoRequest);
+                    if (empleadoResponse != null && empleadoResponse.estado.Equals(Constantes.EstadoCorrecto))
+                    {
+                        if (usuarioModels.idUsuario == Guid.Empty)
+                        {
+                            string correoSalida = ConfigurationManager.AppSettings["DireccionCorreo"].ToString();
+                            string claveCorreoSalida = ConfigurationManager.AppSettings["ClaveCorreo"].ToString();
+                            string cuerpo = "{0}, se ha creado una cuenta en AgroWebPro.<br/><label><strong>Usuario: {1}</strong></label><br/><label><strong>Contraseña: {2}</strong></label></br>Ingresar <a href=\"http://localhost/AgroWebPro/\">www.agrowebpro.com</a> ";
+                            Utilitarios.Utilitarios.EnvioCorreo(empleadoRequest.correo, "Creación cuenta AgroWebPro", string.Format(cuerpo,empleadoRequest.nombre,empleadoRequest.correo,empleadoRequest.password), correoSalida, claveCorreoSalida);
+
+                        }
+                        ModelState.Clear();
+                        usuarioModels = new UsuarioModels();
+                        ViewBag.respuesta = Constantes.EstadoCorrecto;
+                        ViewBag.mensaje = mensajeCorrecto;
+                    }
+                    else
+                    {
+                        ViewBag.respuesta = Constantes.EstadoError;
+                        ViewBag.mensaje = mensajeError;
+                    }
+
                 }
                 else
                 {
-                    ViewBag.respuesta = Constantes.EstadoError;
-                    ViewBag.mensaje = mensajeError;
-                }
-                
+                    usuarioModels.errorValidacion = true;
+                }                
 
                 empleadosEmpresaRequest = new ConsultarEmpleadosEmpresaRequest();
                 empleadosEmpresaRequest.idEmpresa = idEmpresa;
@@ -154,6 +174,9 @@ namespace AgroWebPro.Web.Controllers
 
                 rolesResponse = catalogos.ConsultarRoles(rolesRequest);
                 usuarioModels.CopiarRoles(rolesResponse);
+
+                usuarioModels.password = "password";
+                usuarioModels.passwordRepetir = "password";
 
             }
             catch (Exception ex)
@@ -200,13 +223,85 @@ namespace AgroWebPro.Web.Controllers
         public ActionResult Perfil()
         {
             Session[Constantes.MenuActivo] = Constantes.MenuPerfil;
-            return View();
+            UsuarioModels usuarioModels = new UsuarioModels();
+
+            IUsuario usuario = new Usuario();
+
+            ConsultarUsuarioResponse usuarioResponse = null;
+            ConsultarUsuarioRequest usuarioRequest = null;
+            try
+            {
+                if (Request.Cookies["usuario"] != null)
+                {
+                    
+                    Guid idUsuario = Guid.Parse(Request.Cookies["usuario"]["idUsuario"].ToString());
+
+                    usuarioRequest = new ConsultarUsuarioRequest();
+                    usuarioRequest.idUsuario = idUsuario;
+                    usuarioResponse = usuario.ConsultarUsuario(usuarioRequest);
+
+                    usuarioModels.CopiarUsuario(usuarioResponse);
+
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+            return View(usuarioModels);
         }
 
         [HttpPost]
         public ActionResult Perfil(UsuarioModels usuarioModels)
         {
-            return View();
+            MantenimientoUsuarioResponse empleadoResponse = null;
+            MantenimientoUsuarioRequest empleadoRequest = null;
+
+            IUsuario usuario = new Usuario();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    empleadoRequest = new MantenimientoUsuarioRequest()
+                    {
+                        tipoOperacion = Constantes.operacionModificar,
+                        idUsuario = (Guid)usuarioModels.idUsuario,
+                        nombre = usuarioModels.nombre,
+                        apellidos = usuarioModels.apellidos,
+                        rol = (Guid)usuarioModels.idRol,
+                        correo = usuarioModels.correo,
+                        direccion = usuarioModels.direccion,
+                        telefono = usuarioModels.telefono,
+                        password = usuarioModels.password
+                    };
+                    empleadoResponse = usuario.MantenimientoUsuario(empleadoRequest);
+                    if (empleadoResponse != null && empleadoResponse.estado.Equals(Constantes.EstadoCorrecto))
+                    {
+                        ModelState.Clear();
+                        ViewBag.respuesta = Constantes.EstadoCorrecto;
+                        ViewBag.mensaje = "La información se ha actualizado correctamente";
+                    }
+                    else
+                    {
+                        ViewBag.respuesta = Constantes.EstadoError;
+                        ViewBag.mensaje = "Ocurrió un error al actualizar la información";
+                    }
+                }
+                else
+                {
+
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+            return View(usuarioModels);
         }
     }
 }

@@ -457,5 +457,26 @@ namespace AgroWebPro.Entidades
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarOpcionesRol_Result>("PA_ConsultarOpcionesRol", idRolParameter, estado, mensaje);
         }
+    
+        public virtual ObjectResult<PA_ConsultarReporteTareas_Result> PA_ConsultarReporteTareas(Nullable<System.Guid> idEmpresa, Nullable<System.DateTime> fechaInicio, Nullable<System.DateTime> fechaFinalizacion, Nullable<System.Guid> idTerreno, ObjectParameter estado, ObjectParameter mensaje)
+        {
+            var idEmpresaParameter = idEmpresa.HasValue ?
+                new ObjectParameter("IdEmpresa", idEmpresa) :
+                new ObjectParameter("IdEmpresa", typeof(System.Guid));
+    
+            var fechaInicioParameter = fechaInicio.HasValue ?
+                new ObjectParameter("FechaInicio", fechaInicio) :
+                new ObjectParameter("FechaInicio", typeof(System.DateTime));
+    
+            var fechaFinalizacionParameter = fechaFinalizacion.HasValue ?
+                new ObjectParameter("FechaFinalizacion", fechaFinalizacion) :
+                new ObjectParameter("FechaFinalizacion", typeof(System.DateTime));
+    
+            var idTerrenoParameter = idTerreno.HasValue ?
+                new ObjectParameter("IdTerreno", idTerreno) :
+                new ObjectParameter("IdTerreno", typeof(System.Guid));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarReporteTareas_Result>("PA_ConsultarReporteTareas", idEmpresaParameter, fechaInicioParameter, fechaFinalizacionParameter, idTerrenoParameter, estado, mensaje);
+        }
     }
 }

@@ -10,10 +10,11 @@ namespace AgroWebPro.Web.Models
 {
     public class CultivoModels
     {
-        public Guid idCultivo { get; set; }
+        public Guid? idCultivo { get; set; }
 
         [Display(Name = "Nombre")]
         [Required(ErrorMessage = "El nombre es requerido")]
+        [StringLength(50, ErrorMessage = "El largo máximo es 50")]
         public string nombreCultivo { get; set; }
 
         [Display(Name = "Descripción")]
@@ -21,6 +22,7 @@ namespace AgroWebPro.Web.Models
 
         [Display(Name = "Familia")]
         [Required(ErrorMessage = "Debe seleccionar la familia")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar la familia")]
         public int idFamilia { get; set; }
 
         [Display(Name = "Moneda")]
@@ -42,6 +44,7 @@ namespace AgroWebPro.Web.Models
         public List<CultivoModels> listaCultivos { get; set; }
         public List<UnidadVentaModels> listaUnidadVenta { get; set; }
         public List<MonedaModels> listaMonedas { get; set; }
+        public bool errorValidacion { get; set; }
 
         public void CopiarFamilias(ConsultarFamiliasResponse familiasResponse)
         {

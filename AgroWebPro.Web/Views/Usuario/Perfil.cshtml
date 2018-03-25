@@ -1,8 +1,106 @@
-﻿
+﻿@model AgroWebPro.Web.Models.UsuarioModels
+@using AgroWebPro.Utilitarios;
 @{
     ViewBag.Title = "Perfil";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Perfil del usuario</h2>
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-table.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/bootstrap-table.js"></script>
+<link href="~/Content/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert.js"></script>
+<script src="~/Scripts/bootstrap-table-locale-all.min.js"></script>
+<div class="row">
+    <br>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <h3 style="margin-left:10px;"><span class="fa fa-user fa-lg"></span>&nbsp;<span id="tituloMantenimiento">Perfil de usuario </span></h3>
+            </div>
+        </div>
+    </nav>
+</div>
+@using (Html.BeginForm("Perfil", "Usuario", FormMethod.Post, new { id = "formPerfil", role = "form", @data_toggle = "validator" }))
+{
+    @Html.AntiForgeryToken();
+    @Html.ValidationSummary(true);
+    <div class="form-group" id="divMantenimiento">
+        <h2 id="tituloMantenimiento">Perfil</h2>
+        <div class="row form-group">
+            @Html.HiddenFor(m => m.idUsuario)
+            @Html.HiddenFor(m => m.idRol)
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.nombre)
+                @Html.TextBoxFor(model => model.nombre, new { @id = "txtNombre", @class = "form-control", @placeholder = "Ingrese el nombre", @maxlength = 50 })
+                @Html.ValidationMessageFor(model => model.nombre, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.apellidos)
+                @Html.TextBoxFor(model => model.apellidos, new { @id = "txtApellidos", @class = "form-control", @placeholder = "Ingrese los apellidos", @maxlength = 80 })
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.correo)
+                @Html.TextBoxFor(model => model.correo, new { @id = "txtCorreo", @class = "form-control", @type = "email", @placeholder = "Ingrese el correo", @maxlength = 100 })
+                @Html.ValidationMessageFor(model => model.correo, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.telefono)
+                @Html.TextBoxFor(model => model.telefono, new { @id = "txtTelefono", @class = "form-control", @placeholder = "Ingrese el telefono", @maxlength = 20 })
+            </div>
+        </div>
 
+        <div class="row form-group">
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.password)
+                @Html.TextBoxFor(model => model.password, new { @id = "txtPassword", @class = "form-control", @placeholder = "Ingrese la contraseña", @type = "password", @maxlength = 50 })
+                @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.passwordRepetir)
+                @Html.TextBoxFor(model => model.passwordRepetir, new { @id = "txtPasswordRepetir", @class = "form-control", @placeholder = "Repita la contraseña", @type = "password", @maxlength = 20 })
+                @Html.ValidationMessageFor(model => model.passwordRepetir, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.direccion)
+                @Html.TextAreaFor(model => model.direccion, new { @id = "txtDireccion", @class = "form-control", @rows = 2, @placeholder = "Ingrese la dirección", @maxlength = 200 })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8"></div>
+            <div class="col-md-4">
+                <button id="btnGuardar" name="btnGuardar" class="btn btn-primary pull-right btn-guardar" type="submit">Actualizar&nbsp;<span><i class="fa fa-refresh"></i></span></button>
+            </div>
+        </div>
+    </div>
+
+}
+
+@if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoCorrecto)
+{
+    <script>
+        swal({
+            title: 'Correcto',
+            text: "@ViewBag.mensaje",
+            type: 'success',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+}
+else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoError)
+{
+    <script>
+        swal({
+            title: 'Error',
+            text: "@ViewBag.mensaje",
+            type: 'error',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+            });
+    </script>
+}

@@ -11,69 +11,69 @@
 <link href="~/Content/sweetalert.css" rel="stylesheet" />
 <script src="~/Scripts/sweetalert.js"></script>
 <script src="~/Scripts/bootstrap-table-locale-all.min.js"></script>
+<div class="row">
+    <br>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <h3 style="margin-left:10px;"><span class="fa fa-users fa-lg"></span>&nbsp;<span id="tituloMantenimiento">Listado de empleados </span></h3>
+            </div>
+        </div>
+    </nav>
+</div>
 @using (Html.BeginForm("Mantenimiento", "Usuario", FormMethod.Post, new { id = "formEmpleado", role = "form", @data_toggle = "validator" }))
 {
     @Html.AntiForgeryToken();
     @Html.ValidationSummary(true);
-    <div class="form-group hidden" id="divMantenimiento">
-        <h2 id="tituloMantenimiento">Agregar empleado</h2>
+    <div class="form-group @(Model.errorValidacion ? "":"hidden")" id="divMantenimiento">
         <div class="row form-group">
-            <input type="hidden" id="hdnIdEmpleado" />
-            <div class="col-md-6">
+            @Html.HiddenFor(m => m.idUsuario, new { @id = "hdnIdUsuario" })
+            @Html.HiddenFor(m => m.password, new { value = "password" })
+            @Html.HiddenFor(m => m.passwordRepetir, new { value = "password" })
+            <div class="col-md-4">
                 @Html.LabelFor(model => model.nombre)
-                @Html.TextBoxFor(model => model.nombre, new { @id = "txtNombre", @class = "form-control", @required = "required", @placeholder = "Ingrese el nombre" })
+                @Html.TextBoxFor(model => model.nombre, new { @id = "txtNombre", @class = "form-control", @placeholder = "Ingrese el nombre", @maxlength = 50 })
+                @Html.ValidationMessageFor(model => model.nombre, "", new { @class = "text-danger" })
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 @Html.LabelFor(model => model.apellidos)
-                @Html.TextBoxFor(model => model.apellidos, new { @id = "txtApellidos", @class = "form-control", @placeholder = "Ingrese los apellidos" })
+                @Html.TextBoxFor(model => model.apellidos, new { @id = "txtApellidos", @class = "form-control", @placeholder = "Ingrese los apellidos", @maxlength = 80 })
+            </div>
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.telefono)
+                @Html.TextBoxFor(model => model.telefono, new { @id = "txtTelefono", @class = "form-control", @placeholder = "Ingrese el telefono", @maxlength = 20 })
             </div>
         </div>
         <div class="row form-group">
-            <div class="col-md-6">
-                @Html.LabelFor(model => model.fechaNacimiento)
-                <div class="input-group date" data-provide="datepicker">
-                    @Html.TextBoxFor(model => model.fechaNacimiento, new { @id = "txtFechaNacimiento", @class = "form-control", Value = DateTime.Now.ToString("dd/MM/yyyy"), @readonly = "readonly" })
-                    <div class="input-group-addon">
-                        <span class="glyphicon glyphicon-th"></span>
-                    </div>
-                </div>
-            </div>
             <div class="col-md-6">
                 @Html.LabelFor(model => model.correo)
-                @Html.TextBoxFor(model => model.correo, new { @id = "txtCorreo", @class = "form-control", @type = "email", @placeholder = "Ingrese el correo" })
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-md-6">
-                @Html.LabelFor(model => model.telefono)
-                @Html.TextBoxFor(model => model.telefono, new { @id = "txtTelefono", @class = "form-control", @placeholder = "Ingrese el telefono" })
+                @Html.TextBoxFor(model => model.correo, new { @id = "txtCorreo", @class = "form-control", @type = "email", @placeholder = "Ingrese el correo", @maxlength = 100 })
+                @Html.ValidationMessageFor(model => model.correo, "", new { @class = "text-danger" })
             </div>
             <div class="col-md-6">
                 @Html.LabelFor(model => model.idRol)
-                @Html.DropDownListFor(model => model.idRol, new SelectList(Model.listaRoles, "idRol", "nombreRol"), new { @id = "ddlRoles", @class = "form-control", @required = "required" })
-
+                @Html.DropDownListFor(model => model.idRol, new SelectList(Model.listaRoles, "idRol", "nombreRol"), new { @id = "ddlRoles", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.idRol, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="row form-group">
             <div class="col-md-12">
                 @Html.LabelFor(model => model.direccion)
-                @Html.TextAreaFor(model => model.direccion, new { @id = "txtDireccion", @class = "form-control", @rows = 2, @placeholder = "Ingrese la dirección" })
+                @Html.TextAreaFor(model => model.direccion, new { @id = "txtDireccion", @class = "form-control", @rows = 2, @placeholder = "Ingrese la dirección", @maxlength = 200 })
             </div>
         </div>
         <div class="row">
             <div class="col-md-8"></div>
             <div class="col-md-4">
-                <button id="btnEditar" name="btnEditar" class="btn btn-primary pull-right btn-guardar hidden" type="submit">Editar&nbsp;<span><i class="fa fa-refresh"></i></span></button>
-                <button id="btnGuardar" name="btnGuardar" class="btn btn-primary pull-right btn-guardar" value="btnGuardar" type="submit">Guardar&nbsp;<span><i class="fa fa-plus"></i></span></button>
                 <button class="btn btn-danger pull-right" id="btnCancelar" type="button" onclick="Cancelar()">Cancelar</button>
+                <button id="btnGuardar" name="btnGuardar" class="btn btn-primary pull-right btn-guardar" type="submit">Guardar&nbsp;<span><i class="fa fa-plus"></i></span></button>
             </div>
         </div>
     </div>
 
 }
 
-<div class="form-group" id="divTablaEmpleados">
-    <h2>Listado de empleados</h2>
+<div class="form-group @(Model.errorValidacion ? "hidden":"")" id="divTablaEmpleados">
     <div class="row">
         <div class="col-md-12"><button class="btn btn-orange" onclick="MostrarDivMantenimiento()">Agregar empleado&nbsp;<span class="fa fa-plus"></span></button></div>
         <br />
@@ -113,7 +113,6 @@
                                     <td>@itemEmpleado.telefono</td>
                                     <td>@(itemEmpleado.direccion.Count() > 50 ? itemEmpleado.direccion.Substring(0,50) + "..." : itemEmpleado.direccion)</td>
                                     <td>
-                                        <button class="btn btn-danger" onclick="EliminarEmpleadoPaso1('@itemEmpleado.idUsuario')"><span class="fa fa-trash"></span> </button>&nbsp;
                                         <button class="btn btn-primary"
                                                 data-idusuario="@itemEmpleado.idUsuario"
                                                 data-nombre="@itemEmpleado.nombre"
@@ -125,6 +124,7 @@
                                                 onclick="CargarDatosEmpleado(this)">
                                             <span class="fa fa-pencil"></span>
                                         </button>
+                                        <button class="btn btn-danger" onclick="EliminarEmpleadoPaso1('@itemEmpleado.idUsuario')"><span class="fa fa-trash"></span> </button>&nbsp;
                                     </td>
                                 </tr>
                             }
@@ -265,9 +265,7 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
         $("#txtTelefono").val(telefono);
         $("#txtCorreo").val(correo);
         $("#ddlRoles").val(idrol);
-        $("#btnEditar").removeClass("hidden");
-        $("#btnGuardar").addClass("hidden");
-        $("#btnEditar").val(idUsuario);
+        $("#hdnIdUsuario").val(idUsuario);
 
         $("#divMantenimiento").removeClass("hidden");
         $("#divTablaEmpleados").addClass("hidden");
@@ -282,13 +280,11 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
         $("#txtTelefono").val("");
         $("#txtCorreo").val("");
         $("#ddlRoles").val("@Guid.Empty");
-        $("#btnEditar").addClass("hidden");
-        $("#btnGuardar").removeClass("hidden");
-        $("#btnEditar").val("");
+        $("#hdnIdUsuario").val("@Guid.Empty");
 
         $("#divMantenimiento").addClass("hidden");
         $("#divTablaEmpleados").removeClass("hidden");
-        $("#tituloMantenimiento").html("Editar empleado");
+        $("#tituloMantenimiento").html("Listado de empleados");
     }
 
     function MostrarDivMantenimiento()
@@ -307,7 +303,7 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
 
 </script>
 <style>
-    #btnCancelar {
+    #btnGuardar,#btnEditar {
         margin-right: 10px;
     }
     .ui-datepicker {

@@ -10,7 +10,7 @@ namespace AgroWebPro.Web.Models
 {
     public class UsuarioModels
     {
-        public Guid idUsuario { get; set; }
+        public Guid? idUsuario { get; set; }
         [Display(Name = "Nombre")]
         [Required(ErrorMessage = "El nombre es requerido")]
         public string nombre { get; set; }
@@ -27,6 +27,7 @@ namespace AgroWebPro.Web.Models
         public string password { get; set; }
 
         [Display(Name = "Repetir contraseña")]
+        [Compare("password", ErrorMessage = "Las contraseñas deben ser iguales")]
         public string passwordRepetir { get; set; }
         
         [Display(Name = "Dirección")]
@@ -39,7 +40,8 @@ namespace AgroWebPro.Web.Models
         public string telefono { get; set; }
 
         [Display(Name = "Rol de usuario")]
-        public Guid idRol { get; set; }
+        [Required(ErrorMessage = "Seleccione un rol")]
+        public Guid? idRol { get; set; }
 
         public string nombreEmpresa { get; set; }
         public Guid idZonaHoraria { get; set; }
@@ -48,6 +50,7 @@ namespace AgroWebPro.Web.Models
         public EmpresaModels empresaModels { get; set; }
         public List<UsuarioModels> listaEmpleadosEmpresa { get; set; }
         public List<RolModels> listaRoles { get; set; }
+        public bool errorValidacion { get; set; }
 
 
         public void CopiarEmpleadosEmpresa(ConsultarEmpleadosEmpresaResponse empleadosEmpresaResponse)
@@ -68,7 +71,7 @@ namespace AgroWebPro.Web.Models
                         usuario.idRol = usuarioItem.IdRol;
                         usuario.nombreRol = usuarioItem.NombreRol;
                         usuario.telefono = usuarioItem.Telefono;
-                        usuario.direccion = usuarioItem.Direccion;
+                        usuario.direccion = usuarioItem.Direccion == null ? "" : usuarioItem.Direccion;
                         listaEmpleadosEmpresa.Add(usuario);
                     }
                 }
@@ -88,7 +91,7 @@ namespace AgroWebPro.Web.Models
                 {
                     RolModels rol = new RolModels()
                     {
-                        idRol = Guid.Empty,
+                        idRol = null,
                         nombreRol = "Seleccione el rol"
                     };
                     listaRoles.Add(rol);
@@ -133,11 +136,35 @@ namespace AgroWebPro.Web.Models
             }
             return listaOpciones;
         }
+
+        public void CopiarUsuario(ConsultarUsuarioResponse usuarioResponse)
+        {
+            try
+            {
+                if(usuarioResponse != null && usuarioResponse.estado.Equals(Constantes.EstadoCorrecto) && usuarioResponse.listaUsuario.Count > 0)
+                {
+                    var usuario = usuarioResponse.listaUsuario[0];
+                    this.idUsuario = usuario.IdUsuario;
+                    this.nombre = usuario.Nombre;
+                    this.apellidos = usuario.Apellidos;
+                    this.correo = usuario.Correo;
+                    this.direccion = usuario.Direccion;
+                    this.idRol = usuario.IdRol;
+                    this.password = usuario.Password;
+                    this.passwordRepetir = usuario.Password;
+                    this.telefono = usuario.Telefono;
+                }
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+        }
     }
 
     public class RolModels
     {
-        public Guid idRol { get; set; }
+        public Guid? idRol { get; set; }
         public string nombreRol { get; set; }
     }
 

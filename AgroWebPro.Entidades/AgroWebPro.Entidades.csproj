@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Consultas\Entrada\ConsultarClientesProveedoresEmpresaRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarOpcionUsuarioRequest.cs" />
+    <Compile Include="Consultas\Entrada\ConsultarReporteTareasRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarTareasUsuarioRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarTareaEmpresaRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarOpcionesRolRequest.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Consultas\Entrada\ConsultarZonasHorariasRequest.cs" />
     <Compile Include="Consultas\Salida\ConsultarClientesProveedoresEmpresaResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarOpcionUsuarioResponse.cs" />
+    <Compile Include="Consultas\Salida\ConsultarReporteTareasResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarTareasUsuarioResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarTareasEmpresaResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarTiposTareasResponse.cs" />
@@ -150,6 +152,9 @@
       <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
     </Compile>
     <Compile Include="PA_ConsultarReporteCosechas_Result.cs">
+      <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PA_ConsultarReporteTareas_Result.cs">
       <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
     </Compile>
     <Compile Include="PA_ConsultarReporteVentas_Result.cs">

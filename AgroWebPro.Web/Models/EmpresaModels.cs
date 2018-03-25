@@ -22,6 +22,7 @@ namespace AgroWebPro.Web.Models
         public List<ZonaHoraria> listaZonasHorarias { get; set; }
         public List<TerrenoModels> listaTerrenosEmpresa { get; set; }
         public string coordenadasTerrenos { get; set; }
+        public Guid idTerreno { get; set; }
 
         public void CopiarListaZonasHorarias(ConsultarZonasHorariasResponse zonasHorariasResponse)
         {

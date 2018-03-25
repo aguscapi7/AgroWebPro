@@ -11,37 +11,51 @@ namespace AgroWebPro.Web.Models
     public class TareaModels
     {
         [Display(Name = "Empleado")]
-        public Guid idUsuarioTarea { get; set; }
+        [Required(ErrorMessage = "Debe seleccionar el usuario")]
+        public Guid? idUsuarioTarea { get; set; }
         public List<TipoTarea> listaTiposTareas { get; set; }
         public List<UsuarioModels> listaEmpleadosEmpresa { get; set; }
         public List<TerrenoModels> listaTerrenosEmpresa { get; set; }
+
         [Display(Name = "Terreno")]
-        public Guid idTerreno { get; set; }
+        [Required(ErrorMessage = "Debe seleccionar el terreno")]
+        public Guid? idTerreno { get; set; }
+
         [Display(Name = "Tipo de tarea")]
+        [Required(ErrorMessage = "Debe seleccionar el tipo de tarea")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar el tipo de tarea")]
         public int idTipoTarea { get; set; }
+
         [Display(Name = "Resumen")]
+        [Required(ErrorMessage = "El resumen es requerido")]
         public string resumen { get; set; }
+
         [Display(Name = "Observaciones")]
         public string observaciones { get; set; }
+
         [Display(Name = "Fecha de inicio")]
-        public DateTime fechaInicio { get; set; }
+        public string fechaInicio { get; set; }
+
         [Display(Name = "Fecha de finalización")]
-        public DateTime fechaFinalizacion { get; set; }
+        public string fechaFinalizacion { get; set; }
+
         [Display(Name = "Horas estimadas")]
+        [Required(ErrorMessage = "Las horas estimadas son requeridas")]
+        [Range(0, int.MaxValue, ErrorMessage = "Las horas deben ser mayor a cero")]
         public decimal horasEstimadas { get; set; }
+
         public List<TareaModels> listaTareas { get; set; }
+
         public Guid idTarea { get; set; }
+
+        public bool erorrValidacion { get; set; }
         public string nombreTerreno { get; set; }
         public string nombreTipoTarea { get; set; }
         public string nombreEmpleado { get; set; }
         public string apellidoEmpleado { get; set; }
-        public decimal kilogramosPrimera { get; set; }
-        public decimal kilogramosSegunda { get; set; }
-        public decimal kilogramosRechazo { get; set; }
-        public string causaRechazo { get; set; }
-        public Guid idUsuarioSupervisor { get; set; }
-        public string codigoVerificadorSupervisor { get; set; }
-        
+
+        public bool errorValidacion { get; set; }
+
         public void CopiarTiposTareas(ConsultarTiposTareasResponse tiposTareasResponse)
         {
             try
@@ -140,12 +154,13 @@ namespace AgroWebPro.Web.Models
                         tarea.resumen = tareaItem.Resumen;
                         tarea.observaciones = tareaItem.Observaciones;
                         tarea.nombreTipoTarea = tareaItem.NombreTarea;
-                        tarea.fechaInicio = tareaItem.FechaInicio;
-                        tarea.fechaFinalizacion = tareaItem.FechaFinalizacion;
+                        tarea.fechaInicio = tareaItem.FechaInicio.ToString("dd/MM/yyyy");
+                        tarea.fechaFinalizacion = tareaItem.FechaFinalizacion.ToString("dd/MM/yyyy");
                         tarea.horasEstimadas = tareaItem.HorasEstimadas;
                         tarea.idUsuarioTarea = tareaItem.IdUsuario;
                         tarea.nombreEmpleado = tareaItem.NombreEmpleado;
                         tarea.apellidoEmpleado = tareaItem.ApellidosEmpleado;
+                        tarea.idTipoTarea = tareaItem.IdTipoTarea;
                         listaTareas.Add(tarea);
                     }
                 }

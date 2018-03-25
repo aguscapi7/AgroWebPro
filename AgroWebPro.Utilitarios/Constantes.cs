@@ -33,7 +33,7 @@ namespace AgroWebPro.Utilitarios
         public static readonly String MenuMantenimientoUsuarios = "Usuario-Mantenimiento";
         public static readonly String MenuTarea = "Tarea-Mantenimiento";
         public static readonly String MenuVenta = "Venta-CrearVenta";
-        public static readonly String MenuClienteProveedor = "Venta-CrearVenta";
+        public static readonly String MenuClienteProveedor = "Venta-MantenimientoClienteProveedor";
         public static readonly String MenuAvanceTarea = "Tarea-AvanceTarea";
         public static readonly String MenuPerfil = "Usuario-Perfil";
 

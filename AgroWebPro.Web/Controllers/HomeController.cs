@@ -90,7 +90,8 @@ namespace AgroWebPro.Web.Controllers
             {
 
             }
-            return View();
+            Session["errorCredenciales"] = true;
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
@@ -226,6 +227,7 @@ namespace AgroWebPro.Web.Controllers
                     terrenosEmpresaRequest.idEmpresa = idEmpresa;
                     terrenosEmpresaResponse = empresa.ConsultarTerrenosEmpresa(terrenosEmpresaRequest);
                     empresaModels.CopiarTerrenosEmpresa(terrenosEmpresaResponse);
+                    empresaModels.listaTerrenosEmpresa.Insert(0, new TerrenoModels {nombreTerreno = "Todos", idTerreno = Guid.Empty });
 
                 }
                 else

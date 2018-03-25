@@ -40,6 +40,7 @@ namespace AgroWebPro.Web.Controllers
                     cultivosEmpresaRequest.idEmpresa = idEmpresa;
                     cultivosEmpresaResponse = empresa.ConsultarCultivosEmpresa(cultivosEmpresaRequest);
                     terrenoModels.CopiarCultivosEmpresa(cultivosEmpresaResponse);
+                    terrenoModels.listaCultivosEmpresa.Insert(0, new CultivoModels { idCultivo = null, nombreCultivo = "Seleccione" });
 
                     terrenosEmpresaRequest = new ConsultarTerrenosEmpresaRequest();
                     terrenosEmpresaRequest.idEmpresa = idEmpresa;
@@ -61,7 +62,7 @@ namespace AgroWebPro.Web.Controllers
 
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult Mantenimiento(TerrenoModels terrenoModels, string btnGuardar, string btnEditar)
+        public ActionResult Mantenimiento(TerrenoModels terrenoModels)
         {
             IEmpresa empresa = new Empresa();
             ICatalogos catalogos = new Catalogos();
@@ -87,53 +88,69 @@ namespace AgroWebPro.Web.Controllers
                 string mensajeCorrecto = "El terreno se ha {0} correctamente.";
                 string mensajeError = "Ocurrió un error al {0} el terreno.";
 
-                if (!string.IsNullOrEmpty(btnGuardar))
+                if (ModelState.IsValid)
                 {
-                    terrenoRequest = new MantenimientoTerrenoRequest()
+                    if (!string.IsNullOrEmpty(terrenoModels.listaCoordenadas))
                     {
-                        tipoOperacion = Constantes.operacionCrear,
-                        idTerreno = Guid.NewGuid(),
-                        nombre = terrenoModels.nombreTerreno,
-                        descripcion = terrenoModels.descripcionTerreno,
-                        idCultivo = terrenoModels.idCultivo,
-                        actualizarCoordenadas = true,
-                        coordenadas = terrenoModels.listaCoordenadas,
-                        idEmpresa = idEmpresa,
-                        ingresadoPor = idUsuario
-                    };
-                    mensajeCorrecto = string.Format(mensajeCorrecto, "guardado");
-                    mensajeError = string.Format(mensajeError, "guardar");
-                }
-                else if (!string.IsNullOrEmpty(btnEditar))
-                {
-                    terrenoRequest = new MantenimientoTerrenoRequest()
-                    {
-                        tipoOperacion = Constantes.operacionModificar,
-                        idTerreno = Guid.Parse(btnEditar),
-                        nombre = terrenoModels.nombreTerreno,
-                        descripcion = terrenoModels.descripcionTerreno,
-                        idCultivo = terrenoModels.idCultivo,
-                        actualizarCoordenadas = terrenoModels.actualizarCoordenadas,
-                        coordenadas = terrenoModels.listaCoordenadas,
-                        idEmpresa = idEmpresa,
-                        ingresadoPor = idUsuario
-                    };
-                    mensajeCorrecto = string.Format(mensajeCorrecto, "editado");
-                    mensajeError = string.Format(mensajeError, "editar");
-                }
+                        if (terrenoModels.idTerreno == null || terrenoModels.idTerreno == Guid.Empty)
+                        {
+                            terrenoRequest = new MantenimientoTerrenoRequest()
+                            {
+                                tipoOperacion = Constantes.operacionCrear,
+                                idTerreno = Guid.NewGuid(),
+                                nombre = terrenoModels.nombreTerreno,
+                                descripcion = terrenoModels.descripcionTerreno,
+                                idCultivo = (Guid)terrenoModels.idCultivo,
+                                actualizarCoordenadas = true,
+                                coordenadas = terrenoModels.listaCoordenadas,
+                                idEmpresa = idEmpresa,
+                                ingresadoPor = idUsuario
+                            };
+                            mensajeCorrecto = string.Format(mensajeCorrecto, "guardado");
+                            mensajeError = string.Format(mensajeError, "guardar");
+                        }
+                        else
+                        {
+                            terrenoRequest = new MantenimientoTerrenoRequest()
+                            {
+                                tipoOperacion = Constantes.operacionModificar,
+                                idTerreno = (Guid)terrenoModels.idTerreno,
+                                nombre = terrenoModels.nombreTerreno,
+                                descripcion = terrenoModels.descripcionTerreno,
+                                idCultivo = (Guid)terrenoModels.idCultivo,
+                                actualizarCoordenadas = terrenoModels.actualizarCoordenadas,
+                                coordenadas = terrenoModels.listaCoordenadas,
+                                idEmpresa = idEmpresa,
+                                ingresadoPor = idUsuario
+                            };
+                            mensajeCorrecto = string.Format(mensajeCorrecto, "editado");
+                            mensajeError = string.Format(mensajeError, "editar");
+                        }
 
-                terrenoResponse = empresa.MantenimientoTerreno(terrenoRequest);
-                if (terrenoResponse != null && terrenoResponse.estado.Equals(Constantes.EstadoCorrecto))
-                {
-                    ModelState.Clear();
-                    terrenoModels = new TerrenoModels();
-                    ViewBag.respuesta = Constantes.EstadoCorrecto;
-                    ViewBag.mensaje = mensajeCorrecto;
+                        terrenoResponse = empresa.MantenimientoTerreno(terrenoRequest);
+                        if (terrenoResponse != null && terrenoResponse.estado.Equals(Constantes.EstadoCorrecto))
+                        {
+                            ModelState.Clear();
+                            terrenoModels = new TerrenoModels();
+                            ViewBag.respuesta = Constantes.EstadoCorrecto;
+                            ViewBag.mensaje = mensajeCorrecto;
+                        }
+                        else
+                        {
+                            ViewBag.respuesta = Constantes.EstadoError;
+                            ViewBag.mensaje = mensajeError;
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.respuesta = Constantes.EstadoError;
+                        ViewBag.mensaje = "Debe ingresar un terreno en el mapa para continuar.";
+                        terrenoModels.errorValidacion = true;
+                    }
                 }
                 else
                 {
-                    ViewBag.respuesta = Constantes.EstadoError;
-                    ViewBag.mensaje = mensajeError;
+                    terrenoModels.errorValidacion = true;
                 }
 
 
@@ -141,6 +158,7 @@ namespace AgroWebPro.Web.Controllers
                 cultivosEmpresaRequest.idEmpresa = idEmpresa;
                 cultivosEmpresaResponse = empresa.ConsultarCultivosEmpresa(cultivosEmpresaRequest);
                 terrenoModels.CopiarCultivosEmpresa(cultivosEmpresaResponse);
+                terrenoModels.listaCultivosEmpresa.Insert(0, new CultivoModels { idCultivo = null, nombreCultivo = "Seleccione" });
 
                 terrenosEmpresaRequest = new ConsultarTerrenosEmpresaRequest();
                 terrenosEmpresaRequest.idEmpresa = idEmpresa;
