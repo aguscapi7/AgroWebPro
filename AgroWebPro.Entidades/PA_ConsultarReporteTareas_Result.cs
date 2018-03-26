@@ -25,5 +25,6 @@ namespace AgroWebPro.Entidades
         public decimal HorasEstimadas { get; set; }
         public System.DateTime FechaInicio { get; set; }
         public System.DateTime FechaFinalizacion { get; set; }
+        public string NombreTarea { get; set; }
     }
 }

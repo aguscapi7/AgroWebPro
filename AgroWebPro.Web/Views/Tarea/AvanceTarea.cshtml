@@ -1,7 +1,100 @@
 ﻿
+@model AgroWebPro.Web.Models.AvanceTareaModels
+@using AgroWebPro.Utilitarios;
 @{
     ViewBag.Title = "Avance de tarea";
 }
+<link href="~/Content/bootstrap-table.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/bootstrap-table.js"></script>
+<link href="~/Content/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert.js"></script>
+<script src="~/Scripts/bootstrap-table-locale-all.min.js"></script>
 
-<h2>Avance de tarea</h2>
+<div class="row">
+    <br>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <h3 style="margin-left:10px;"><span class="fa fa-tasks fa-lg"></span>&nbsp;<span id="tituloMantenimiento">Avance de tarea</span></h3>
+            </div>
+        </div>
+    </nav>
+</div>
+@using (Html.BeginForm("AvanceTarea", "Tarea", FormMethod.Post, new { id = "formCultivo", role = "form", @data_toggle = "validator" }))
+{
+    @Html.AntiForgeryToken();
+    @Html.ValidationSummary(true);
+    <div class="form-group " id="divMantenimiento">
+        <div class="row form-group">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.idTarea)
+                <select id="ddlTareas" name="idTarea" class="form-control">
+                    @if (Model.listaTareaUsuario != null)
+                    {
+                        <option value="">Seleccione</option>
+                        foreach (var itemTarea in Model.listaTareaUsuario)
+                        {
+                            <option value="@itemTarea.idTarea" data-recoleccion="@itemTarea.recoleccion ? 1 : 0" @(Session["idTareaSeleccionada"] != null ? Session["idTareaSeleccionada"].ToString().Equals(itemTarea.idTarea.ToString()) ? "selected" : "" : "")>@itemTarea.nombreTerreno - @itemTarea.nombreTipoTarea - @itemTarea.resumen</option>
+                        }
+                    }
+                </select>
+                @Html.ValidationMessageFor(model => model.idTarea, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.idEstadoTarea)
+                @Html.DropDownListFor(model => model.idEstadoTarea, new SelectList(Model.listaEstadoTarea, "IdEstadoTarea", "NombreEstadoTarea"), new { @id = "ddlEstadoTarea", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.idEstadoTarea, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.horas)
+                @Html.TextBoxFor(model => model.horas, new { @id = "txtHorasEstimadas", @class = "form-control", @placeholder = "Horas estimadas" })
+                @Html.ValidationMessageFor(model => model.horas, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.observaciones)
+                @Html.TextAreaFor(model => model.observaciones, new { @id = "txtObservaciones", @class = "form-control", @placeholder = "Observaciones", @maxlength = 200 })
+                @Html.ValidationMessageFor(model => model.observaciones, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8"></div>
+            <div class="col-md-4">
+                <button class="btn btn-danger pull-right" id="btnCancelar" type="button" onclick="Cancelar()">Cancelar</button>
+                <button id="btnGuardar" name="btnGuardar" class="btn btn-primary pull-right btn-guardar" type="submit">Guardar</button>
+            </div>
+        </div>
+    </div>
+}
+@if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoCorrecto)
+{
+    <script>
+            swal({
+                title: 'Correcto',
+                text: "@ViewBag.mensaje",
+                type: 'success',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Aceptar'
+            });</script>
+}
+else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoError)
+{
+    <script>
+            swal({
+                title: 'Error',
+                text: "@ViewBag.mensaje",
+                type: 'error',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Aceptar'
+            });</script>
+}
 
+<style>
+    #btnGuardar, #btnEditar {
+        margin-right: 10px;
+    }
+</style>

@@ -2,6 +2,7 @@
 @using AgroWebPro.Utilitarios;
 @{
     ViewBag.Title = "Inicio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <link href="~/Content/leaflet.css" rel="stylesheet" />
@@ -9,7 +10,6 @@
 <script src="~/Scripts/leaflet-src.js"></script>
 
 <link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
-<link href="~/Content/reportes.css" rel="stylesheet" />
 
 <script>
     debugger;
@@ -27,46 +27,97 @@
         </div>
     </nav>
 </div>
-    <div class="row">
-    <div class="col-lg-8"><div id="map" style="height:580px;"></div>
+@if (Request.Cookies["usuario"] != null && Request.Cookies["usuario"]["rol"] != null && Request.Cookies["usuario"]["rol"].ToString().Equals("57bcde54-9b6d-417f-a58a-451ab43431cd"))
+{
 
-    </div>
-    <div class="col-lg-4">
-        <!-- Example Pie Chart Card-->
-        <div class="card mb-3">
-            <div class="card-header">
-                <i class="fa fa-pie-chart"></i> Resumen de tareas&nbsp;
-                
-            </div>
-            <div class="card-body">
+    if (Model.listaTareasUsuario != null && Model.listaTareasUsuario.Count > 0)
+    {
+        <h3>Tareas pendientes</h3>
+        foreach (var item in Model.listaTareasUsuario)
+        {
+            <div class="well well-lg">
+                <h3>Información general</h3>
                 <div class="row">
-                    <div class="col-md-6">
-                        <label>Periodo</label>
-                        <select id="ddlTiempo" onchange="CargarTareas()" class="form-control">
-                            <option value="1" selected>Día</option>
-                            <option value="2">Semana</option>
-                            <option value="3">Mes</option>
-                            <option value="4">Año</option>
-                        </select>
+                    <div class="col-md-3">
+                        <label>Fechas:</label>
+                        <p>Inicia @item.fechaInicio y finaliza @item.fechaFinalizacion</p>
                     </div>
-                    <div class="col-md-6" onchange="CargarTareas()">
-                        <label>Terreno</label>
-                        @Html.DropDownListFor(m => Model.idTerreno, new SelectList(Model.listaTerrenosEmpresa, "IdTerreno", "NombreTerreno", Guid.Empty.ToString()), new { @id = "ddlTerrenos", @class = "form-control" })
+                    <div class="col-md-3">
+                        <label>Terreno:</label>
+                        <p>@item.nombreTerreno</p>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Tipo de tarea:</label>
+                        <p>@item.nombreTipoTarea</p>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Horas estimadas:</label>
+                        <p>@item.horasEstimadas</p>
                     </div>
                 </div>
-                
-                <div id="divContenedor">
-                    <canvas id="canvasGrafico" width="100%" height="150"></canvas>
-                </div>
-                <br />
-                <div id="divSinDatos" class="alert alert-warning hidden">
-                    <p><center><strong>No hay datos disponibles</strong></center></p>
-                </div>
+
+                <h3>Descripción de la tarea</h3>
+                <div></div>
+                <p>@item.resumen</p>
+                @if (!string.IsNullOrEmpty(item.observaciones))
+                {   <br />
+                    <p>@item.observaciones</p>
+                }
+                <button class="btn btn-orange" onclick="AbrirAvance('@Url.Action("RedireccionarAvanceTarea", "Tarea", new { idTarea = item.idTarea })')">Realizar avance</button>
             </div>
-            <div class="card-footer small text-muted"></div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-success"><center><h3><strong>No tiene tareas pendientes</strong></h3></center></div>
+    }
+
+}
+else if (Request.Cookies["usuario"] != null && Request.Cookies["usuario"]["rol"] != null && !Request.Cookies["usuario"]["rol"].ToString().Equals("57bcde54-9b6d-417f-a58a-451ab43431cd"))
+{
+    <div class="row">
+        <div class="col-lg-8">
+            <div id="map" style="height:580px;"></div>
+
+        </div>
+        <div class="col-lg-4">
+            <!-- Example Pie Chart Card-->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fa fa-pie-chart"></i> Resumen de tareas&nbsp;
+
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Periodo</label>
+                            <select id="ddlTiempo" onchange="CargarTareas()" class="form-control">
+                                <option value="1" selected>Día</option>
+                                <option value="2">Semana</option>
+                                <option value="3">Mes</option>
+                                <option value="4">Año</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6" onchange="CargarTareas()">
+                            <label>Terreno</label>
+                            @Html.DropDownListFor(m => Model.idTerreno, new SelectList(Model.listaTerrenosEmpresa, "IdTerreno", "NombreTerreno", Guid.Empty.ToString()), new { @id = "ddlTerrenos", @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div id="divContenedor">
+                        <canvas id="canvasGrafico" width="100%" height="150"></canvas>
+                    </div>
+                    <br />
+                    <div id="divSinDatos" class="alert alert-warning hidden">
+                        <p><center><strong>No hay datos disponibles</strong></center></p>
+                    </div>
+                </div>
+                <div class="card-footer small text-muted"></div>
+            </div>
         </div>
     </div>
-    </div>
+}
+
 
 
 <script src="~/Scripts/Chart.js"></script>
@@ -76,6 +127,10 @@
 <script>
 
     var ctx = document.getElementById("canvasGrafico");
+
+    function AbrirAvance(enlace) {
+        window.location.href = enlace;
+    }
 
     CargarTareas();
 

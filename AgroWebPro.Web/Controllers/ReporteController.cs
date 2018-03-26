@@ -28,8 +28,82 @@ namespace AgroWebPro.Web.Controllers
 
         public ActionResult General()
         {
+            ReporteModels reporteModels = new ReporteModels();
             Session[Constantes.MenuActivo] = Constantes.MenuReportes;
-            return View();
+            IEmpresa empresa = new Empresa();
+
+            ConsultarTerrenosEmpresaRequest terrenosEmpresaRequest = null;
+            ConsultarTerrenosEmpresaResponse terrenosEmpresaResponse = null;
+            try
+            {
+                if (Request.Cookies["usuario"] != null)
+                {
+                    string idEmpresaCookie = Request.Cookies["usuario"]["idEmpresa"];
+                    Guid idEmpresa = Guid.Parse(idEmpresaCookie);
+
+                    terrenosEmpresaRequest = new ConsultarTerrenosEmpresaRequest();
+                    terrenosEmpresaRequest.idEmpresa = idEmpresa;
+                    terrenosEmpresaResponse = empresa.ConsultarTerrenosEmpresa(terrenosEmpresaRequest);
+                    reporteModels.CopiarTerrenosEmpresa(terrenosEmpresaResponse);
+                    reporteModels.listaTerrenosEmpresa.Insert(0, new TerrenoModels { idTerreno = Guid.Empty, nombreTerreno = "Todos" });
+                    reporteModels.fechaInicio = DateTime.Now.AddDays(-30).ToString("dd/MM/yyyy");
+                    reporteModels.fechaFin = DateTime.Now.ToString("dd/MM/yyyy");
+
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+            return View(reporteModels);
+        }
+
+        [HttpPost]
+        public ActionResult General(ReporteModels reporteModels)
+        {
+            IEmpresa empresa = new Empresa();
+            IReportes reportes = new Reportes();
+
+            ConsultarTerrenosEmpresaRequest terrenosEmpresaRequest = null;
+            ConsultarTerrenosEmpresaResponse terrenosEmpresaResponse = null;
+
+            ConsultarReporteTareasRequest tareasRequest = null;
+            ConsultarReporteTareasResponse tareasResponse = null;
+            try
+            {
+                if (Request.Cookies["usuario"] != null)
+                {
+                    string idEmpresaCookie = Request.Cookies["usuario"]["idEmpresa"];
+                    Guid idEmpresa = Guid.Parse(idEmpresaCookie);
+
+                    terrenosEmpresaRequest = new ConsultarTerrenosEmpresaRequest();
+                    terrenosEmpresaRequest.idEmpresa = idEmpresa;
+                    terrenosEmpresaResponse = empresa.ConsultarTerrenosEmpresa(terrenosEmpresaRequest);
+                    reporteModels.CopiarTerrenosEmpresa(terrenosEmpresaResponse);
+                    reporteModels.listaTerrenosEmpresa.Insert(0, new TerrenoModels { idTerreno = Guid.Empty, nombreTerreno = "Todos" });
+
+                    tareasRequest = new ConsultarReporteTareasRequest();
+                    tareasRequest.fechaInicio = DateTime.Parse(reporteModels.fechaInicio);
+                    tareasRequest.fechaFinalizacion = DateTime.Parse(reporteModels.fechaFin);
+                    tareasRequest.idTerreno = reporteModels.idTerreno;
+                    tareasRequest.idEmpresa = idEmpresa;
+                    tareasResponse = reportes.ConsultarReporteTareas(tareasRequest);
+                    reporteModels.CopiarReporteTareas(tareasResponse);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return View(reporteModels);
         }
 
         public ActionResult Cosechas()

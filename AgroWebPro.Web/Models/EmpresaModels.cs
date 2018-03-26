@@ -23,6 +23,7 @@ namespace AgroWebPro.Web.Models
         public List<TerrenoModels> listaTerrenosEmpresa { get; set; }
         public string coordenadasTerrenos { get; set; }
         public Guid idTerreno { get; set; }
+        public List<TareaModels> listaTareasUsuario { get; set; }
 
         public void CopiarListaZonasHorarias(ConsultarZonasHorariasResponse zonasHorariasResponse)
         {
@@ -68,6 +69,36 @@ namespace AgroWebPro.Web.Models
                         coordenadasTerrenos += terrenoItem.Coordenadas + "|";
                         contador++;
                         listaTerrenosEmpresa.Add(terreno);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        public void CopiarTareasUsuario(ConsultarTareasUsuarioResponse tareasUsuarioResponse)
+        {
+            try
+            {
+                listaTareasUsuario = new List<TareaModels>();
+                if (tareasUsuarioResponse != null && tareasUsuarioResponse.estado.Equals(Constantes.EstadoCorrecto) && tareasUsuarioResponse.listaTareasUsuario.Count > 0)
+                {
+                    TareaModels tarea = null;
+                    foreach (var tareaItem in tareasUsuarioResponse.listaTareasUsuario)
+                    {
+                        tarea = new TareaModels();
+                        tarea.idTarea = tareaItem.IdTarea;
+                        tarea.resumen = tareaItem.Resumen;
+                        tarea.nombreTerreno = tareaItem.NombreTerreno;
+                        tarea.nombreTipoTarea = tareaItem.NombreTarea;
+                        tarea.recoleccion = tareaItem.Recoleccion;
+                        tarea.fechaInicio = tareaItem.FechaInicio.ToShortDateString();
+                        tarea.fechaFinalizacion = tareaItem.FechaFinalizacion.ToShortDateString();
+                        tarea.horasEstimadas = tareaItem.HorasEstimadas;
+                        tarea.observaciones = tareaItem.Observaciones;
+                        listaTareasUsuario.Add(tarea);
                     }
                 }
             }

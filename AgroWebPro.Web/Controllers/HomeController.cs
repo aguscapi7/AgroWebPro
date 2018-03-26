@@ -210,16 +210,21 @@ namespace AgroWebPro.Web.Controllers
             Session[Constantes.MenuActivo] = Constantes.MenuInicio;
             EmpresaModels empresaModels = new EmpresaModels();
             IEmpresa empresa = new Empresa();
+            ITarea tarea = new Tarea();
 
             ConsultarTerrenosEmpresaRequest terrenosEmpresaRequest = null;
             ConsultarTerrenosEmpresaResponse terrenosEmpresaResponse = null;
 
+            ConsultarTareasUsuarioRequest tareasUsuarioRequest = null;
+            ConsultarTareasUsuarioResponse tareasUsuarioResponse = null;
             try
             {                
                 if (Request.Cookies["usuario"] != null)
                 {
                     string idEmpresaCookie = Request.Cookies["usuario"]["idEmpresa"];
+                    string idUsuarioCookie = Request.Cookies["usuario"]["idUsuario"];
                     Guid idEmpresa = Guid.Parse(idEmpresaCookie);
+                    Guid idUsuario = Guid.Parse(idUsuarioCookie);
 
                     empresaModels.usuario = new UsuarioModels() { nombre = Request.Cookies["usuario"]["nombre"] };
 
@@ -228,6 +233,12 @@ namespace AgroWebPro.Web.Controllers
                     terrenosEmpresaResponse = empresa.ConsultarTerrenosEmpresa(terrenosEmpresaRequest);
                     empresaModels.CopiarTerrenosEmpresa(terrenosEmpresaResponse);
                     empresaModels.listaTerrenosEmpresa.Insert(0, new TerrenoModels {nombreTerreno = "Todos", idTerreno = Guid.Empty });
+
+
+                    tareasUsuarioRequest = new ConsultarTareasUsuarioRequest();
+                    tareasUsuarioRequest.idUsuario = idUsuario;
+                    tareasUsuarioResponse = tarea.ConsultarTareasUsuario(tareasUsuarioRequest);
+                    empresaModels.CopiarTareasUsuario(tareasUsuarioResponse);
 
                 }
                 else

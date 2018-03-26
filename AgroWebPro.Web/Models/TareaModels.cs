@@ -53,8 +53,10 @@ namespace AgroWebPro.Web.Models
         public string nombreTipoTarea { get; set; }
         public string nombreEmpleado { get; set; }
         public string apellidoEmpleado { get; set; }
-
+        public decimal horasReportadas { get; set; }
         public bool errorValidacion { get; set; }
+        public int idEstadoTarea { get; set; }
+        public bool recoleccion { get; set; }
 
         public void CopiarTiposTareas(ConsultarTiposTareasResponse tiposTareasResponse)
         {

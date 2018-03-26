@@ -247,8 +247,112 @@ namespace AgroWebPro.Web.Controllers
         public ActionResult AvanceTarea()
         {
             Session[Constantes.MenuActivo] = Constantes.MenuAvanceTarea;
-            return View();
+            AvanceTareaModels avanceTareaModels = new AvanceTareaModels();
+            ITarea tarea = new Tarea();
+            ICatalogos catalogos = new Catalogos();
+
+            ConsultarEstadoTareaRequest estadoTareaRequest = null;
+            ConsultarEstadoTareaResponse estadoTareaResponse = null;
+
+            ConsultarTareasUsuarioRequest tareasUsuarioRequest = null;
+            ConsultarTareasUsuarioResponse tareasUsuarioResponse = null;
+
+            try
+            {
+                if (Request.Cookies["usuario"] != null)
+                {
+                    Guid idUsuario = Guid.Parse(Request.Cookies["usuario"]["idUsuario"]);
+                    estadoTareaRequest = new ConsultarEstadoTareaRequest();
+                    estadoTareaResponse = catalogos.ConsultarEstadoTarea(estadoTareaRequest);
+                    avanceTareaModels.CopiarEstadoTarea(estadoTareaResponse);
+
+                    tareasUsuarioRequest = new ConsultarTareasUsuarioRequest();
+                    tareasUsuarioRequest.idUsuario = idUsuario;
+                    tareasUsuarioResponse = tarea.ConsultarTareasUsuario(tareasUsuarioRequest);
+                    avanceTareaModels.CopiarTareasUsuario(tareasUsuarioResponse);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                    
+            }
+            catch(Exception ex)
+            {
+
+            }
+            return View(avanceTareaModels);
         }
 
+        [HttpPost]
+        public ActionResult AvanceTarea(AvanceTareaModels avanceTareaModels)
+        {
+            Session[Constantes.MenuActivo] = Constantes.MenuAvanceTarea;
+            ITarea tarea = new Tarea();
+            ICatalogos catalogos = new Catalogos();
+
+            ConsultarEstadoTareaRequest estadoTareaRequest = null;
+            ConsultarEstadoTareaResponse estadoTareaResponse = null;
+
+            ConsultarTareasUsuarioRequest tareasUsuarioRequest = null;
+            ConsultarTareasUsuarioResponse tareasUsuarioResponse = null;
+
+            MantenimientoAvanceTareaUsuarioRequest avanceResquest = null;
+            MantenimientoAvanceTareaUsuarioResponse avanceResponse = null; 
+
+            try
+            {
+                Guid idUsuario = Guid.Parse(Request.Cookies["usuario"]["idUsuario"]);
+                if (ModelState.IsValid)
+                {
+                    string mensajeCorrecto = "El avance de la tarea se ha registrado correctamente.";
+                    string mensajeError = "Ocurrió un error al registrar el avance de la tarea.";
+
+
+                    avanceResquest = new MantenimientoAvanceTareaUsuarioRequest()
+                    {
+                        tipoOperacion = Constantes.operacionCrear,
+                        idTarea = (Guid)avanceTareaModels.idTarea,
+                        horasEstimadas = avanceTareaModels.horas,
+                        idEstadoTarea = avanceTareaModels.idEstadoTarea,
+                        observaciones = avanceTareaModels.observaciones
+
+                    };
+
+                    avanceResponse = tarea.MantenimientoAvanceTareaUsuario(avanceResquest);
+                    if(avanceResponse != null && avanceResponse.estado.Equals(Constantes.EstadoCorrecto))
+                    {
+                        ViewBag.respuesta = Constantes.EstadoCorrecto;
+                        ViewBag.mensaje = mensajeCorrecto;
+                    }
+                    else
+                    {
+                        ViewBag.respuesta = Constantes.EstadoError;
+                        ViewBag.mensaje = mensajeError;
+                    }
+                }
+
+                estadoTareaRequest = new ConsultarEstadoTareaRequest();
+                estadoTareaResponse = catalogos.ConsultarEstadoTarea(estadoTareaRequest);
+                avanceTareaModels.CopiarEstadoTarea(estadoTareaResponse);
+
+                tareasUsuarioRequest = new ConsultarTareasUsuarioRequest();
+                tareasUsuarioRequest.idUsuario = idUsuario;
+                tareasUsuarioResponse = tarea.ConsultarTareasUsuario(tareasUsuarioRequest);
+                avanceTareaModels.CopiarTareasUsuario(tareasUsuarioResponse);
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return View(avanceTareaModels);
+        }
+
+        public ActionResult RedireccionarAvanceTarea(Guid idTarea)
+        {
+            Session["idTareaSeleccionada"] = idTarea;
+            return RedirectToAction("AvanceTarea");
+        }
     }
 }

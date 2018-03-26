@@ -79,7 +79,7 @@
             <div class="col-md-8"></div>
             <div class="col-md-4">
                 <button class="btn btn-danger pull-right" id="btnCancelar" type="button" onclick="Cancelar()">Cancelar</button>
-                <button id="btnGuardar" name="btnGuardar" class="btn btn-primary pull-right btn-guardar" type="submit">Guardar&nbsp;<span><i class="fa fa-plus"></i></span></button>
+                <button id="btnGuardar" name="btnGuardar" class="btn btn-primary pull-right btn-guardar" type="submit">Guardar</button>
             </div>
         </div>
     </div>
@@ -178,7 +178,7 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
             swal({
                 title: 'Error',
                 text: "@ViewBag.mensaje",
-                type: 'danger',
+                type: 'error',
                 confirmButtonColor: '#3085d6',
                 confirmButtonText: 'Aceptar'
             });</script>
@@ -333,7 +333,7 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
 </script>
 
 <style>
-    #btnCancelar {
+    #btnGuardar, #btnEditar {
         margin-right: 10px;
     }
 </style>
