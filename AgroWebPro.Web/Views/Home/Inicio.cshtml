@@ -8,7 +8,7 @@
 <link href="~/Content/leaflet.css" rel="stylesheet" />
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/leaflet-src.js"></script>
-
+<link href="~/Content/reportes.css" rel="stylesheet" />
 <link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
 
 <script>
@@ -22,7 +22,7 @@
     <nav class="navbar navbar-default" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
-                <h3 style="margin-left:10px;"><span class="fa fa-home fa-lg"></span>&nbsp;<span id="tituloMantenimiento">Bienvenido, @Model.usuario.nombre</span></h3>
+                <h3 style="margin-left:10px;"><span class="fa fa-home fa-lg"></span>&nbsp;<span id="tituloMantenimiento">Bienvenido, @Html.Raw(Model.usuario.nombre)</span></h3>
             </div>
         </div>
     </nav>
@@ -130,6 +130,10 @@ else if (Request.Cookies["usuario"] != null && Request.Cookies["usuario"]["rol"]
 
     function AbrirAvance(enlace) {
         window.location.href = enlace;
+    }
+
+    function AgregarTarea(enlace) {
+        window.location.href = '@Url.Action("Mantenimiento", "Tarea")';
     }
 
     CargarTareas();

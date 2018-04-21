@@ -3,6 +3,7 @@
     ViewBag.Title = "Tareas";
 }
 
+<script src="~/Scripts/jquery-1.10.2.js"></script>
 <link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
 <link href="~/Content/reportes.css" rel="stylesheet" />
 
@@ -46,67 +47,82 @@
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
-                <table class="table table-sm" data-show-toggle="true" data-search="true"
-                       data-show-export="true"
-                       data-minimum-count-columns="2"
-                       data-show-pagination-switch="true"
-                       data-pagination="true"
-                       data-page-list="[10, 25, 50, 100, ALL]"
-                       data-locale="es-CR">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Terreno</th>
-                            <th>Empleado</th>
-                            <th>Tipo de tarea</th>
-                            <th>Fecha de inicio</th>
-                            <th>Fecha de finalización</th>
-                            <th>Horas estimadas</th>
-                            <th>Horas reportadas</th>
-                            <th>Resumen</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.listaTareas != null && Model.listaTareas.Count() > 0)
-                        {
-                            foreach (var itemTarea in Model.listaTareas)
+                
+                    
+                    <table class="table table-sm" id="tblResultado" data-show-toggle="true" data-search="true"
+                           data-show-export="true"
+                           data-minimum-count-columns="2"
+                           data-show-pagination-switch="true"
+                           data-pagination="true"
+                           data-page-list="[10, 25, 50, 100, ALL]"
+                           data-locale="es-CR"
+                           data-url="tableExport.json">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th data-field="Terreno">Terreno</th>
+                                <th data-field="Empleado">Empleado</th>
+                                <th data-field="TipoTarea">Tipo de tarea</th>
+                                <th data-field="FechaInicio">Fecha de inicio</th>
+                                <th data-field="FechaFin">Fecha de finalización</th>
+                                <th data-field="HorasEstimadas">Horas estimadas</th>
+                                <th data-field="HorasReportadas">Horas reportadas</th>
+                                <th data-field="Resumen">Resumen</th>
+                                <th data-field="Estado">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.listaTareas != null && Model.listaTareas.Count() > 0)
                             {
-                                <tr>
-                                    <td>@itemTarea.nombreTerreno</td>
-                                    <td>@itemTarea.nombreEmpleado</td>
-                                    <td>@itemTarea.nombreTipoTarea</td>
-                                    <td>@itemTarea.fechaInicio</td>
-                                    <td>@itemTarea.fechaFinalizacion</td>
-                                    <td>@itemTarea.horasEstimadas</td>
-                                    <td>@itemTarea.horasReportadas</td>
-                                    <td>@itemTarea.resumen</td>
-                                    <td>
-                                        @if (itemTarea.idEstadoTarea == 0) {
-                                            <label class="btn btn-danger">No iniciada</label>
-                                        }
-                                        else if (itemTarea.idEstadoTarea == 1)
-                                        {
-                                            <label class="btn btn-info">Iniciada</label>
-                                        }
-                                        else if (itemTarea.idEstadoTarea == 2)
-                                        {
-                                            <label class="btn btn-warning">En proceso</label>
-                                        }
-                                        else if (itemTarea.idEstadoTarea == 3)
-                                        {
-                                            <label class="btn btn-success">Finalizada</label>
-                                        }
-                                    </td>
-                                </tr>
+                                foreach (var itemTarea in Model.listaTareas)
+                                {
+                                    <tr>
+                                        <td>@itemTarea.nombreTerreno</td>
+                                        <td>@itemTarea.nombreEmpleado</td>
+                                        <td>@itemTarea.nombreTipoTarea</td>
+                                        <td>@itemTarea.fechaInicio</td>
+                                        <td>@itemTarea.fechaFinalizacion</td>
+                                        <td>@itemTarea.horasEstimadas</td>
+                                        <td>@itemTarea.horasReportadas</td>
+                                        <td>@itemTarea.resumen</td>
+                                        <td>
+                                            @if (itemTarea.idEstadoTarea == 0)
+                                            {
+                                                <label class="btn btn-danger">No iniciada</label>
+                                            }
+                                            else if (itemTarea.idEstadoTarea == 1)
+                                            {
+                                                <label class="btn btn-info">Iniciada</label>
+                                            }
+                                            else if (itemTarea.idEstadoTarea == 2)
+                                            {
+                                                <label class="btn btn-warning">En proceso</label>
+                                            }
+                                            else if (itemTarea.idEstadoTarea == 3)
+                                            {
+                                                <label class="btn btn-success">Finalizada</label>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
                             }
-                        }
-                        else
-                        {
-                            <tr><td colspan="8"><center>No hay datos disponibles</center></td></tr>
-                        }
+                            else
+                            {
+                                <tr><td colspan="8"><center>No hay datos disponibles</center></td></tr>
+                            }
 
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                    @if (Model.listaTareas != null && Model.listaTareas.Count() > 0)
+                    {
+                        <div id="divExportarExcel">
+                            <a href="#" class="btn btn-success" onclick="$('#tblResultado').tableExport({type:'excel',
+                                                             excelFileFormat:'xmlss',
+                                                             worksheetName: ['Table 1']});">
+                                &nbsp;Exportar a Excel&nbsp;<span><i class="fa fa-save"></i></span>
+                            </a>
+                        </div>
+                    }
+                    
             </div>
         </div>
     </div>
@@ -119,6 +135,12 @@
 <script src="~/Scripts/Chart.js"></script>
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/bootstrap-datepicker.js"></script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+<script src="~/Scripts/tableExport.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/extensions/export/bootstrap-table-export.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/extensions/toolbar/bootstrap-table-toolbar.js"></script>
 <script>
     $('#txtFechaInicio').datepicker({
         changeMonth: true,
@@ -129,7 +151,7 @@
         $(this).datepicker('hide');
     });
 
-    $('#txtFechaFin').datepicker({
+    $('#txtFechaFinalizacion').datepicker({
         changeMonth: true,
         changeYear: true,
         format: "dd/mm/yyyy",

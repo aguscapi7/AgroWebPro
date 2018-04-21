@@ -15,5 +15,7 @@ namespace AgroWebPro.LogicaNegocios.Interfaces
         ConsultarUsuarioLoginResponse ConsultarUsuarioLogin(ConsultarUsuarioLoginRequest request);
         MantenimientoUsuarioResponse MantenimientoUsuario(MantenimientoUsuarioRequest request);
         ConsultarUsuarioResponse ConsultarUsuario(ConsultarUsuarioRequest request);
+        ConsultarTestResponse ConsultarTest(ConsultarTestRequest request);
+        MantenimientoTestResponse MantenimientoTest(MantenimientoTestRequest request);
     }
 }

@@ -127,7 +127,7 @@ namespace AgroWebPro.Entidades
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_MantenimientoUsuario", tipoOperacionParameter, idUsuarioParameter, nombreParameter, apellidosParameter, correoParameter, passwordParameter, direccionParameter, telefonoParameter, ingresadoPorParameter, rolParameter, activoParameter, idEmpresaParameter, estado, mensaje);
         }
     
-        public virtual ObjectResult<PA_ConsultarUsuarioLogin_Result> PA_ConsultarUsuarioLogin(string correo, string password, ObjectParameter estado, ObjectParameter mensaje)
+        public virtual ObjectResult<PA_ConsultarUsuarioLogin_Result> PA_ConsultarUsuarioLogin(string correo, string password, Nullable<bool> olvido, ObjectParameter estado, ObjectParameter mensaje)
         {
             var correoParameter = correo != null ?
                 new ObjectParameter("Correo", correo) :
@@ -137,7 +137,11 @@ namespace AgroWebPro.Entidades
                 new ObjectParameter("Password", password) :
                 new ObjectParameter("Password", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarUsuarioLogin_Result>("PA_ConsultarUsuarioLogin", correoParameter, passwordParameter, estado, mensaje);
+            var olvidoParameter = olvido.HasValue ?
+                new ObjectParameter("Olvido", olvido) :
+                new ObjectParameter("Olvido", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarUsuarioLogin_Result>("PA_ConsultarUsuarioLogin", correoParameter, passwordParameter, olvidoParameter, estado, mensaje);
         }
     
         public virtual int PA_MantenimientoCultivo(Nullable<int> tipoOperacion, Nullable<System.Guid> idCultivo, string nombre, string descripcion, Nullable<int> idFamilia, Nullable<System.Guid> ingresadoPor, Nullable<bool> activo, Nullable<System.Guid> idEmpresa, ObjectParameter estado, ObjectParameter mensaje)
@@ -477,6 +481,28 @@ namespace AgroWebPro.Entidades
                 new ObjectParameter("IdTerreno", typeof(System.Guid));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarReporteTareas_Result>("PA_ConsultarReporteTareas", idEmpresaParameter, fechaInicioParameter, fechaFinalizacionParameter, idTerrenoParameter, estado, mensaje);
+        }
+    
+        public virtual ObjectResult<PA_ConsultarTest_Result> PA_ConsultarTest(ObjectParameter estado, ObjectParameter mensaje)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarTest_Result>("PA_ConsultarTest", estado, mensaje);
+        }
+    
+        public virtual int PA_MantenimientoTest(Nullable<int> tipoOperacion, Nullable<int> idUsuario, string nombre, ObjectParameter estado, ObjectParameter mensaje)
+        {
+            var tipoOperacionParameter = tipoOperacion.HasValue ?
+                new ObjectParameter("TipoOperacion", tipoOperacion) :
+                new ObjectParameter("TipoOperacion", typeof(int));
+    
+            var idUsuarioParameter = idUsuario.HasValue ?
+                new ObjectParameter("IdUsuario", idUsuario) :
+                new ObjectParameter("IdUsuario", typeof(int));
+    
+            var nombreParameter = nombre != null ?
+                new ObjectParameter("Nombre", nombre) :
+                new ObjectParameter("Nombre", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_MantenimientoTest", tipoOperacionParameter, idUsuarioParameter, nombreParameter, estado, mensaje);
         }
     }
 }

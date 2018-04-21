@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Inicio</title>
+
+    <!-- css -->
+    <link href="~/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="plugins/cubeportfolio/css/cubeportfolio.min.css">
+
+    <link href="~/Content/inicio/style.css" rel="stylesheet" />
+    <link href="~/Content/inicio/animate.css" rel="stylesheet" />
+    <link href="~/Content/inicio/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/login.css" rel="stylesheet" />
+    <link href="~/Content/inicio/nivo-lightbox.css" rel="stylesheet" />
+    <link href="~/Content/inicio/owl.carousel.css" rel="stylesheet" />
+    <link href="~/Content/inicio/owl.theme.css" rel="stylesheet" />
+
+    <!-- boxed bg -->
+    <link href="~/Content/bodybg/bg1.css" rel="stylesheet" />
+    <!-- template skin -->
+    <link href="~/Content/color/default.css" rel="stylesheet" />
+</head>
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-custom">
+
+
+    <div id="wrapper">
+
+        
+        @RenderBody()
+
+
+        
+        <div class="modal fade modalPageLoad" id="modalPageLoad" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" style="margin-top: 20%; overflow-y: auto;">
+                <div class="modal-content contentPageLoad">
+                    <div class="progress"><div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"></div></div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modalPageLoad -->
+    </div>
+    <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
+
+    <!-- Core JavaScript Files -->
+    <script src="~/Scripts/inicio/jquery.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/inicio/jquery.easing.min.js"></script>
+    <script src="~/Scripts/inicio/wow.min.js"></script>
+    <script src="~/Scripts/inicio/jquery.scrollTo.js"></script>
+    <script src="~/Scripts/inicio/jquery.appear.js"></script>
+    <script src="~/Scripts/inicio/stellar.js"></script>
+    <script src="~/Scripts/inicio/owl.carousel.min.js"></script>
+    <script src="~/Scripts/inicio/nivo-lightbox.min.js"></script>
+    <script src="~/Scripts/inicio/custom.js"></script>
+    
+</body>
+
+</html>

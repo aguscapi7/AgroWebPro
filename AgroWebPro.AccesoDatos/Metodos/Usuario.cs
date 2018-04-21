@@ -72,6 +72,7 @@ namespace AgroWebPro.AccesoDatos.Metodos
                     response.listaUsuarioLogin = modelo.PA_ConsultarUsuarioLogin(
                                                      request.correo
                                                     , request.password
+                                                    , request.olvido
                                                     , estado
                                                     , mensaje).ToList();
                     if (estado.Value.ToString().Equals(Constantes.EstadoError))
@@ -118,6 +119,67 @@ namespace AgroWebPro.AccesoDatos.Metodos
             }
             return response;
         }
+        public ConsultarTestResponse ConsultarTest(ConsultarTestRequest request)
+        {
+            ConsultarTestResponse response = new ConsultarTestResponse();
+            ObjectParameter estado = new ObjectParameter("Estado", Constantes.EstadoCorrecto);
+            ObjectParameter mensaje = new ObjectParameter("Mensaje", string.Empty);
+            try
+            {
+                using (AgroWebProEntities modelo = new AgroWebProEntities())
+                {
+                    response.listaNombres = modelo.PA_ConsultarTest(
+                                                     estado
+                                                    , mensaje).ToList();
+                    if (estado.Value.ToString().Equals(Constantes.EstadoError))
+                    {
+                        response.estado = Constantes.EstadoError;
+                        response.mensaje = Constantes.MensajeErrorAccesoDatos + mensaje.Value.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorAccesoDatos + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                throw;
+            }
+            return response;
+        }
 
+        public MantenimientoTestResponse MantenimientoTest(MantenimientoTestRequest request)
+        {
+            MantenimientoTestResponse response = new MantenimientoTestResponse();
+            ObjectParameter estado = new ObjectParameter("Estado", Constantes.EstadoCorrecto);
+            ObjectParameter mensaje = new ObjectParameter("Mensaje", string.Empty);
+            try
+            {
+                using (AgroWebProEntities modelo = new AgroWebProEntities())
+                {
+                    modelo.PA_MantenimientoTest(request.tipoOperacion
+                                                    , request.id
+                                                    , request.nombre
+                                                    , estado
+                                                    , mensaje);
+                    if (estado.Value.ToString().Equals(Constantes.EstadoError))
+                    {
+                        response.estado = Constantes.EstadoError;
+                        response.mensaje = Constantes.MensajeErrorAccesoDatos + mensaje.Value.ToString();
+                    }
+                    else if (estado.Value.ToString().Equals(Constantes.EstadoErrorCustom))
+                    {
+                        response.estado = Constantes.EstadoErrorCustom;
+                        response.mensaje = mensaje.Value.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorAccesoDatos + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                throw;
+            }
+            return response;
+        }
     }
 }

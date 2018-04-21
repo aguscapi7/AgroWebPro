@@ -8,6 +8,7 @@ using AgroWebPro.Utilitarios;
 using AgroWebPro.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -121,6 +122,9 @@ namespace AgroWebPro.Web.Controllers
             IUsuario usuario = new Usuario();
             IEmpresa empresa = new Empresa();
             ICatalogos catalogos = new Catalogos();
+            ISeguridad seguridad = new Seguridad();
+
+            UsuarioModels usuarioModels = new UsuarioModels();
 
             MantenimientoUsuarioResponse usuarioResponse = null ;
             MantenimientoUsuarioRequest usuarioRequest = null;
@@ -128,7 +132,9 @@ namespace AgroWebPro.Web.Controllers
             MantenimientoEmpresaResponse empresaResponse = null;
             MantenimientoEmpresaRequest empresaRequest = null;
 
-            
+            ConsultarOpcionesRolResponse opcionesRolResponse = null;
+            ConsultarOpcionesRolRequest opcionesRolRequest = null;
+
             ConsultarZonasHorariasRequest zonasHorariasRequest = null;
 
             try
@@ -183,7 +189,16 @@ namespace AgroWebPro.Web.Controllers
                                 cookie.Expires = DateTime.Now.AddDays(1);
                                 Response.Cookies.Add(cookie);
 
-                                return RedirectToAction("Inicio", "Principal");
+                                opcionesRolRequest = new ConsultarOpcionesRolRequest();
+                                opcionesRolRequest.idRol = usuarioRequest.rol;
+                                opcionesRolResponse = seguridad.ConsultarOpcionesRol(opcionesRolRequest);
+                                if (opcionesRolResponse != null && opcionesRolResponse.estado.Equals(Constantes.EstadoCorrecto) && opcionesRolResponse.listaOpcionesRol.Count > 0)
+                                {
+                                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                                    cookie.Values["opciones-menu"] = serializer.Serialize(usuarioModels.CopiarOpcionesRol(opcionesRolResponse));
+                                }
+
+                                return RedirectToAction("Inicio");
                             }
                             else if (usuarioResponse != null && usuarioResponse.estado.Equals(Constantes.EstadoErrorCustom))
                             {
@@ -272,6 +287,60 @@ namespace AgroWebPro.Web.Controllers
 
             }
             return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult OlvidoContrasenna(string correo)
+        {
+            ConsultarUsuarioLoginRequest usuarioLoginRequest = null;
+            ConsultarUsuarioLoginResponse usuarioLoginResponse = null;
+
+            MantenimientoUsuarioResponse mantenimientoUsuarioResponse = null;
+            MantenimientoUsuarioRequest mantenimientoUsuarioRequest = null;
+            IUsuario usuario = new Usuario();
+
+            string resultado = Constantes.EstadoError;
+            string mensaje = string.Empty;
+            try
+            {
+                usuarioLoginRequest = new ConsultarUsuarioLoginRequest();
+                usuarioLoginRequest.correo = correo;
+                usuarioLoginRequest.olvido = true;
+
+                usuarioLoginResponse = usuario.ConsultarUsuarioLogin(usuarioLoginRequest);
+
+                if(usuarioLoginResponse != null && usuarioLoginResponse.estado.Equals(Constantes.EstadoCorrecto) && usuarioLoginResponse.listaUsuarioLogin.Count() > 0)
+                {
+                    var usuarioLogin = usuarioLoginResponse.listaUsuarioLogin[0];
+                    string[] partesClave = Guid.NewGuid().ToString().Split('-');
+                    string claveTemporal = partesClave[0] + partesClave[1];
+
+                    mantenimientoUsuarioRequest = new MantenimientoUsuarioRequest();
+                    mantenimientoUsuarioRequest.idUsuario = usuarioLogin.IdUsuario;
+                    mantenimientoUsuarioRequest.password = claveTemporal;
+                    mantenimientoUsuarioRequest.tipoOperacion = Constantes.operacionActualizarPassword;
+
+                    mantenimientoUsuarioResponse = usuario.MantenimientoUsuario(mantenimientoUsuarioRequest);
+
+                    string correoSalida = ConfigurationManager.AppSettings["DireccionCorreo"].ToString();
+                    string claveCorreoSalida = ConfigurationManager.AppSettings["ClaveCorreo"].ToString();
+                    string cuerpo = "{0}, se ha restablecido su cuenta en AgroWebPro.<br/><label><strong>Usuario: {1}</strong></label><br/><label><strong>Contraseña temporal: {2}</strong></label></br>Ingresar <a href=\"localhost/AgroWebPro.Web/\">www.agrowebpro.com</a> ";
+                    Utilitarios.Utilitarios.EnvioCorreo(correo, "Restablecer cuenta AgroWebPro", string.Format(cuerpo, usuarioLogin.Nombre, usuarioLogin.Correo, claveTemporal), correoSalida, claveCorreoSalida);
+                    
+                    mensaje = "Se envió un correo a {0} con los detalles para restablecer la contraseña";
+                    mensaje = string.Format(mensaje, correo);
+                    resultado = Constantes.EstadoCorrecto;
+                }
+                else
+                {
+                    mensaje = "El correo no se encuentra registrado en el sistema";
+                }
+
+            }
+            catch(Exception ex)
+            {
+
+            }
+            return Json(new { resultado = resultado, mensaje = mensaje });
         }
     }
 }

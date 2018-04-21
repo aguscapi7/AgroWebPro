@@ -59,6 +59,7 @@
     <Compile Include="Consultas\Entrada\ConsultarTiposTareasRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarReporteVentasRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarEstadoTareaRequest.cs" />
+    <Compile Include="Consultas\Entrada\ConsultarTestRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarUsuarioRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarEmpresaRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarTerrenosEmpresaRequest.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Consultas\Salida\ConsultarReporteVentasResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarEstadoTareaResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarOpcionesRolResponse.cs" />
+    <Compile Include="Consultas\Salida\ConsultarTestResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarUsuarioResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarEmpresaResponse .cs" />
     <Compile Include="Consultas\Salida\ConsultarTerrenosEmpresaResponse.cs" />
@@ -102,6 +104,7 @@
     <Compile Include="Mantenimientos\Entrada\MantenimientoCultivoRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoEmpresaRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoClienteProveedorRequest.cs" />
+    <Compile Include="Mantenimientos\Entrada\MantenimientoTestRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoUsuarioRequest.cs" />
     <Compile Include="Mantenimientos\Salida\CrearRecoleccionCultivoResponse.cs" />
     <Compile Include="Mantenimientos\Salida\MantenimientoAvanceTareaUsuarioResponse.cs" />
@@ -111,6 +114,7 @@
     <Compile Include="Mantenimientos\Salida\MantenimientoCultivoResponse.cs" />
     <Compile Include="Mantenimientos\Salida\MantenimientoEmpresaResponse.cs" />
     <Compile Include="Mantenimientos\Salida\MantenimientoClienteProveedorResponse.cs" />
+    <Compile Include="Mantenimientos\Salida\MantenimientoTestResponse.cs" />
     <Compile Include="Mantenimientos\Salida\MantenimientoUsuarioResponse.cs" />
     <Compile Include="ModelAgroWebPro.Context.cs">
       <AutoGen>True</AutoGen>
@@ -173,6 +177,9 @@
       <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
     </Compile>
     <Compile Include="PA_ConsultarTerreno_Result.cs">
+      <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PA_ConsultarTest_Result.cs">
       <DependentUpon>ModelAgroWebPro.tt</DependentUpon>
     </Compile>
     <Compile Include="PA_ConsultarTiposTareas_Result.cs">

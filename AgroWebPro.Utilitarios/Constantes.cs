@@ -12,6 +12,7 @@ namespace AgroWebPro.Utilitarios
         public static readonly int operacionCrear = 1;
         public static readonly int operacionModificar = 2;
         public static readonly int operacionDesactivar = 3;
+        public static readonly int operacionActualizarPassword = 4;
 
 
         public static readonly String EstadoCorrecto = "00";
@@ -38,5 +39,7 @@ namespace AgroWebPro.Utilitarios
         public static readonly String MenuPerfil = "Usuario-Perfil";
 
         public static readonly String OpcionesRol = "OpcionesRol";
+        public static readonly String RolAgricultor = "57bcde54-9b6d-417f-a58a-451ab43431cd";
+        
     }
 }

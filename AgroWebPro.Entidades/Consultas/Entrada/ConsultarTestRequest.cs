@@ -7,10 +7,7 @@ using System.Threading.Tasks;
 
 namespace AgroWebPro.Entidades.Consultas.Entrada
 {
-    public class ConsultarUsuarioLoginRequest:EntradaBase
+    public class ConsultarTestRequest:EntradaBase
     {
-        public string correo { get; set; }
-        public string password { get; set; }
-        public bool olvido { get; set; }
     }
 }

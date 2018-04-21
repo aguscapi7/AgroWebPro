@@ -143,7 +143,7 @@ namespace AgroWebPro.Web.Controllers
                         {
                             string correoSalida = ConfigurationManager.AppSettings["DireccionCorreo"].ToString();
                             string claveCorreoSalida = ConfigurationManager.AppSettings["ClaveCorreo"].ToString();
-                            string cuerpo = "{0}, se ha creado una cuenta en AgroWebPro.<br/><label><strong>Usuario: {1}</strong></label><br/><label><strong>Contraseña: {2}</strong></label></br>Ingresar <a href=\"http://localhost/AgroWebPro/\">www.agrowebpro.com</a> ";
+                            string cuerpo = "{0}, se ha creado una cuenta en AgroWebPro.<br/><label><strong>Usuario: {1}</strong></label><br/><label><strong>Contraseña: {2}</strong></label></br>Ingresar <a href=\"correo.s-com.com/agendarcitas.regionalsoft.web/\">www.agrowebpro.com</a> ";
                             Utilitarios.Utilitarios.EnvioCorreo(empleadoRequest.correo, "Creación cuenta AgroWebPro", string.Format(cuerpo,empleadoRequest.nombre,empleadoRequest.correo,empleadoRequest.password), correoSalida, claveCorreoSalida);
 
                         }
@@ -152,10 +152,17 @@ namespace AgroWebPro.Web.Controllers
                         ViewBag.respuesta = Constantes.EstadoCorrecto;
                         ViewBag.mensaje = mensajeCorrecto;
                     }
+                    else if(empleadoResponse != null && empleadoResponse.estado.Equals(Constantes.EstadoErrorCustom))
+                    {
+                        ViewBag.respuesta = Constantes.EstadoError;
+                        ViewBag.mensaje = empleadoResponse.mensaje;
+                        usuarioModels.errorValidacion = true;
+                    }
                     else
                     {
                         ViewBag.respuesta = Constantes.EstadoError;
                         ViewBag.mensaje = mensajeError;
+                        usuarioModels.errorValidacion = true;
                     }
 
                 }

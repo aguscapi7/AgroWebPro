@@ -89,6 +89,10 @@
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
+        <Function Name="PA_ConsultarTest" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
         <Function Name="PA_ConsultarTiposTareas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
@@ -105,6 +109,7 @@
         <Function Name="PA_ConsultarUsuarioLogin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Correo" Type="varchar" Mode="In" />
           <Parameter Name="Password" Type="varchar" Mode="In" />
+          <Parameter Name="Olvido" Type="bit" Mode="In" />
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
@@ -176,6 +181,13 @@
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
+        <Function Name="PA_MantenimientoTest" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TipoOperacion" Type="int" Mode="In" />
+          <Parameter Name="IdUsuario" Type="int" Mode="In" />
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
         <Function Name="PA_MantenimientoUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="TipoOperacion" Type="int" Mode="In" />
           <Parameter Name="IdUsuario" Type="uniqueidentifier" Mode="In" />
@@ -234,6 +246,7 @@
           <FunctionImport Name="PA_ConsultarUsuarioLogin" ReturnType="Collection(AgroWebProModel.PA_ConsultarUsuarioLogin_Result)">
             <Parameter Name="Correo" Mode="In" Type="String" />
             <Parameter Name="Password" Mode="In" Type="String" />
+            <Parameter Name="Olvido" Mode="In" Type="Boolean" />
             <Parameter Name="Estado" Mode="InOut" Type="String" />
             <Parameter Name="Mensaje" Mode="InOut" Type="String" />
           </FunctionImport>
@@ -382,6 +395,17 @@
             <Parameter Name="FechaInicio" Mode="In" Type="DateTime" />
             <Parameter Name="FechaFinalizacion" Mode="In" Type="DateTime" />
             <Parameter Name="IdTerreno" Mode="In" Type="Guid" />
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PA_ConsultarTest" ReturnType="Collection(AgroWebProModel.PA_ConsultarTest_Result)">
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PA_MantenimientoTest">
+            <Parameter Name="TipoOperacion" Mode="In" Type="Int32" />
+            <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
+            <Parameter Name="Nombre" Mode="In" Type="String" />
             <Parameter Name="Estado" Mode="InOut" Type="String" />
             <Parameter Name="Mensaje" Mode="InOut" Type="String" />
           </FunctionImport>
@@ -605,6 +629,11 @@
           <Property Type="DateTime" Name="FechaInicio" Nullable="false" Precision="23" />
           <Property Type="DateTime" Name="FechaFinalizacion" Nullable="false" Precision="23" />
           <Property Type="String" Name="NombreTarea" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="PA_ConsultarTest_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="nombre" Nullable="false" MaxLength="200" />
+          <Property Type="DateTime" Name="fechaIngreso" Nullable="false" Precision="23" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -912,6 +941,16 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PA_ConsultarTest" FunctionName="AgroWebProModel.Store.PA_ConsultarTest">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AgroWebProModel.PA_ConsultarTest_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="fechaIngreso" ColumnName="fechaIngreso" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PA_MantenimientoTest" FunctionName="AgroWebProModel.Store.PA_MantenimientoTest" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

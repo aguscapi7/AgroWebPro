@@ -53,7 +53,25 @@
             <p>&copy; @DateTime.Now.Year - AgroWebPro / Un desarrollo de CPSoft</p>
         </footer>
     </div>
+    <div class="modal fade modalPageLoad" id="modalPageLoad" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog" style="margin-top: 20%; overflow-y: auto;">
+            <div class="modal-content contentPageLoad">
+                <div class="progress"><div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"></div></div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modalPageLoad -->
     <script>
+        // Antes de cargar la pantalla muestra el model panel
+        window.onbeforeunload = function (e) {
+            if (!($("#modalPageLoad").data('bs.modal') || {}).isShown)
+                $('#modalPageLoad').modal('show');
+        };
+
+        // Una vez cargado los datos se oculta el modal panel
+        window.onunload = function (e) {
+            if (($("#modalPageLoad").data('bs.modal') || {}).isShown)
+                $('#modalPageLoad').modal('hide');
+        };
         function AbrirEnlace(enlace) {
             window.location.href = enlace;
         }

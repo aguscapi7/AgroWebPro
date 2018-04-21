@@ -1,0 +1,218 @@
+﻿@model AgroWebPro.Web.Models.TestModels
+@using AgroWebPro.Utilitarios;
+@{
+    ViewBag.Title = "Test";
+    Layout = "~/Views/Shared/_LayoutTest.cshtml";
+}
+
+<link href="~/Content/bootstrap-table.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/bootstrap-table.js"></script>
+<link href="~/Content/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert.js"></script>
+<script src="~/Scripts/bootstrap-table-locale-all.min.js"></script>
+
+<div class="row">
+    <br>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <center>
+                <div >
+                    <h3 style="margin-left:10px;"><span class="fa fa-user fa-lg"></span>&nbsp;<span id="tituloMantenimiento">Usuarios </span></h3>
+
+                </div>
+            </center>
+        </div>
+    </nav>
+</div>
+@using (Html.BeginForm("Test", "Santiago", FormMethod.Post, new { id = "formTest", role = "form", @data_toggle = "validator" }))
+{
+    @Html.AntiForgeryToken();
+    @Html.ValidationSummary(true);
+    <div class="form-group">
+        <div class="row form-group">
+            <div class="col-md-3"></div>
+            <div class="col-md-6 divPrincipal">
+                <input id="hdnIdTest" type="hidden" />
+                @Html.LabelFor(model => model.nombre)
+                @Html.TextBoxFor(model => model.nombre, new { @id = "txtNombre", @class = "form-control", @placeholder = "Ingrese el nombre" })
+                @Html.ValidationMessageFor(model => model.nombre, "", new { @class = "text-danger" })
+
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6 divPrincipal">
+                <button class="btn btn-warning pull-right" id="btnCancelar" type="button" onclick="Cancelar()">Limpiar</button>
+                <button id="btnGuardar" name="btnGuardar" class="btn btn-primary pull-right btn-guardar" type="submit">Agregar</button>
+            </div>
+
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+}
+
+
+<div class="form-group" id="divTablaTest">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 divPrincipal">
+            <div class="table-responsive">
+                <table class="table table-sm table-hover" 
+                        data-detail-formatter="detailFormatter"
+                        data-minimum-count-columns="2"
+                        data-show-pagination-switch="true"
+                        data-pagination="true"
+                        data-page-list="[10, 25, 50, 100, ALL]"
+                        data-locale="en-US">
+                    <thead class="thead-default">
+                        <tr>
+                            <th>Id</th>
+                            <th>Nombre</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.listaTest != null && Model.listaTest.Count() > 0)
+                    {
+                        foreach (var itemCultivo in Model.listaTest)
+                        {
+                                <tr>
+                                    <td>@itemCultivo.id</td>
+                                    <td>@itemCultivo.nombre</td>
+                                    <td>
+                                        <button class="btn btn-danger" onclick="EliminarCultivoPaso1('@itemCultivo.id')"><span class="fa fa-trash"></span> </button>&nbsp;
+                                    </td>
+                                </tr>
+                        }
+                    }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+<script src="~/Scripts/sweetalert.min.js"></script>
+<script src="~/Scripts/jquery.numeric.js"></script>
+    @if(ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoCorrecto)
+    {
+        <script>
+            swal({
+                title: 'Correcto',
+                text: "@ViewBag.mensaje",
+                type: 'success',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Aceptar'
+            });</script>
+    }
+    else if(ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoError)
+    {
+        <script>
+            swal({
+                title: 'Error',
+                text: "@ViewBag.mensaje",
+                type: 'error',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Aceptar'
+            });</script>
+    }
+
+<script>
+
+
+    $('table').bootstrapTable({
+        editable: true
+    });
+
+
+    function EliminarCultivo() {
+        var parametros = {
+            id: $("#hdnIdTest").val()
+        };
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: '@Url.Action("Eliminar", "Santiago")',
+            data: parametros,
+            success: function (data) {
+                if (data.respuesta == '@Constantes.EstadoCorrecto')
+                {
+                    swal({
+                        title: 'Correcto',
+                        text: "El usuario se ha borrado correctamente",
+                        type: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Aceptar'
+                    }).then(function (isConfirm) {
+                        window.location.href = window.location.href;
+                    });
+
+                    
+                }
+                else
+                {
+                    swal({
+                        title: 'Error',
+                        text: "Ocurrio un error al borrar el usuario",
+                        type: 'error',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Aceptar'
+                    }).then(function (isConfirm) {
+                        window.location.href = window.location.href;
+                    });
+                }
+
+            }
+        });
+    }
+
+    function EliminarCultivoPaso1(idCultivo)
+    {
+        swal({
+            title: '',
+            text: "Esta accion eliminara el usuario",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Borrar',
+            cancelButtonText: 'Cancelar'
+        }).then(function (isConfirm) {
+            if (isConfirm)
+            {
+                $("#hdnIdTest").val(idCultivo);
+                EliminarCultivo();
+            }
+
+        })
+    }
+
+ 
+
+    function Cancelar()
+    {
+        $("#txtNombre").val("");
+        $("#hdnIdTest").val("");
+        //$(".text-danger").addClass("hidden");
+    }
+
+</script>
+<style>
+    #btnGuardar{
+        margin-right: 10px;
+        margin-top:5px;
+    }
+    .btn {
+        text-transform: none;
+    }
+    .divPrincipal{
+        margin: 10px;
+    }
+</style>

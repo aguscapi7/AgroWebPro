@@ -92,16 +92,19 @@ namespace AgroWebPro.Web.Models
                     UsuarioModels usuario = null;
                     foreach (var usuarioItem in empleadosEmpresaResponse.listaEmpleadosEmpresa)
                     {
-                        usuario = new UsuarioModels();
-                        usuario.idUsuario = usuarioItem.IdUsuario;
-                        usuario.nombre = usuarioItem.Nombre;
-                        usuario.apellidos = usuarioItem.Apellidos;
-                        usuario.correo = usuarioItem.Correo;
-                        usuario.idRol = usuarioItem.IdRol;
-                        usuario.nombreRol = usuarioItem.NombreRol;
-                        usuario.telefono = usuarioItem.Telefono;
-                        usuario.direccion = usuarioItem.Direccion;
-                        listaEmpleadosEmpresa.Add(usuario);
+                        if (usuarioItem.IdRol.ToString().Equals(Constantes.RolAgricultor))
+                        {
+                            usuario = new UsuarioModels();
+                            usuario.idUsuario = usuarioItem.IdUsuario;
+                            usuario.nombre = usuarioItem.Nombre;
+                            usuario.apellidos = usuarioItem.Apellidos;
+                            usuario.correo = usuarioItem.Correo;
+                            usuario.idRol = usuarioItem.IdRol;
+                            usuario.nombreRol = usuarioItem.NombreRol;
+                            usuario.telefono = usuarioItem.Telefono;
+                            usuario.direccion = usuarioItem.Direccion;
+                            listaEmpleadosEmpresa.Add(usuario);
+                        }
                     }
                 }
             }
