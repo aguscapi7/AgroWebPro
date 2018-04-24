@@ -366,7 +366,7 @@ namespace AgroWebPro.Entidades
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarClientesProveedoresEmpresa_Result>("PA_ConsultarClientesProveedoresEmpresa", idEmpresaParameter, esClienteParameter, estado, mensaje);
         }
     
-        public virtual ObjectResult<PA_ConsultarReporteCosechas_Result> PA_ConsultarReporteCosechas(Nullable<System.DateTime> fechaInicio, Nullable<System.DateTime> fechaFin, Nullable<System.Guid> idCultivo, ObjectParameter estado, ObjectParameter mensaje)
+        public virtual ObjectResult<PA_ConsultarReporteCosechas_Result> PA_ConsultarReporteCosechas(Nullable<System.DateTime> fechaInicio, Nullable<System.DateTime> fechaFin, Nullable<System.Guid> idCultivo, Nullable<System.Guid> idEmpresa, ObjectParameter estado, ObjectParameter mensaje)
         {
             var fechaInicioParameter = fechaInicio.HasValue ?
                 new ObjectParameter("FechaInicio", fechaInicio) :
@@ -380,7 +380,11 @@ namespace AgroWebPro.Entidades
                 new ObjectParameter("IdCultivo", idCultivo) :
                 new ObjectParameter("IdCultivo", typeof(System.Guid));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarReporteCosechas_Result>("PA_ConsultarReporteCosechas", fechaInicioParameter, fechaFinParameter, idCultivoParameter, estado, mensaje);
+            var idEmpresaParameter = idEmpresa.HasValue ?
+                new ObjectParameter("IdEmpresa", idEmpresa) :
+                new ObjectParameter("IdEmpresa", typeof(System.Guid));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarReporteCosechas_Result>("PA_ConsultarReporteCosechas", fechaInicioParameter, fechaFinParameter, idCultivoParameter, idEmpresaParameter, estado, mensaje);
         }
     
         public virtual ObjectResult<PA_ConsultarReporteVentas_Result> PA_ConsultarReporteVentas(Nullable<System.DateTime> fechaInicio, Nullable<System.DateTime> fechaFin, Nullable<System.Guid> idEmpresa, ObjectParameter estado, ObjectParameter mensaje)
@@ -503,6 +507,72 @@ namespace AgroWebPro.Entidades
                 new ObjectParameter("Nombre", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_MantenimientoTest", tipoOperacionParameter, idUsuarioParameter, nombreParameter, estado, mensaje);
+        }
+    
+        public virtual int PA_MantenimientoRecoleccion(Nullable<System.Guid> idTarea, Nullable<System.Guid> idUsuarioRecolecta, Nullable<decimal> kilogramosPrimera, Nullable<decimal> kilogramosSegunda, Nullable<decimal> kilogramosRechazo, string causaRechazo, string idUsuarioSupervisor, ObjectParameter estado, ObjectParameter mensaje)
+        {
+            var idTareaParameter = idTarea.HasValue ?
+                new ObjectParameter("IdTarea", idTarea) :
+                new ObjectParameter("IdTarea", typeof(System.Guid));
+    
+            var idUsuarioRecolectaParameter = idUsuarioRecolecta.HasValue ?
+                new ObjectParameter("IdUsuarioRecolecta", idUsuarioRecolecta) :
+                new ObjectParameter("IdUsuarioRecolecta", typeof(System.Guid));
+    
+            var kilogramosPrimeraParameter = kilogramosPrimera.HasValue ?
+                new ObjectParameter("KilogramosPrimera", kilogramosPrimera) :
+                new ObjectParameter("KilogramosPrimera", typeof(decimal));
+    
+            var kilogramosSegundaParameter = kilogramosSegunda.HasValue ?
+                new ObjectParameter("KilogramosSegunda", kilogramosSegunda) :
+                new ObjectParameter("KilogramosSegunda", typeof(decimal));
+    
+            var kilogramosRechazoParameter = kilogramosRechazo.HasValue ?
+                new ObjectParameter("KilogramosRechazo", kilogramosRechazo) :
+                new ObjectParameter("KilogramosRechazo", typeof(decimal));
+    
+            var causaRechazoParameter = causaRechazo != null ?
+                new ObjectParameter("CausaRechazo", causaRechazo) :
+                new ObjectParameter("CausaRechazo", typeof(string));
+    
+            var idUsuarioSupervisorParameter = idUsuarioSupervisor != null ?
+                new ObjectParameter("IdUsuarioSupervisor", idUsuarioSupervisor) :
+                new ObjectParameter("IdUsuarioSupervisor", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_MantenimientoRecoleccion", idTareaParameter, idUsuarioRecolectaParameter, kilogramosPrimeraParameter, kilogramosSegundaParameter, kilogramosRechazoParameter, causaRechazoParameter, idUsuarioSupervisorParameter, estado, mensaje);
+        }
+    
+        public virtual int PA_CrearRecoleccionCultivo(Nullable<System.Guid> idTarea, Nullable<System.Guid> idUsuarioRecolecta, Nullable<decimal> kilogramosPrimera, Nullable<decimal> kilogramosSegunda, Nullable<decimal> kilogramosRechazo, string causaRechazo, string idUsuarioSupervisor, ObjectParameter estado, ObjectParameter mensaje)
+        {
+            var idTareaParameter = idTarea.HasValue ?
+                new ObjectParameter("IdTarea", idTarea) :
+                new ObjectParameter("IdTarea", typeof(System.Guid));
+    
+            var idUsuarioRecolectaParameter = idUsuarioRecolecta.HasValue ?
+                new ObjectParameter("IdUsuarioRecolecta", idUsuarioRecolecta) :
+                new ObjectParameter("IdUsuarioRecolecta", typeof(System.Guid));
+    
+            var kilogramosPrimeraParameter = kilogramosPrimera.HasValue ?
+                new ObjectParameter("KilogramosPrimera", kilogramosPrimera) :
+                new ObjectParameter("KilogramosPrimera", typeof(decimal));
+    
+            var kilogramosSegundaParameter = kilogramosSegunda.HasValue ?
+                new ObjectParameter("KilogramosSegunda", kilogramosSegunda) :
+                new ObjectParameter("KilogramosSegunda", typeof(decimal));
+    
+            var kilogramosRechazoParameter = kilogramosRechazo.HasValue ?
+                new ObjectParameter("KilogramosRechazo", kilogramosRechazo) :
+                new ObjectParameter("KilogramosRechazo", typeof(decimal));
+    
+            var causaRechazoParameter = causaRechazo != null ?
+                new ObjectParameter("CausaRechazo", causaRechazo) :
+                new ObjectParameter("CausaRechazo", typeof(string));
+    
+            var idUsuarioSupervisorParameter = idUsuarioSupervisor != null ?
+                new ObjectParameter("IdUsuarioSupervisor", idUsuarioSupervisor) :
+                new ObjectParameter("IdUsuarioSupervisor", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_CrearRecoleccionCultivo", idTareaParameter, idUsuarioRecolectaParameter, kilogramosPrimeraParameter, kilogramosSegundaParameter, kilogramosRechazoParameter, causaRechazoParameter, idUsuarioSupervisorParameter, estado, mensaje);
         }
     }
 }

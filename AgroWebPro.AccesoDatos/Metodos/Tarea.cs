@@ -164,10 +164,7 @@ namespace AgroWebPro.AccesoDatos.Metodos
             {
                 using (AgroWebProEntities modelo = new AgroWebProEntities())
                 {
-                    //modelo.PA_CrearRecoleccionCultivo(
-                    //                request.idUsuario
-                    //                , estado
-                    //                , mensaje);
+                    modelo.PA_CrearRecoleccionCultivo(request.idTarea, request.idUsuarioRecolecta, request.kilogramosPrimera, request.kilogramosSegunda, request.kilogramosRechazo, request.causaRechazo, request.idUsuarioSupervisor, estado, mensaje);
                     if (estado.Value.ToString().Equals(Constantes.EstadoError))
                     {
                         response.estado = Constantes.EstadoError;

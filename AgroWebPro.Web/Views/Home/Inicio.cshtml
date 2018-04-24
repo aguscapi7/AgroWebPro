@@ -151,6 +151,8 @@ else if (Request.Cookies["usuario"] != null && Request.Cookies["usuario"]["rol"]
             success: function (data) {
                 if (data.respuesta == '@Constantes.EstadoCorrecto' && data.agrupada.length > 0)
                 {
+                    debugger;
+
                     $('#canvasGrafico').remove(); // this is my <canvas> element
                     $('#divContenedor').append('<canvas id="canvasGrafico" width="100%" height="150"><canvas>');
                     ctx = document.getElementById("canvasGrafico");

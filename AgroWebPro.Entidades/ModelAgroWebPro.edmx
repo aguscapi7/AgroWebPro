@@ -47,6 +47,7 @@
           <Parameter Name="FechaInicio" Type="datetime" Mode="In" />
           <Parameter Name="FechaFin" Type="datetime" Mode="In" />
           <Parameter Name="IdCultivo" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="IdEmpresa" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
@@ -117,6 +118,17 @@
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
+        <Function Name="PA_CrearRecoleccionCultivo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdTarea" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="IdUsuarioRecolecta" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="KilogramosPrimera" Type="decimal" Mode="In" />
+          <Parameter Name="KilogramosSegunda" Type="decimal" Mode="In" />
+          <Parameter Name="KilogramosRechazo" Type="decimal" Mode="In" />
+          <Parameter Name="CausaRechazo" Type="varchar" Mode="In" />
+          <Parameter Name="IdUsuarioSupervisor" Type="varchar" Mode="In" />
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
         <Function Name="PA_MantenimientoAvanceTareaUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="TipoOperacion" Type="int" Mode="In" />
           <Parameter Name="IdTarea" Type="uniqueidentifier" Mode="In" />
@@ -148,6 +160,17 @@
           <Parameter Name="idZonaHoraria" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="Direccion" Type="varchar" Mode="In" />
           <Parameter Name="Activa" Type="bit" Mode="In" />
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
+        <Function Name="PA_MantenimientoRecoleccion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdTarea" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="IdUsuarioRecolecta" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="KilogramosPrimera" Type="decimal" Mode="In" />
+          <Parameter Name="KilogramosSegunda" Type="decimal" Mode="In" />
+          <Parameter Name="KilogramosRechazo" Type="decimal" Mode="In" />
+          <Parameter Name="CausaRechazo" Type="varchar" Mode="In" />
+          <Parameter Name="IdUsuarioSupervisor" Type="varchar" Mode="In" />
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
@@ -348,6 +371,7 @@
             <Parameter Name="FechaInicio" Mode="In" Type="DateTime" />
             <Parameter Name="FechaFin" Mode="In" Type="DateTime" />
             <Parameter Name="IdCultivo" Mode="In" Type="Guid" />
+            <Parameter Name="IdEmpresa" Mode="In" Type="Guid" />
             <Parameter Name="Estado" Mode="InOut" Type="String" />
             <Parameter Name="Mensaje" Mode="InOut" Type="String" />
           </FunctionImport>
@@ -406,6 +430,28 @@
             <Parameter Name="TipoOperacion" Mode="In" Type="Int32" />
             <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
             <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PA_MantenimientoRecoleccion">
+            <Parameter Name="IdTarea" Mode="In" Type="Guid" />
+            <Parameter Name="IdUsuarioRecolecta" Mode="In" Type="Guid" />
+            <Parameter Name="KilogramosPrimera" Mode="In" Type="Decimal" />
+            <Parameter Name="KilogramosSegunda" Mode="In" Type="Decimal" />
+            <Parameter Name="KilogramosRechazo" Mode="In" Type="Decimal" />
+            <Parameter Name="CausaRechazo" Mode="In" Type="String" />
+            <Parameter Name="IdUsuarioSupervisor" Mode="In" Type="String" />
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PA_CrearRecoleccionCultivo">
+            <Parameter Name="IdTarea" Mode="In" Type="Guid" />
+            <Parameter Name="IdUsuarioRecolecta" Mode="In" Type="Guid" />
+            <Parameter Name="KilogramosPrimera" Mode="In" Type="Decimal" />
+            <Parameter Name="KilogramosSegunda" Mode="In" Type="Decimal" />
+            <Parameter Name="KilogramosRechazo" Mode="In" Type="Decimal" />
+            <Parameter Name="CausaRechazo" Mode="In" Type="String" />
+            <Parameter Name="IdUsuarioSupervisor" Mode="In" Type="String" />
             <Parameter Name="Estado" Mode="InOut" Type="String" />
             <Parameter Name="Mensaje" Mode="InOut" Type="String" />
           </FunctionImport>
@@ -538,11 +584,14 @@
           <Property Type="Guid" Name="IdCultivo" Nullable="false" />
           <Property Type="Guid" Name="IdUsuarioRecolecta" Nullable="false" />
           <Property Type="DateTime" Name="FechaRecoleccion" Nullable="false" Precision="23" />
-          <Property Type="Decimal" Name="KiilogramosPrimera" Nullable="false" Precision="18" Scale="3" />
           <Property Type="Decimal" Name="KilogramosSegunda" Nullable="false" Precision="18" Scale="3" />
           <Property Type="Decimal" Name="KilogramosRechazo" Nullable="false" Precision="18" Scale="3" />
           <Property Type="String" Name="CausaRechazo" Nullable="true" MaxLength="500" />
-          <Property Type="Guid" Name="IdUsuarioSupervisor" Nullable="false" />
+          <Property Type="Guid" Name="IdUsuarioSupervisor" Nullable="true" />
+          <Property Type="Decimal" Name="KilogramosPrimera" Nullable="false" Precision="18" Scale="3" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="NombreUsuario" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ApellidosUsuario" Nullable="true" MaxLength="80" />
         </ComplexType>
         <ComplexType Name="PA_ConsultarReporteVentas_Result">
           <Property Type="Guid" Name="IdMaestroVenta" Nullable="false" />
@@ -818,11 +867,14 @@
                 <ScalarProperty Name="IdCultivo" ColumnName="IdCultivo" />
                 <ScalarProperty Name="IdUsuarioRecolecta" ColumnName="IdUsuarioRecolecta" />
                 <ScalarProperty Name="FechaRecoleccion" ColumnName="FechaRecoleccion" />
-                <ScalarProperty Name="KiilogramosPrimera" ColumnName="KiilogramosPrimera" />
                 <ScalarProperty Name="KilogramosSegunda" ColumnName="KilogramosSegunda" />
                 <ScalarProperty Name="KilogramosRechazo" ColumnName="KilogramosRechazo" />
                 <ScalarProperty Name="CausaRechazo" ColumnName="CausaRechazo" />
                 <ScalarProperty Name="IdUsuarioSupervisor" ColumnName="IdUsuarioSupervisor" />
+                <ScalarProperty Name="KilogramosPrimera" ColumnName="KilogramosPrimera" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
+                <ScalarProperty Name="ApellidosUsuario" ColumnName="ApellidosUsuario" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -951,6 +1003,8 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="PA_MantenimientoTest" FunctionName="AgroWebProModel.Store.PA_MantenimientoTest" />
+          <FunctionImportMapping FunctionImportName="PA_MantenimientoRecoleccion" FunctionName="AgroWebProModel.Store.PA_MantenimientoRecoleccion" />
+          <FunctionImportMapping FunctionImportName="PA_CrearRecoleccionCultivo" FunctionName="AgroWebProModel.Store.PA_CrearRecoleccionCultivo" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

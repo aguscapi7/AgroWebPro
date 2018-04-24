@@ -67,7 +67,7 @@
                                 <div class="col-md-6 col-sm-6">
                                     <div class="input-group">
                                         <span id="txtPasswordRepetirPrepend" class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
-                                        @Html.DropDownListFor(model => model.idZonaHoraria, new SelectList(Model.empresaModels.listaZonasHorarias, "IdZonaHoraria", "ZonaHoraria"), new { @id = "ddlZonaHoraria", @class = "form-control", @required = "required" })
+                                        @Html.DropDownListFor(model => model.idZonaHoraria, new SelectList(Model.empresaModels.listaZonasHorarias, "IdZonaHoraria", "ZonaHoraria", "8897f249-893f-4435-b6e6-e2885b859c8e".ToUpper()), new { @id = "ddlZonaHoraria", @class = "form-control", @required = "required" })
                                     </div>
                                 </div>
                                 @if (ViewBag.MensajeError != null)
@@ -112,6 +112,11 @@
 </style>
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 <script>
+
+    $(document).ready(function () {
+        $("#menuSuperior").addClass("hidden");
+    });
+
     function InfoRegistroValido() {
         var infoAgendaValida = true;
 

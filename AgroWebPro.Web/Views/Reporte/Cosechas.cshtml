@@ -1,80 +1,160 @@
-﻿
+﻿@model AgroWebPro.Web.Models.ReporteModels
 @{
     ViewBag.Title = "Cosechas";
 }
 
+<script src="~/Scripts/jquery-1.10.2.js"></script>
 <link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
 <link href="~/Content/reportes.css" rel="stylesheet" />
 
-<h2>Cosechas</h2>
-<div class="form-group">
-    <div class="row">
-        <div class="col-md-4">
-            <label>Fecha inicio</label>
-            <input id="txtFechaInicio" class="form-control" type="text" readonly="readonly" value="@(DateTime.Now.AddDays(-30).ToShortDateString())"/>
+<div class="row">
+    <br>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="">
+                <div class="row" style="padding-right:10px;">
+                    <div class="col-md-9">
+                        <h3 style="margin-left:10px;"><span class="fa fa-tasks fa-lg"></span>&nbsp;Reporte&nbsp;<span id="tituloMantenimiento">/ Cosechas </span></h3>
+                    </div>
+                    <div class="col-md-3" style="margin:10px 0px 10px 0px;">
+                        <label>Tipo de reporte:</label>
+                        <select id="ddlTipoReporte" class="form-control" onchange="CambiarReporte()" style="margin-right:10px;"><option value="1">Reporte de tareas</option><option value="2" selected>Reporte de cosechas</option></select>
+                    </div>
+                </div>
+
+            </div>
         </div>
-        <div class="col-md-4">
-            <label>Fecha fin</label>
-            <input id="txtFechaFin" class="form-control" type="text" readonly="readonly" value="@(DateTime.Now.ToShortDateString())"/>
+    </nav>
+</div>
+@using (Html.BeginForm("Cosechas", "Reporte", FormMethod.Post, new { id = "formReporte", role = "form", @data_toggle = "validator" }))
+{
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.fechaInicio)
+                @Html.TextBoxFor(model => model.fechaInicio, new { @id = "txtFechaInicio", @readonly = "readonly", @class = "form-control", @required = "required", @placeholder = "Nombre", value = DateTime.Now.ToShortDateString() })
+            </div>
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.fechaFin)
+                @Html.TextBoxFor(model => model.fechaFin, new { @id = "txtFechaFinalizacion", @readonly = "readonly", @class = "form-control", @required = "required", @placeholder = "Nombre" })
+            </div>
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.idCultivo)<br />
+                @Html.DropDownListFor(model => model.idCultivo, new SelectList(Model.listaCultivosEmpresa, "idCultivo", "nombreCultivo"), new { @id = "ddlCultivos", @class = "form-control" })
+            </div>
         </div>
-        <div class="col-md-4">
-            <label>Producto</label>
-            <select id="selectProducto" class="form-control">
-                <option>Seleccione...</option>
-                <option>Producto 1</option>
-                <option>Producto 2</option>
-                <option>Producto 3</option>
-                <option>Producto 4</option>
-                <option>Producto 5</option>
-            </select>
+        <div class="row" style="margin-top:10px;">
+            <div class="col-md-10"></div>
+            <div class="col-md-2 ">
+                <button class="btn btn-orange pull-right" id="btnBuscar" type="submit">Buscar&nbsp;<span class="fa fa-search"></span></button>
+            </div>
         </div>
     </div>
+}
+
+<div class="form-group" id="divTablaTareas">
     <div class="row">
-        <div class="col-md-10"></div>
-        <div class="col-md-2 ">
-            <button class="btn btn-info pull-right btn-buscar" id="btnBuscar">Buscar</button>
+        <div class="col-md-12">
+            <div class="table-responsive">
+                
+                    
+                    <table class="table table-sm" id="tblResultado" data-show-toggle="true" data-search="true"
+                           data-show-export="true"
+                           data-minimum-count-columns="2"
+                           data-show-pagination-switch="true"
+                           data-pagination="true"
+                           data-page-list="[10, 25, 50, 100, ALL]"
+                           data-locale="es-CR"
+                           data-url="tableExport.json">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th data-field="Terreno">Cultivo</th>
+                                <th data-field="Empleado">Empleado</th>
+                                <th data-field="FechaRecoleccion">Fecha de recolección</th>
+                                <th data-field="KgPrimera">Kg de primera categoría</th>
+                                <th data-field="KgSegunda">Kg de segunda categoría</th>
+                                <th data-field="KgRechazo">Kg de rechazo</th>
+                                <th data-field="Resumen">Causa rechazo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.listaCosechas != null && Model.listaCosechas.Count() > 0)
+                            {
+                                foreach (var itemTarea in Model.listaCosechas)
+                                {
+                                    <tr>
+                                        <td>@itemTarea.nombreCultivo</td>
+                                        <td>@itemTarea.nombreUsuario @itemTarea.apellidosUsuario</td>
+                                        <td>@itemTarea.fechaRecoleccion</td>
+                                        <td>@itemTarea.kilogramosPrimera.ToString().Replace(',','.')</td>
+                                        <td>@itemTarea.kilogramosSegunda.ToString().Replace(',', '.')</td>
+                                        <td>@itemTarea.kilogramosRechazo.ToString().Replace(',', '.')</td>
+                                        <td>@itemTarea.causaRechazo</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr><td colspan="8"><center>No hay datos disponibles</center></td></tr>
+                            }
+
+                        </tbody>
+                    </table>
+                    @if (Model.listaCosechas != null && Model.listaCosechas.Count() > 0)
+                    {
+                        <div id="divExportarExcel">
+                            <a href="#" class="btn btn-success" onclick="$('#tblResultado').tableExport({type:'excel',
+                                                             excelFileFormat:'xmlss',
+                                                             worksheetName: ['Table 1']});">
+                                &nbsp;Exportar a Excel&nbsp;<span><i class="fa fa-save"></i></span>
+                            </a>
+                        </div>
+                    }
+                    
+            </div>
         </div>
     </div>
 </div>
-<div class="card mb-3">
-    <div class="card-header">
-        <i class="fa fa-area-chart"></i> Cosechas
-    </div>
-    <div class="card-body">
-        <canvas id="myAreaChart" width="100%" height="30"></canvas>
-    </div>
-    <div class="card-footer small text-muted">Actualizado ayer a las 11:59 PM</div>
-</div>
+
+
+
+
 
 <script src="~/Scripts/Chart.js"></script>
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/bootstrap-datepicker.js"></script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+<script src="~/Scripts/tableExport.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/extensions/export/bootstrap-table-export.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/extensions/toolbar/bootstrap-table-toolbar.js"></script>
 <script>
     $('#txtFechaInicio').datepicker({
-
         changeMonth: true,
         changeYear: true,
         format: "dd/mm/yyyy",
-        todayHighlight: true,
-        todayBtn: "linked",
-        onSelect: function (date) {
-        }
+        todayBtn: "linked"
+    }).on('changeDate', function (e) {
+        $(this).datepicker('hide');
+    });
+
+    $('#txtFechaFinalizacion').datepicker({
+        changeMonth: true,
+        changeYear: true,
+        format: "dd/mm/yyyy",
+        todayBtn: "linked"
     }).on('changeDate', function (e) {
         $(this).datepicker('hide');
         });
 
-    $('#txtFechaFin').datepicker({
 
-        changeMonth: true,
-        changeYear: true,
-        format: "dd/mm/yyyy",
-        todayHighlight: true,
-        todayBtn: "linked",
-        onSelect: function (date) {
+    function CambiarReporte() {
+        var seleccionado = $("#ddlTipoReporte").val();
+        if (seleccionado == 1) {
+            window.location.href = "@Url.Action("General","Reporte")";
         }
-    }).on('changeDate', function (e) {
-        $(this).datepicker('hide');
-    });
+    }
 
     Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
     Chart.defaults.global.defaultFontColor = '#292b2c';

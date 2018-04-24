@@ -46,48 +46,15 @@
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
-                    <ul class="nav navbar-nav">
+                    <ul id="menuSuperior" class="nav navbar-nav enlaces">
                         <li class="active"><a href="#intro">Inicio</a></li>
                         <li><a href="#boxes">Servicios</a></li>
                         @*<li><a href="#facilities">Facilidades</a></li>*@
                         <li><a href="#pricing">Precios</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" onclick="MostrarLogin()"><b>Login</b></a>
-                            @*<ul id="login-dp" class="dropdown-menu">
-                                    <li>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                @using (Html.BeginForm("Login", "Home", FormMethod.Post, new
-                                                {
-                                                    id = "formInicio",
-                                                    role = "form",
-                                                    @data_toggle = "validator"}))
-                                                {
-                                                    <div class="form-group">
-                                                        <label class="sr-only" for="exampleInputEmail2">Correo electrónico</label>
-                                                        <input type="email" class="form-control" id="txtCorreo" placeholder="Correo electrónico" required name="correo">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="sr-only" for="exampleInputPassword2">Contraseña</label>
-                                                        <input type="password" class="form-control" id="txtPassword" name="password" placeholder="Contraseña" required>
-                                                        <div class="help-block text-right"><a class="olvido" href="" onclick="return OlvidoContrasenna()" style="font-size:10px;">Olvidó su contraseña?</a></div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <button class="btn btn-skin btn-block" type="submit">Ingresar</button>
-                                                    </div>
-                                                    <div class="checkbox">
-                                                        <label>
-                                                            <input type="checkbox"> Mantenerme conectado
-                                                        </label>
-                                                    </div>
-                                                }
-                                            </div>
-                                            <div class="bottom text-center">
-                                                Nuevo aquí? <a href="#" onclick="AbrirEnlace('@Url.Action("Registro", "Home")')"><b>Regístrese</b></a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>*@
+                        </li>
+                    </ul>
                 </div>
                 <!-- /.navbar-collapse -->
             </div>
@@ -295,7 +262,7 @@
                 '</form>' +
                                         '</div>' +
                 '<div class="bottom text-center">' +
-                '    Nuevo aquí? <a href="#" onclick="AbrirEnlace("@Url.Action("Registro", "Home")")"><b>Regístrese</b></a>' +
+                '    Nuevo aquí? <a href="#" id="btnRegistro" onclick="Registro()"><b>Regístrese</b></a>' +
                 '</div>' +
                                     '</div>',
                 confirmButtonColor: '#3085d6',
@@ -305,6 +272,10 @@
             }).then(function (isConfirm) {
 
             });
+        }
+
+        function Registro() {
+            AbrirEnlace("@Url.Action("Registro", "Home")");
         }
     </script>
 </body>

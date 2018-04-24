@@ -53,7 +53,15 @@
         <div class="row form-group">
             <div class="col-md-6">
                 @Html.LabelFor(model => model.idTipoTarea)
-                @Html.DropDownListFor(model => model.idTipoTarea, new SelectList(Model.listaTiposTareas, "IdTipoTarea", "NombreTarea"), new { @id = "ddlTiposTareas", @class = "form-control" })
+                <select id="ddlTipoTareas" class="form-control" name="idTipoTarea" onchange="VerificarRecoleccion()">
+                    @if (Model.listaTareas != null)
+                    {
+                        foreach (var item in Model.listaTiposTareas)
+                        {
+                            <option value="@item.idTipoTarea" data-recoleccion="@item.recoleccion">@item.nombreTarea</option>
+                        }
+                    }
+                </select>
                 @Html.ValidationMessageFor(model => model.idTipoTarea, "", new { @class = "text-danger" })
             </div>
             <div class="col-md-6">
@@ -73,6 +81,11 @@
             <div class="col-md-12">
                 @Html.LabelFor(model => model.observaciones)
                 @Html.TextAreaFor(model => model.observaciones, new { @id = "txtObservaciones", @class = "form-control", @placeholder = "Descripción" })
+            </div>
+        </div>
+        <div id="divRecoleccion" class="row hidden">
+            <div class="alert alert-warning">
+                <center><label>Esta tarea es de recolección por lo que el responsable deberá indicar los datos de la cosecha en el avance.</label></center>
             </div>
         </div>
         <div class="row">
@@ -185,6 +198,17 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
 }
 
 <script>
+    function VerificarRecoleccion() {
+        var seleccionado = $("#ddlTipoTareas :selected");
+        var recoleccion = $(seleccionado).data("recoleccion");
+        if (recoleccion == "True") {
+            $("#divRecoleccion").removeClass("hidden");
+        }
+        else {
+            $("#divRecoleccion").addClass("hidden");
+        }
+    }
+
     $('#txtFechaInicio').datepicker({
         changeMonth: true,
         changeYear: true,

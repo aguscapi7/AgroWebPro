@@ -56,7 +56,7 @@ namespace AgroWebPro.Web.Controllers
                 consultarUsuarioRequest = new ConsultarUsuarioLoginRequest()
                 {
                     correo = usuarioModels.correo,
-                    password = usuarioModels.password
+                    password = Utilitarios.Utilitarios.Encriptar(usuarioModels.password)
                 };
 
                 consultarUsuarioResponse = usuario.ConsultarUsuarioLogin(consultarUsuarioRequest);
@@ -69,7 +69,7 @@ namespace AgroWebPro.Web.Controllers
                     cookie.Values["apellidos"] = consultaUsuario.Apellidos;
                     cookie.Values["idUsuario"] = consultaUsuario.IdUsuario.ToString();
                     cookie.Values["rol"] = consultaUsuario.IdRol.ToString();
-                    cookie.Values["password"] = consultaUsuario.Password;
+                    cookie.Values["password"] = Utilitarios.Utilitarios.Encriptar(consultaUsuario.Password);
                     cookie.Values["idEmpresa"] = consultaUsuario.IdEmpresa.ToString();
                     cookie.Expires = DateTime.Now.AddDays(30);
                     Response.Cookies.Add(cookie);
@@ -107,6 +107,7 @@ namespace AgroWebPro.Web.Controllers
                 zonasHorariasRequest = new ConsultarZonasHorariasRequest();
                 usuarioModels.empresaModels = new EmpresaModels();
                 usuarioModels.empresaModels.CopiarListaZonasHorarias(catalogos.ConsultarZonasHorarias(zonasHorariasRequest));
+                usuarioModels.idZonaHoraria = Guid.Parse("8897f249-893f-4435-b6e6-e2885b859c8e");
             }
             catch(Exception ex)
             {
@@ -156,7 +157,7 @@ namespace AgroWebPro.Web.Controllers
                             nombre = modelo.nombre,
                             apellidos = modelo.apellidos,
                             correo = modelo.correo,
-                            password = modelo.password,
+                            password = Utilitarios.Utilitarios.Encriptar(modelo.password),
                             rol = Guid.Parse(Constantes.RolPropietario),
                             idUsuario = idUsuario,
                             ingresadoPor = null,
@@ -184,7 +185,7 @@ namespace AgroWebPro.Web.Controllers
                                 cookie.Values["apellidos"] = usuarioRequest.apellidos;
                                 cookie.Values["idUsuario"] = usuarioRequest.idUsuario.ToString();
                                 cookie.Values["rol"] = usuarioRequest.rol.ToString();
-                                cookie.Values["password"] = usuarioRequest.password;
+                                cookie.Values["password"] = Utilitarios.Utilitarios.Encriptar(usuarioRequest.password);
                                 cookie.Values["idEmpresa"] = usuarioRequest.idEmpresa.ToString();
                                 cookie.Expires = DateTime.Now.AddDays(1);
                                 Response.Cookies.Add(cookie);
@@ -316,7 +317,7 @@ namespace AgroWebPro.Web.Controllers
 
                     mantenimientoUsuarioRequest = new MantenimientoUsuarioRequest();
                     mantenimientoUsuarioRequest.idUsuario = usuarioLogin.IdUsuario;
-                    mantenimientoUsuarioRequest.password = claveTemporal;
+                    mantenimientoUsuarioRequest.password = Utilitarios.Utilitarios.Encriptar(claveTemporal);
                     mantenimientoUsuarioRequest.tipoOperacion = Constantes.operacionActualizarPassword;
 
                     mantenimientoUsuarioResponse = usuario.MantenimientoUsuario(mantenimientoUsuarioRequest);

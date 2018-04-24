@@ -13,13 +13,16 @@ namespace AgroWebPro.Web.Models
         public string fechaInicio { get; set; }
         [Display(Name = "Fecha de fin")]
         public string fechaFin { get; set; }
-        public Guid idCultivo { get; set; }
         public Guid idEmpresa { get; set; }
         public List<VentaModels> listaVentas { get; set; }
         public List<TerrenoModels> listaTerrenosEmpresa { get; set; }
+        public List<CultivoModels> listaCultivosEmpresa { get; set; }
         [Display(Name = "Terreno")]
         public Guid? idTerreno { get; set; }
+        [Display(Name = "Cultivo")]
+        public Guid? idCultivo { get; set; }
         public List<TareaModels> listaTareas { get; set; }
+        public List<AvanceTareaModels> listaCosechas { get; set; }
 
         public void CopiarReporteVentas(ConsultarReporteVentasResponse reporteVentasResponse)
         {
@@ -83,6 +86,62 @@ namespace AgroWebPro.Web.Models
 
             }
         }
+
+        public void CopiarReporteCosechas(ConsultarReporteCosechasResponse cosechasResponse)
+        {
+            try
+            {
+                listaCosechas = new List<AvanceTareaModels>();
+                if (cosechasResponse != null && cosechasResponse.estado.Equals(Constantes.EstadoCorrecto) && cosechasResponse.listaReporteCosechas.Count > 0)
+                {
+                    AvanceTareaModels tarea = null;
+                    foreach (var itemTarea in cosechasResponse.listaReporteCosechas)
+                    {
+                        tarea = new AvanceTareaModels();
+                        tarea.fechaRecoleccion = itemTarea.FechaRecoleccion.ToString("dd/MM/yyyy");
+                        tarea.kilogramosPrimera = itemTarea.KilogramosPrimera;
+                        tarea.kilogramosSegunda = itemTarea.KilogramosSegunda;
+                        tarea.kilogramosRechazo = itemTarea.KilogramosRechazo;
+                        tarea.causaRechazo = itemTarea.CausaRechazo;
+                        tarea.nombreCultivo = itemTarea.Nombre;
+                        tarea.nombreUsuario = itemTarea.NombreUsuario;
+                        tarea.apellidosUsuario = itemTarea.ApellidosUsuario;
+                        listaCosechas.Add(tarea);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        public void CopiarCultivosEmpresa(ConsultarCultivosEmpresaResponse cultivosEmpresaResponse)
+        {
+            try
+            {
+                listaCultivosEmpresa = new List<CultivoModels>();
+                if (cultivosEmpresaResponse != null && cultivosEmpresaResponse.estado.Equals(Constantes.EstadoCorrecto) && cultivosEmpresaResponse.listaCultivosEmpresa.Count >= 0)
+                {
+                    CultivoModels cultivo = null;
+                    foreach (var cultivoItem in cultivosEmpresaResponse.listaCultivosEmpresa)
+                    {
+                        cultivo = new CultivoModels();
+                        cultivo.idCultivo = cultivoItem.IdCultivo;
+                        cultivo.nombreCultivo = cultivoItem.Nombre;
+                        cultivo.idFamilia = cultivoItem.IdFamilia;
+                        cultivo.nombreFamilia = cultivoItem.NombreFamilia;
+                        cultivo.descripcionCultivo = cultivoItem.Descripcion;
+                        listaCultivosEmpresa.Add(cultivo);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
     }
-    
+
 }

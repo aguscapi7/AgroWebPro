@@ -29,13 +29,13 @@
         <div class="row form-group">
             <div class="col-md-12">
                 @Html.LabelFor(model => model.idTarea)
-                <select id="ddlTareas" name="idTarea" class="form-control">
+                <select id="ddlTareas" name="idTarea" class="form-control" onchange="ValidarRecoleccion()">
                     @if (Model.listaTareaUsuario != null)
                     {
                         <option value="">Seleccione</option>
                         foreach (var itemTarea in Model.listaTareaUsuario)
                         {
-                            <option value="@itemTarea.idTarea" data-recoleccion="@itemTarea.recoleccion ? 1 : 0" @(Session["idTareaSeleccionada"] != null ? Session["idTareaSeleccionada"].ToString().Equals(itemTarea.idTarea.ToString()) ? "selected" : "" : "")>@itemTarea.nombreTerreno - @itemTarea.nombreTipoTarea - @itemTarea.resumen</option>
+                            <option value="@itemTarea.idTarea" data-recoleccion="@(itemTarea.recoleccion ? 1 : 0)" @(Session["idTareaSeleccionada"] != null ? Session["idTareaSeleccionada"].ToString().Equals(itemTarea.idTarea.ToString()) ? "selected" : "" : "")>@itemTarea.nombreTerreno - @itemTarea.nombreTipoTarea - @itemTarea.resumen</option>
                         }
                     }
                 </select>
@@ -61,6 +61,35 @@
                 @Html.ValidationMessageFor(model => model.observaciones, "", new { @class = "text-danger" })
             </div>
         </div>
+        <div id="divRecoleccion" class="hidden">
+            <hr />
+            <center><h3>Datos de la recolección</h3></center>
+            <div class="row form-group">
+                <div class="col-md-6">
+                    @Html.LabelFor(model => model.kilogramosPrimera)
+                    @Html.TextBoxFor(model => model.kilogramosPrimera, new { @id = "txtKilogramosPrimera", @class = "form-control", @placeholder = "Kilogramos de primera categoría" })
+                    @Html.ValidationMessageFor(model => model.kilogramosPrimera, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6">
+                    @Html.LabelFor(model => model.kilogramosSegunda)
+                    @Html.TextBoxFor(model => model.kilogramosSegunda, new { @id = "txtKilogramosSegunda", @class = "form-control", @placeholder = "Kilogramos de segunda categoría" })
+                    @Html.ValidationMessageFor(model => model.kilogramosSegunda, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-6">
+                    @Html.LabelFor(model => model.kilogramosRechazo)
+                    @Html.TextBoxFor(model => model.kilogramosRechazo, new { @id = "txtKilogramosRechazo", @class = "form-control", @placeholder = "Kilogramos de rechazo" })
+                    @Html.ValidationMessageFor(model => model.kilogramosRechazo, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6">
+                    @Html.LabelFor(model => model.causaRechazo)
+                    @Html.TextBoxFor(model => model.causaRechazo, new { @id = "txtCausaRechazo", @class = "form-control", @placeholder = "Causa del rechazo", @maxlength = 500 })
+                    @Html.ValidationMessageFor(model => model.causaRechazo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <input type="hidden" value="" id="hdnTieneRecoleccion" name="tieneRecoleccion"/>
         <div class="row">
             <div class="col-md-8"></div>
             <div class="col-md-4">
@@ -90,7 +119,8 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
                 type: 'error',
                 confirmButtonColor: '#3085d6',
                 confirmButtonText: 'Aceptar'
-            });</script>
+            });
+    </script>
 }
 
 <style>
@@ -98,3 +128,24 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
         margin-right: 10px;
     }
 </style>
+<script src="~/Scripts/jquery.numeric.js"></script>
+<script>
+
+    $('#txtHorasEstimadas').numeric(",");
+    $('#txtKilogramosPrimera').numeric(",");
+    $('#txtKilogramosSegunda').numeric(",");
+    $('#txtKilogramosRechazo').numeric(",");
+    ValidarRecoleccion();
+    function ValidarRecoleccion() {
+        var seleccionado = $("#ddlTareas :selected");
+        var recoleccion = $(seleccionado).data("recoleccion");
+        if (recoleccion == 1) {
+            $("#divRecoleccion").removeClass("hidden");
+            $("#hdnTieneRecoleccion").val(true);
+        }
+        else {
+            $("#divRecoleccion").addClass("hidden");
+            $("#hdnTieneRecoleccion").val(false);
+        }
+    }
+</script>

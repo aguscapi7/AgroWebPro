@@ -12,5 +12,6 @@ namespace AgroWebPro.LogicaNegocios.Interfaces
     {
         ConsultarReporteVentasResponse ConsultarReporteVentas(ConsultarReporteVentasRequest request);
         ConsultarReporteTareasResponse ConsultarReporteTareas(ConsultarReporteTareasRequest request);
+        ConsultarReporteCosechasResponse ConsultarReporteCosechas(ConsultarReporteCosechasRequest request);
     }
 }

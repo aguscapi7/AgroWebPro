@@ -77,5 +77,37 @@ namespace AgroWebPro.AccesoDatos.Metodos
             return response;
         }
 
+        public ConsultarReporteCosechasResponse ConsultarReporteCosechas(ConsultarReporteCosechasRequest request)
+        {
+            ConsultarReporteCosechasResponse response = new ConsultarReporteCosechasResponse();
+            ObjectParameter estado = new ObjectParameter("Estado", Constantes.EstadoCorrecto);
+            ObjectParameter mensaje = new ObjectParameter("Mensaje", string.Empty);
+            try
+            {
+                using (AgroWebProEntities modelo = new AgroWebProEntities())
+                {
+                    response.listaReporteCosechas = modelo.PA_ConsultarReporteCosechas(
+                                                     request.fechaInicio
+                                                    , request.fechaFinalizacion
+                                                    , request.idCultivo
+                                                    , request.idEmpresa
+                                                    , estado
+                                                    , mensaje).ToList();
+                    if (estado.Value.ToString().Equals(Constantes.EstadoError))
+                    {
+                        response.estado = Constantes.EstadoError;
+                        response.mensaje = Constantes.MensajeErrorAccesoDatos + mensaje.Value.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorAccesoDatos + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                throw;
+            }
+            return response;
+        }
+
     }
 }

@@ -10,9 +10,13 @@ namespace AgroWebPro.Web.Models
 {
     public class AvanceTareaModels
     {
+        [Display(Name = "Kilogramos de primera")]
         public decimal kilogramosPrimera { get; set; }
+        [Display(Name = "Kilogramos de segunda")]
         public decimal kilogramosSegunda { get; set; }
+        [Display(Name = "Kilogramos de rechazo")]
         public decimal kilogramosRechazo { get; set; }
+        [Display(Name = "Causa del rechazo")]
         public string causaRechazo { get; set; }
         public Guid idUsuarioSupervisor { get; set; }
         public string codigoVerificadorSupervisor { get; set; }
@@ -32,7 +36,11 @@ namespace AgroWebPro.Web.Models
         [Display(Name = "Observaciones")]
         [Required(ErrorMessage = "Las observaciones son requeridas")]
         public string observaciones { get; set; }
-
+        public bool tieneRecoleccion { get; set; }
+        public string fechaRecoleccion { get; set; }
+        public string nombreCultivo { get; set; }
+        public string nombreUsuario { get; set; }
+        public string apellidosUsuario { get; set; }
         public void CopiarEstadoTarea(ConsultarEstadoTareaResponse estadoTareaResponse)
         {
             try

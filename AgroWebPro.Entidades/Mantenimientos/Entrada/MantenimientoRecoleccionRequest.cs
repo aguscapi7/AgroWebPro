@@ -7,15 +7,16 @@ using System.Threading.Tasks;
 
 namespace AgroWebPro.Entidades.Mantenimientos.Entrada
 {
-    public class CrearRecoleccionCultivoRequest:EntradaBase
+    public class MantenimientoRecoleccionRequest:EntradaBase
     {
+
         public Guid idTarea { get; set; }
         public Guid idUsuarioRecolecta { get; set; }
         public decimal kilogramosPrimera { get; set; }
         public decimal kilogramosSegunda { get; set; }
         public decimal kilogramosRechazo { get; set; }
         public string causaRechazo { get; set; }
-        public string idUsuarioSupervisor { get; set; }
-        public string codigoVerificadorSupervisor { get; set; }
+        public Nullable<Guid> idUsuarioSupervisor { get; set; }
+
     }
 }

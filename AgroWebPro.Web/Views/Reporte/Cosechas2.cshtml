@@ -1,0 +1,131 @@
+﻿
+@{
+    ViewBag.Title = "Cosechas";
+}
+
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<link href="~/Content/reportes.css" rel="stylesheet" />
+
+<h2>Cosechas</h2>
+<div class="form-group">
+    <div class="row">
+        <div class="col-md-4">
+            <label>Fecha inicio</label>
+            <input id="txtFechaInicio" class="form-control" type="text" readonly="readonly" value="@(DateTime.Now.AddDays(-30).ToShortDateString())"/>
+        </div>
+        <div class="col-md-4">
+            <label>Fecha fin</label>
+            <input id="txtFechaFin" class="form-control" type="text" readonly="readonly" value="@(DateTime.Now.ToShortDateString())"/>
+        </div>
+        <div class="col-md-4">
+            <label>Producto</label>
+            <select id="selectProducto" class="form-control">
+                <option>Seleccione...</option>
+                <option>Producto 1</option>
+                <option>Producto 2</option>
+                <option>Producto 3</option>
+                <option>Producto 4</option>
+                <option>Producto 5</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10"></div>
+        <div class="col-md-2 ">
+            <button class="btn btn-info pull-right btn-buscar" id="btnBuscar">Buscar</button>
+        </div>
+    </div>
+</div>
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fa fa-area-chart"></i> Cosechas
+    </div>
+    <div class="card-body">
+        <canvas id="myAreaChart" width="100%" height="30"></canvas>
+    </div>
+    <div class="card-footer small text-muted">Actualizado ayer a las 11:59 PM</div>
+</div>
+
+<script src="~/Scripts/Chart.js"></script>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+<script>
+    $('#txtFechaInicio').datepicker({
+
+        changeMonth: true,
+        changeYear: true,
+        format: "dd/mm/yyyy",
+        todayHighlight: true,
+        todayBtn: "linked",
+        onSelect: function (date) {
+        }
+    }).on('changeDate', function (e) {
+        $(this).datepicker('hide');
+        });
+
+    $('#txtFechaFin').datepicker({
+
+        changeMonth: true,
+        changeYear: true,
+        format: "dd/mm/yyyy",
+        todayHighlight: true,
+        todayBtn: "linked",
+        onSelect: function (date) {
+        }
+    }).on('changeDate', function (e) {
+        $(this).datepicker('hide');
+    });
+
+    Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+    Chart.defaults.global.defaultFontColor = '#292b2c';
+
+    var ctx = document.getElementById("myAreaChart");
+    var myLineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ["Mar 1", "Mar 2", "Mar 3", "Mar 4", "Mar 5", "Mar 6", "Mar 7", "Mar 8", "Mar 9", "Mar 10", "Mar 11", "Mar 12", "Mar 13"],
+            datasets: [{
+                label: "Sessions",
+                lineTension: 0.3,
+                backgroundColor: "rgba(2,117,216,0.2)",
+                borderColor: "rgba(2,117,216,1)",
+                pointRadius: 5,
+                pointBackgroundColor: "rgba(2,117,216,1)",
+                pointBorderColor: "rgba(255,255,255,0.8)",
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(2,117,216,1)",
+                pointHitRadius: 20,
+                pointBorderWidth: 2,
+                data: [10000, 30162, 26263, 18394, 18287, 28682, 31274, 33259, 25849, 24159, 32651, 31984, 38451],
+            }],
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    time: {
+                        unit: 'date'
+                    },
+                    gridLines: {
+                        display: false
+                    },
+                    ticks: {
+                        maxTicksLimit: 7
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        min: 0,
+                        max: 40000,
+                        maxTicksLimit: 5
+                    },
+                    gridLines: {
+                        color: "rgba(0, 0, 0, .125)",
+                    }
+                }],
+            },
+            legend: {
+                display: false
+            }
+        }
+    });
+</script>

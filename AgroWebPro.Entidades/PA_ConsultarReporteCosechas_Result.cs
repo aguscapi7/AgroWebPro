@@ -16,10 +16,13 @@ namespace AgroWebPro.Entidades
         public System.Guid IdCultivo { get; set; }
         public System.Guid IdUsuarioRecolecta { get; set; }
         public System.DateTime FechaRecoleccion { get; set; }
-        public decimal KiilogramosPrimera { get; set; }
         public decimal KilogramosSegunda { get; set; }
         public decimal KilogramosRechazo { get; set; }
         public string CausaRechazo { get; set; }
-        public System.Guid IdUsuarioSupervisor { get; set; }
+        public Nullable<System.Guid> IdUsuarioSupervisor { get; set; }
+        public decimal KilogramosPrimera { get; set; }
+        public string Nombre { get; set; }
+        public string NombreUsuario { get; set; }
+        public string ApellidosUsuario { get; set; }
     }
 }

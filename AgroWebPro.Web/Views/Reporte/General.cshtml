@@ -11,8 +11,17 @@
     <br>
     <nav class="navbar navbar-default" role="navigation">
         <div class="container-fluid">
-            <div class="navbar-header">
-                <h3 style="margin-left:10px;"><span class="fa fa-tasks fa-lg"></span>&nbsp;Reporte&nbsp;<span id="tituloMantenimiento">/ Tareas </span></h3>
+            <div class="">
+                <div class="row" style="padding-right:10px;">
+                    <div class="col-md-9">
+                        <h3 style="margin-left:10px;"><span class="fa fa-tasks fa-lg"></span>&nbsp;Reporte&nbsp;<span id="tituloMantenimiento">/ Tareas </span></h3>
+                    </div>
+                    <div class="col-md-3" style="margin:10px 0px 10px 0px;">
+                        <label>Tipo de reporte:</label>
+                        <select id="ddlTipoReporte" class="form-control" onchange="CambiarReporte()" style="margin-right:10px;"><option value="1" selected>Reporte de tareas</option><option value="2">Reporte de cosechas</option></select>
+                    </div>
+                </div>
+                
             </div>
         </div>
     </nav>
@@ -159,6 +168,13 @@
     }).on('changeDate', function (e) {
         $(this).datepicker('hide');
     });
+
+    function CambiarReporte() {
+        var seleccionado = $("#ddlTipoReporte").val();
+        if (seleccionado == 2) {
+            window.location.href = "@Url.Action("Cosechas","Reporte")";
+        }
+    }
 
     Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
     Chart.defaults.global.defaultFontColor = '#292b2c';

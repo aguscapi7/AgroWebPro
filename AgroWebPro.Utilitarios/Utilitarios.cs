@@ -52,15 +52,22 @@ namespace AgroWebPro.Utilitarios
             return enviado;
         }
         
-
-        public static string EncriptarPassword(string password)
+        
+        public static string Encriptar(string textoEncriptar)
         {
-            return "";
+            string result = string.Empty;
+            byte[] encryted = System.Text.Encoding.Unicode.GetBytes(textoEncriptar);
+            result = Convert.ToBase64String(encryted);
+            return result;
         }
+        
 
-        public static string DesencriptarPassword(string password)
+        public static string DesEncriptar(string textoDesencriptar)
         {
-            return "";
+            string result = string.Empty;
+            byte[] decryted = Convert.FromBase64String(textoDesencriptar);
+            result = System.Text.Encoding.Unicode.GetString(decryted);
+            return result;
         }
     }
 }

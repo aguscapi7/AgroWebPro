@@ -108,9 +108,84 @@ namespace AgroWebPro.Web.Controllers
 
         public ActionResult Cosechas()
         {
+            ReporteModels reporteModels = new ReporteModels();
             Session[Constantes.MenuActivo] = Constantes.MenuReportes;
-            return View();
+            IEmpresa empresa = new Empresa();
+
+            ConsultarCultivosEmpresaRequest cultivosEmpresaRequest = null;
+            ConsultarCultivosEmpresaResponse cultivosEmpresaResponse = null;
+            try
+            {
+                if (Request.Cookies["usuario"] != null)
+                {
+                    string idEmpresaCookie = Request.Cookies["usuario"]["idEmpresa"];
+                    Guid idEmpresa = Guid.Parse(idEmpresaCookie);
+
+                    cultivosEmpresaRequest = new ConsultarCultivosEmpresaRequest();
+                    cultivosEmpresaRequest.idEmpresa = idEmpresa;
+                    cultivosEmpresaResponse = empresa.ConsultarCultivosEmpresa(cultivosEmpresaRequest);
+                    reporteModels.CopiarCultivosEmpresa(cultivosEmpresaResponse);
+                    reporteModels.listaCultivosEmpresa.Insert(0, new CultivoModels { idCultivo = Guid.Empty, nombreCultivo = "Todos" });
+                    reporteModels.fechaInicio = DateTime.Now.AddDays(-30).ToString("dd/MM/yyyy");
+                    reporteModels.fechaFin = DateTime.Now.ToString("dd/MM/yyyy");
+
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return View(reporteModels);
         }
+
+        [HttpPost]
+        public ActionResult Cosechas(ReporteModels reporteModels)
+        {
+            IEmpresa empresa = new Empresa();
+            IReportes reportes = new Reportes();
+
+            ConsultarCultivosEmpresaRequest cultivosEmpresaRequest = null;
+            ConsultarCultivosEmpresaResponse cultivosEmpresaResponse = null;
+
+            ConsultarReporteCosechasRequest cosechasRequest = null;
+            ConsultarReporteCosechasResponse cosechasResponse = null;
+            try
+            {
+                if (Request.Cookies["usuario"] != null)
+                {
+                    string idEmpresaCookie = Request.Cookies["usuario"]["idEmpresa"];
+                    Guid idEmpresa = Guid.Parse(idEmpresaCookie);
+
+                    cultivosEmpresaRequest = new ConsultarCultivosEmpresaRequest();
+                    cultivosEmpresaRequest.idEmpresa = idEmpresa;
+                    cultivosEmpresaResponse = empresa.ConsultarCultivosEmpresa(cultivosEmpresaRequest);
+                    reporteModels.CopiarCultivosEmpresa(cultivosEmpresaResponse);
+                    reporteModels.listaCultivosEmpresa.Insert(0, new CultivoModels { idCultivo = Guid.Empty, nombreCultivo = "Todos" });
+
+                    cosechasRequest = new ConsultarReporteCosechasRequest();
+                    cosechasRequest.fechaInicio = DateTime.Parse(reporteModels.fechaInicio);
+                    cosechasRequest.fechaFinalizacion = DateTime.Parse(reporteModels.fechaFin);
+                    cosechasRequest.idCultivo = reporteModels.idCultivo;
+                    cosechasRequest.idEmpresa = idEmpresa;
+                    cosechasResponse = reportes.ConsultarReporteCosechas(cosechasRequest);
+                    reporteModels.CopiarReporteCosechas(cosechasResponse);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return View(reporteModels);
+        }
+        
 
         public ActionResult Tareas()
         {

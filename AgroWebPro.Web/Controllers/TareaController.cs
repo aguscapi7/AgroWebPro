@@ -298,7 +298,10 @@ namespace AgroWebPro.Web.Controllers
             ConsultarTareasUsuarioResponse tareasUsuarioResponse = null;
 
             MantenimientoAvanceTareaUsuarioRequest avanceResquest = null;
-            MantenimientoAvanceTareaUsuarioResponse avanceResponse = null; 
+            MantenimientoAvanceTareaUsuarioResponse avanceResponse = null;
+
+            CrearRecoleccionCultivoRequest recoleccionCultivoRequest = null;
+            CrearRecoleccionCultivoResponse recoleccionCultivoResponse = null;
 
             try
             {
@@ -322,8 +325,35 @@ namespace AgroWebPro.Web.Controllers
                     avanceResponse = tarea.MantenimientoAvanceTareaUsuario(avanceResquest);
                     if(avanceResponse != null && avanceResponse.estado.Equals(Constantes.EstadoCorrecto))
                     {
-                        ViewBag.respuesta = Constantes.EstadoCorrecto;
-                        ViewBag.mensaje = mensajeCorrecto;
+                        if (avanceTareaModels.tieneRecoleccion)
+                        {
+                            recoleccionCultivoRequest = new CrearRecoleccionCultivoRequest()
+                            {
+                                causaRechazo = avanceTareaModels.causaRechazo,
+                                idTarea = (Guid)avanceTareaModels.idTarea,
+                                idUsuarioRecolecta = idUsuario,
+                                kilogramosPrimera = avanceTareaModels.kilogramosPrimera,
+                                kilogramosSegunda = avanceTareaModels.kilogramosSegunda,
+                                kilogramosRechazo = avanceTareaModels.kilogramosRechazo,
+                                idUsuarioSupervisor = ""
+                            };
+                            recoleccionCultivoResponse = tarea.CrearRecoleccionCultivo(recoleccionCultivoRequest);
+                            if(recoleccionCultivoResponse != null && recoleccionCultivoResponse.estado.Equals(Constantes.EstadoCorrecto))
+                            {
+                                ViewBag.respuesta = Constantes.EstadoCorrecto;
+                                ViewBag.mensaje = mensajeCorrecto;
+                            }
+                            else
+                            {
+                                ViewBag.respuesta = Constantes.EstadoError;
+                                ViewBag.mensaje = mensajeError;
+                            }
+                        }
+                        else
+                        {
+                            ViewBag.respuesta = Constantes.EstadoCorrecto;
+                            ViewBag.mensaje = mensajeCorrecto;
+                        }
                     }
                     else
                     {

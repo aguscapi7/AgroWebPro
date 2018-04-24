@@ -150,8 +150,8 @@ namespace AgroWebPro.Web.Models
                     this.correo = usuario.Correo;
                     this.direccion = usuario.Direccion;
                     this.idRol = usuario.IdRol;
-                    this.password = usuario.Password;
-                    this.passwordRepetir = usuario.Password;
+                    this.password = Utilitarios.Utilitarios.DesEncriptar(usuario.Password);
+                    this.passwordRepetir = Utilitarios.Utilitarios.DesEncriptar(usuario.Password);
                     this.telefono = usuario.Telefono;
                 }
             }

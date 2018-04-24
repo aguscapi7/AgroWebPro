@@ -109,7 +109,7 @@ namespace AgroWebPro.Web.Controllers
                             rol = (Guid)usuarioModels.idRol,
                             correo = usuarioModels.correo,
                             direccion = usuarioModels.direccion,
-                            password = claveTemporal,
+                            password = Utilitarios.Utilitarios.Encriptar(claveTemporal),
                             telefono = usuarioModels.telefono,
                             idEmpresa = idEmpresa,
                             ingresadoPor = idUsuario
@@ -139,12 +139,12 @@ namespace AgroWebPro.Web.Controllers
                     empleadoResponse = usuario.MantenimientoUsuario(empleadoRequest);
                     if (empleadoResponse != null && empleadoResponse.estado.Equals(Constantes.EstadoCorrecto))
                     {
-                        if (usuarioModels.idUsuario == Guid.Empty)
+                        if (usuarioModels.idUsuario == Guid.Empty || usuarioModels.idUsuario == null)
                         {
                             string correoSalida = ConfigurationManager.AppSettings["DireccionCorreo"].ToString();
                             string claveCorreoSalida = ConfigurationManager.AppSettings["ClaveCorreo"].ToString();
-                            string cuerpo = "{0}, se ha creado una cuenta en AgroWebPro.<br/><label><strong>Usuario: {1}</strong></label><br/><label><strong>Contraseña: {2}</strong></label></br>Ingresar <a href=\"correo.s-com.com/agendarcitas.regionalsoft.web/\">www.agrowebpro.com</a> ";
-                            Utilitarios.Utilitarios.EnvioCorreo(empleadoRequest.correo, "Creación cuenta AgroWebPro", string.Format(cuerpo,empleadoRequest.nombre,empleadoRequest.correo,empleadoRequest.password), correoSalida, claveCorreoSalida);
+                            string cuerpo = " <br/>{0}, se ha creado una cuenta en AgroWebPro.<br/><label><strong>Usuario: {1}</strong></label><br/><label><strong>Contraseña: {2}</strong></label></br>Ingresar <a href=\"localhost//AgroWebPro.Web//\">www.agrowebpro.com</a> ";
+                            Utilitarios.Utilitarios.EnvioCorreo(empleadoRequest.correo, "Creación cuenta AgroWebPro", string.Format(cuerpo,empleadoRequest.nombre,empleadoRequest.correo,Utilitarios.Utilitarios.DesEncriptar(empleadoRequest.password)), correoSalida, claveCorreoSalida);
 
                         }
                         ModelState.Clear();
@@ -284,7 +284,7 @@ namespace AgroWebPro.Web.Controllers
                         correo = usuarioModels.correo,
                         direccion = usuarioModels.direccion,
                         telefono = usuarioModels.telefono,
-                        password = usuarioModels.password
+                        password = Utilitarios.Utilitarios.Encriptar(usuarioModels.password)
                     };
                     empleadoResponse = usuario.MantenimientoUsuario(empleadoRequest);
                     if (empleadoResponse != null && empleadoResponse.estado.Equals(Constantes.EstadoCorrecto))

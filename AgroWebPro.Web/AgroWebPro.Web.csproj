@@ -445,8 +445,9 @@
     <Content Include="Scripts\libs\html2canvas\LICENSE" />
     <Content Include="Scripts\libs\js-xlsx\LICENSE" />
     <Content Include="Scripts\libs\pdfmake\LICENSE" />
-    <None Include="Views\Reporte\Tareas.cshtml" />
     <Content Include="Views\Reporte\Cosechas.cshtml" />
+    <None Include="Views\Reporte\Tareas.cshtml" />
+    <Content Include="Views\Reporte\Cosechas2.cshtml" />
     <Content Include="Views\Reporte\Ventas.cshtml" />
     <Content Include="Views\Usuario\Mantenimiento.cshtml" />
     <Content Include="Views\Tarea\Mantenimiento.cshtml" />

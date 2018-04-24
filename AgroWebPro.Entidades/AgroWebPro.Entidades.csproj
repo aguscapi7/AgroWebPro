@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Consultas\Entrada\ConsultarClientesProveedoresEmpresaRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarOpcionUsuarioRequest.cs" />
+    <Compile Include="Consultas\Entrada\ConsultarReporteCosechasRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarReporteTareasRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarTareasUsuarioRequest.cs" />
     <Compile Include="Consultas\Entrada\ConsultarTareaEmpresaRequest.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Consultas\Entrada\ConsultarZonasHorariasRequest.cs" />
     <Compile Include="Consultas\Salida\ConsultarClientesProveedoresEmpresaResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarOpcionUsuarioResponse.cs" />
+    <Compile Include="Consultas\Salida\ConsultarReporteCosechasResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarReporteTareasResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarTareasUsuarioResponse.cs" />
     <Compile Include="Consultas\Salida\ConsultarTareasEmpresaResponse.cs" />
@@ -99,6 +101,7 @@
     <Compile Include="Mantenimientos\Entrada\CrearRecoleccionCultivoRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoAvanceTareaUsuarioRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\CrearVentaRequest.cs" />
+    <Compile Include="Mantenimientos\Entrada\MantenimientoRecoleccionRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoTareaRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoTerrenoRequest.cs" />
     <Compile Include="Mantenimientos\Entrada\MantenimientoCultivoRequest.cs" />
@@ -109,6 +112,7 @@
     <Compile Include="Mantenimientos\Salida\CrearRecoleccionCultivoResponse.cs" />
     <Compile Include="Mantenimientos\Salida\MantenimientoAvanceTareaUsuarioResponse.cs" />
     <Compile Include="Mantenimientos\Salida\CrearVentaResponse.cs" />
+    <Compile Include="Mantenimientos\Salida\MantenimientoRecoleccionResponse.cs" />
     <Compile Include="Mantenimientos\Salida\MantenimientoTareaResponse.cs" />
     <Compile Include="Mantenimientos\Salida\MantenimientoTerrenoResponse.cs" />
     <Compile Include="Mantenimientos\Salida\MantenimientoCultivoResponse.cs" />
