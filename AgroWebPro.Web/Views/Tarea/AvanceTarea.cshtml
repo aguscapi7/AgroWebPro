@@ -35,7 +35,7 @@
                         <option value="">Seleccione</option>
                         foreach (var itemTarea in Model.listaTareaUsuario)
                         {
-                            <option value="@itemTarea.idTarea" data-recoleccion="@(itemTarea.recoleccion ? 1 : 0)" @(Session["idTareaSeleccionada"] != null ? Session["idTareaSeleccionada"].ToString().Equals(itemTarea.idTarea.ToString()) ? "selected" : "" : "")>@itemTarea.nombreTerreno - @itemTarea.nombreTipoTarea - @itemTarea.resumen</option>
+                            <option value="@itemTarea.idTarea" data-recoleccion="@(itemTarea.recoleccion ? 1 : 0)" @(Session["idTareaSeleccionada"] != null ? Session["idTareaSeleccionada"].ToString().Equals(itemTarea.idTarea.ToString()) ? "selected" : "" : Model.idTarea != null && Model.idTarea == itemTarea.idTarea ? "selected" : "")>@itemTarea.nombreTerreno - @itemTarea.nombreTipoTarea - @itemTarea.resumen</option>
                         }
                     }
                 </select>
@@ -146,6 +146,10 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
         else {
             $("#divRecoleccion").addClass("hidden");
             $("#hdnTieneRecoleccion").val(false);
+
+            $('#txtKilogramosPrimera').val("0");
+            $('#txtKilogramosSegunda').val("0");
+            $('#txtKilogramosRechazo').val("0");
         }
     }
 </script>

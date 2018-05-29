@@ -98,7 +98,7 @@ namespace AgroWebPro.Web.Models
                     foreach (var itemTarea in cosechasResponse.listaReporteCosechas)
                     {
                         tarea = new AvanceTareaModels();
-                        tarea.fechaRecoleccion = itemTarea.FechaRecoleccion.ToString("dd/MM/yyyy");
+                        tarea.fechaRecoleccion = itemTarea.FechaRecoleccion.AddHours(-6).ToString("dd/MM/yyyy HH:mm");
                         tarea.kilogramosPrimera = itemTarea.KilogramosPrimera;
                         tarea.kilogramosSegunda = itemTarea.KilogramosSegunda;
                         tarea.kilogramosRechazo = itemTarea.KilogramosRechazo;

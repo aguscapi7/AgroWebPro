@@ -11,10 +11,13 @@ namespace AgroWebPro.Web.Models
     public class AvanceTareaModels
     {
         [Display(Name = "Kilogramos de primera")]
+        [Range(0, int.MaxValue, ErrorMessage = "Las cantidad debe ser mayor a cero")]
         public decimal kilogramosPrimera { get; set; }
         [Display(Name = "Kilogramos de segunda")]
+        [Range(0, int.MaxValue, ErrorMessage = "Las cantidad debe ser mayor a cero")]
         public decimal kilogramosSegunda { get; set; }
         [Display(Name = "Kilogramos de rechazo")]
+        [Range(0, int.MaxValue, ErrorMessage = "Las cantidad debe ser mayor a cero")]
         public decimal kilogramosRechazo { get; set; }
         [Display(Name = "Causa del rechazo")]
         public string causaRechazo { get; set; }

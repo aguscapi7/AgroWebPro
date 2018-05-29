@@ -65,7 +65,7 @@
                            data-pagination="true"
                            data-page-list="[10, 25, 50, 100, ALL]"
                            data-locale="es-CR"
-                           data-url="tableExport.json">
+                           data-url="ReporteCosechas.json">
                         <thead class="thead-dark">
                             <tr>
                                 <th data-field="Terreno">Cultivo</th>
@@ -105,8 +105,12 @@
                         <div id="divExportarExcel">
                             <a href="#" class="btn btn-success" onclick="$('#tblResultado').tableExport({type:'excel',
                                                              excelFileFormat:'xmlss',
-                                                             worksheetName: ['Table 1']});">
+                                                             worksheetName: ['Table 1'],
+                                                             fileName: 'ReporteCosechas@(DateTime.Now.ToString("-dd-MM-yyyy_HHmm"))'});">
                                 &nbsp;Exportar a Excel&nbsp;<span><i class="fa fa-save"></i></span>
+                            </a>
+                            <a href="#" class="btn btn-info" onclick="$('#tblResultado').tableExport({type:'pdf',pdfmake:{enabled:true},fileName: 'ReporteCosechas@(DateTime.Now.ToString("-dd-MM-yyyy_HHmm"))'});">
+                                &nbsp;Exportar a PDF&nbsp;<span><i class="fa fa-save"></i></span>
                             </a>
                         </div>
                     }
@@ -124,11 +128,11 @@
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/bootstrap-datepicker.js"></script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+<script src="~/Scripts/libs/js-xlsx/xlsx.core.min.js"></script>
+<script src="~/Scripts/libs/pdfmake/pdfmake.min.js"></script>
+<script src="~/Scripts/libs/pdfmake/vfs_fonts.js"></script>
+<script src="~/Scripts/libs/FileSaver/FileSaver.min.js"></script>
 <script src="~/Scripts/tableExport.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/extensions/export/bootstrap-table-export.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/extensions/toolbar/bootstrap-table-toolbar.js"></script>
 <script>
     $('#txtFechaInicio').datepicker({
         changeMonth: true,

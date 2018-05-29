@@ -79,6 +79,10 @@ namespace AgroWebPro.Web.Controllers
             catch (Exception ex)
             {
 
+                AgroWebPro.Utilitarios.Utilitarios.BitacoraErrores(ex.Message + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty),
+                                                    "Error WEB: ",
+                                                    this.GetType().Name,
+                                                    System.Reflection.MethodInfo.GetCurrentMethod().Name);
             }
             return View(tareaModels);
         }
@@ -206,6 +210,10 @@ namespace AgroWebPro.Web.Controllers
             catch(Exception ex)
             {
 
+                AgroWebPro.Utilitarios.Utilitarios.BitacoraErrores(ex.Message + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty),
+                                                    "Error WEB: ",
+                                                    this.GetType().Name,
+                                                    System.Reflection.MethodInfo.GetCurrentMethod().Name);
             }
             return View(tareaModels);
         }
@@ -240,6 +248,10 @@ namespace AgroWebPro.Web.Controllers
             catch (Exception ex)
             {
 
+                AgroWebPro.Utilitarios.Utilitarios.BitacoraErrores(ex.Message + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty),
+                                                    "Error WEB: ",
+                                                    this.GetType().Name,
+                                                    System.Reflection.MethodInfo.GetCurrentMethod().Name);
             }
             return Json(new { respuesta = respuesta });
         }
@@ -280,6 +292,10 @@ namespace AgroWebPro.Web.Controllers
             catch(Exception ex)
             {
 
+                AgroWebPro.Utilitarios.Utilitarios.BitacoraErrores(ex.Message + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty),
+                                                    "Error WEB: ",
+                                                    this.GetType().Name,
+                                                    System.Reflection.MethodInfo.GetCurrentMethod().Name);
             }
             return View(avanceTareaModels);
         }
@@ -342,6 +358,9 @@ namespace AgroWebPro.Web.Controllers
                             {
                                 ViewBag.respuesta = Constantes.EstadoCorrecto;
                                 ViewBag.mensaje = mensajeCorrecto;
+                                ModelState.Clear();
+                                avanceTareaModels = new AvanceTareaModels();
+                                Session["idTareaSeleccionada"] = null;
                             }
                             else
                             {
@@ -353,6 +372,9 @@ namespace AgroWebPro.Web.Controllers
                         {
                             ViewBag.respuesta = Constantes.EstadoCorrecto;
                             ViewBag.mensaje = mensajeCorrecto;
+                            ModelState.Clear();
+                            avanceTareaModels = new AvanceTareaModels();
+                            Session["idTareaSeleccionada"] = null;
                         }
                     }
                     else
@@ -374,7 +396,10 @@ namespace AgroWebPro.Web.Controllers
             }
             catch (Exception ex)
             {
-
+                AgroWebPro.Utilitarios.Utilitarios.BitacoraErrores(ex.Message + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty),
+                                                    "Error WEB: ",
+                                                    this.GetType().Name,
+                                                    System.Reflection.MethodInfo.GetCurrentMethod().Name);
             }
             return View(avanceTareaModels);
         }
