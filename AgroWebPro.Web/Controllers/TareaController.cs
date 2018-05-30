@@ -38,7 +38,9 @@ namespace AgroWebPro.Web.Controllers
             
             try
             {
-                if (Request.Cookies["usuario"] != null)
+                string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+                string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+                if (ConsultarOpcionPorUsuario(controllerName, actionName))
                 {
                     string idEmpresaCookie = Request.Cookies["usuario"]["idEmpresa"];
                     Guid idEmpresa = Guid.Parse(idEmpresaCookie);
@@ -271,7 +273,9 @@ namespace AgroWebPro.Web.Controllers
 
             try
             {
-                if (Request.Cookies["usuario"] != null)
+                string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+                string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+                if (ConsultarOpcionPorUsuario(controllerName, actionName))
                 {
                     Guid idUsuario = Guid.Parse(Request.Cookies["usuario"]["idUsuario"]);
                     estadoTareaRequest = new ConsultarEstadoTareaRequest();
@@ -285,7 +289,7 @@ namespace AgroWebPro.Web.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Error", "Home");
                 }
                     
             }

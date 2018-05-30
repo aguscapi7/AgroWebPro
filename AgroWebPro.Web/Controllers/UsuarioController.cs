@@ -32,7 +32,9 @@ namespace AgroWebPro.Web.Controllers
             ConsultarRolesResponse rolesResponse = null;
             try
             {
-                if(Request.Cookies["usuario"] != null)
+                string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+                string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+                if (ConsultarOpcionPorUsuario(controllerName, actionName))
                 {
                     string idEmpresaCookie = Request.Cookies["usuario"]["idEmpresa"];
                     Guid idEmpresa = Guid.Parse(idEmpresaCookie);
@@ -246,9 +248,11 @@ namespace AgroWebPro.Web.Controllers
             ConsultarUsuarioRequest usuarioRequest = null;
             try
             {
-                if (Request.Cookies["usuario"] != null)
+                string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+                string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+                if (ConsultarOpcionPorUsuario(controllerName, actionName))
                 {
-                    
+
                     Guid idUsuario = Guid.Parse(Request.Cookies["usuario"]["idUsuario"].ToString());
 
                     usuarioRequest = new ConsultarUsuarioRequest();
