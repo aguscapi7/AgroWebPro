@@ -352,7 +352,33 @@ namespace AgroWebPro.Web.Controllers
 
                     string correoSalida = ConfigurationManager.AppSettings["DireccionCorreo"].ToString();
                     string claveCorreoSalida = ConfigurationManager.AppSettings["ClaveCorreo"].ToString();
-                    string cuerpo = "{0}, se ha restablecido su cuenta en AgroWebPro.<br/><label><strong>Usuario: {1}</strong></label><br/><label><strong>Contraseña temporal: {2}</strong></label></br>Ingresar <a href=\"localhost/AgroWebPro.Web/\">www.agrowebpro.com</a> ";
+                    string imagenCorreo = ConfigurationManager.AppSettings["ImagenCorreo"].ToString();
+                    string cuerpo = 
+                        "<html>" +
+                            "<body>" +
+                                "<div>" +
+                                    "<center>" +
+                                        "<img src=\"" + imagenCorreo + "\"><br>" +
+                                        "<h2>Contraseña reestablecida</h2><br>" +
+                                        "<div style=\"text-align: left; display: table;margin-right: auto;margin-left: auto;\">" +
+                                            "{0}, se ha restablecido su cuenta en AgroWebPro.<br/>" +
+                                            "<table>" +
+                                                "<tr>" +
+                                                    "<td><strong>Usuario:&nbsp;&nbsp;</strong></td>" +
+                                                    "<td>{1}</td>" +
+                                                "</tr>" +
+                                                "<tr>" +
+                                                    "<td><strong>Contraseña:&nbsp;&nbsp;</strong></td>" +
+                                                    "<td>{2}</td>" +
+                                                "</tr>" +
+                                            "</table>" +
+                                            "</br>" +
+                                            "Ingresar:&nbsp;<a href=\"localhost/AgroWebPro.Web/\">www.agrowebpro.com</a> " +
+                                        "</div>" +
+                                    "</center>" +
+                                "</div>" +
+                            "</body>" +
+                        "</html>";
                     Utilitarios.Utilitarios.EnvioCorreo(correo, "Restablecer cuenta AgroWebPro", string.Format(cuerpo, usuarioLogin.Nombre, usuarioLogin.Correo, claveTemporal), correoSalida, claveCorreoSalida);
                     
                     mensaje = "Se envió un correo a {0} con los detalles para restablecer la contraseña";

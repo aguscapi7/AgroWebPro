@@ -62,7 +62,14 @@ namespace AgroWebPro.Utilitarios
                     email.Subject = asunto;
                     email.Body = cuerpo;
                     email.IsBodyHtml = true;
-                    email.Priority = MailPriority.High;
+                    email.BodyEncoding = System.Text.Encoding.UTF8;
+
+                    System.Net.Mail.AlternateView plainView = System.Net.Mail.AlternateView.CreateAlternateViewFromString
+(System.Text.RegularExpressions.Regex.Replace(cuerpo, @"<(.|\n)*?>", string.Empty), null, "text/plain");
+                    System.Net.Mail.AlternateView htmlView = System.Net.Mail.AlternateView.CreateAlternateViewFromString(cuerpo, null, "text/html");
+
+                    email.AlternateViews.Add(plainView);
+                    email.AlternateViews.Add(htmlView);
 
                     SmtpClient smtp = new SmtpClient();
                     smtp.Host = "smtp.live.com";
