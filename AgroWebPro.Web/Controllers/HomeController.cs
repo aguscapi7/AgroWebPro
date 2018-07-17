@@ -353,13 +353,14 @@ namespace AgroWebPro.Web.Controllers
                     string correoSalida = ConfigurationManager.AppSettings["DireccionCorreo"].ToString();
                     string claveCorreoSalida = ConfigurationManager.AppSettings["ClaveCorreo"].ToString();
                     string imagenCorreo = ConfigurationManager.AppSettings["ImagenCorreo"].ToString();
+                    string url = ConfigurationManager.AppSettings["Url"].ToString();
                     string cuerpo = 
                         "<html>" +
                             "<body>" +
                                 "<div>" +
                                     "<center>" +
                                         "<img src=\"" + imagenCorreo + "\"><br>" +
-                                        "<h2>Contraseña reestablecida</h2><br>" +
+                                        "<h2>Contraseña restablecida</h2><br>" +
                                         "<div style=\"text-align: left; display: table;margin-right: auto;margin-left: auto;\">" +
                                             "{0}, se ha restablecido su cuenta en AgroWebPro.<br/>" +
                                             "<table>" +
@@ -373,13 +374,13 @@ namespace AgroWebPro.Web.Controllers
                                                 "</tr>" +
                                             "</table>" +
                                             "</br>" +
-                                            "Ingresar:&nbsp;<a href=\"localhost/AgroWebPro.Web/\">www.agrowebpro.com</a> " +
+                                            "Ingresar:&nbsp;<a href=\"{3}\">www.agrowebpro.com</a> " +
                                         "</div>" +
                                     "</center>" +
                                 "</div>" +
                             "</body>" +
                         "</html>";
-                    Utilitarios.Utilitarios.EnvioCorreo(correo, "Restablecer cuenta AgroWebPro", string.Format(cuerpo, usuarioLogin.Nombre, usuarioLogin.Correo, claveTemporal), correoSalida, claveCorreoSalida);
+                    Utilitarios.Utilitarios.EnvioCorreo(correo, "Restablecer cuenta AgroWebPro", string.Format(cuerpo, usuarioLogin.Nombre, usuarioLogin.Correo, claveTemporal,url), correoSalida, claveCorreoSalida);
                     
                     mensaje = "Se envió un correo a {0} con los detalles para restablecer la contraseña";
                     mensaje = string.Format(mensaje, correo);

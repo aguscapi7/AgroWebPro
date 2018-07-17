@@ -10,11 +10,10 @@ namespace AgroWebPro.Entidades.Mantenimientos.Entrada
     public class MantenimientoClienteProveedorRequest:EntradaBase
     {
         public int tipoOperacion { get; set; }
-        public Guid idUsuario { get; set; }
+        public Guid idClienteProveedor { get; set; }
         public string nombre { get; set; }
         public string apellidos { get; set; }
         public string correo { get; set; }
-        public string password { get; set; }
         public string direccion { get; set; }
         public string telefono { get; set; }
         public Nullable<Guid> ingresadoPor { get; set; }

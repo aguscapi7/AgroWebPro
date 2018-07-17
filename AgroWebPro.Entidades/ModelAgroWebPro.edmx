@@ -138,6 +138,21 @@
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
+        <Function Name="PA_MantenimientoClienteProveedor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TipoOperacion" Type="int" Mode="In" />
+          <Parameter Name="IdClienteProveedor" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="Apellidos" Type="varchar" Mode="In" />
+          <Parameter Name="Correo" Type="varchar" Mode="In" />
+          <Parameter Name="Direccion" Type="varchar" Mode="In" />
+          <Parameter Name="Telefono" Type="varchar" Mode="In" />
+          <Parameter Name="IngresadoPor" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="Activo" Type="bit" Mode="In" />
+          <Parameter Name="IdEmpresa" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="EsCliente" Type="bit" Mode="In" />
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
         <Function Name="PA_MantenimientoCultivo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="TipoOperacion" Type="int" Mode="In" />
           <Parameter Name="IdCultivo" Type="uniqueidentifier" Mode="In" />
@@ -452,6 +467,21 @@
             <Parameter Name="KilogramosRechazo" Mode="In" Type="Decimal" />
             <Parameter Name="CausaRechazo" Mode="In" Type="String" />
             <Parameter Name="IdUsuarioSupervisor" Mode="In" Type="String" />
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PA_MantenimientoClienteProveedor">
+            <Parameter Name="TipoOperacion" Mode="In" Type="Int32" />
+            <Parameter Name="IdClienteProveedor" Mode="In" Type="Guid" />
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="Apellidos" Mode="In" Type="String" />
+            <Parameter Name="Correo" Mode="In" Type="String" />
+            <Parameter Name="Direccion" Mode="In" Type="String" />
+            <Parameter Name="Telefono" Mode="In" Type="String" />
+            <Parameter Name="IngresadoPor" Mode="In" Type="Guid" />
+            <Parameter Name="Activo" Mode="In" Type="Boolean" />
+            <Parameter Name="IdEmpresa" Mode="In" Type="Guid" />
+            <Parameter Name="EsCliente" Mode="In" Type="Boolean" />
             <Parameter Name="Estado" Mode="InOut" Type="String" />
             <Parameter Name="Mensaje" Mode="InOut" Type="String" />
           </FunctionImport>
@@ -1005,6 +1035,7 @@
           <FunctionImportMapping FunctionImportName="PA_MantenimientoTest" FunctionName="AgroWebProModel.Store.PA_MantenimientoTest" />
           <FunctionImportMapping FunctionImportName="PA_MantenimientoRecoleccion" FunctionName="AgroWebProModel.Store.PA_MantenimientoRecoleccion" />
           <FunctionImportMapping FunctionImportName="PA_CrearRecoleccionCultivo" FunctionName="AgroWebProModel.Store.PA_CrearRecoleccionCultivo" />
+          <FunctionImportMapping FunctionImportName="PA_MantenimientoClienteProveedor" FunctionName="AgroWebProModel.Store.PA_MantenimientoClienteProveedor" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

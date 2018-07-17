@@ -67,8 +67,8 @@ namespace AgroWebPro.Web.Controllers
                     tareasEmpresaResponse = tarea.ConsultarTareasEmpresa(tareasEmpresaRequest);
                     tareaModels.CopiarTareasEmpresa(tareasEmpresaResponse);
 
-                    tareaModels.fechaInicio = DateTime.Now.ToString("dd/MM/yyyy");
-                    tareaModels.fechaFinalizacion = DateTime.Now.AddDays(1).ToString("dd/MM/yyyy");
+                    tareaModels.fechaInicio = DateTime.UtcNow.AddHours(-6).ToString("dd/MM/yyyy");
+                    tareaModels.fechaFinalizacion = DateTime.UtcNow.AddHours(-6).AddDays(1).ToString("dd/MM/yyyy");
 
                 }
                 else

@@ -86,11 +86,20 @@ namespace AgroWebPro.AccesoDatos.Metodos
             {
                 using (AgroWebProEntities modelo = new AgroWebProEntities())
                 {
-                    //modelo.PA_MantenimientoClienteProveedor(
-                    //                request.idEmpresa
-                    //                , request.esCliente
-                    //                , estado
-                    //                , mensaje);
+                    modelo.PA_MantenimientoClienteProveedor(
+                                      request.tipoOperacion
+                                    , request.idClienteProveedor
+                                    , request.nombre
+                                    , request.apellidos
+                                    , request.correo
+                                    , request.direccion
+                                    , request.telefono
+                                    , request.ingresadoPor
+                                    , request.activo
+                                    , request.idEmpresa
+                                    , request.esCliente                                    
+                                    , estado
+                                    , mensaje);
                     if (estado.Value.ToString().Equals(Constantes.EstadoError))
                     {
                         response.estado = Constantes.EstadoError;

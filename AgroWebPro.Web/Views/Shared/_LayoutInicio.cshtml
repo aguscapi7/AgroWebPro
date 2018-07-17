@@ -36,7 +36,7 @@
             <div class="container navigation">
 
                 <div class="navbar-header page-scroll">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                    <button type="button" class="navbar-toggle" onclick="AbrirMenu()">
                         <i class="fa fa-bars"></i>
                     </button>
                     <a class="navbar-brand" onclick="AbrirEnlace('@Url.Action("Index", "Home")')">
@@ -45,12 +45,12 @@
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                <div class="navbar-collapse navbar-right navbar-main-collapse collapse">
                     <ul id="menuSuperior" class="nav navbar-nav enlaces">
-                        <li class="active"><a href="#intro">Inicio</a></li>
-                        <li><a href="#boxes">Servicios</a></li>
+                        <li class="active" onclick="CerrarMenu()"><a href="#intro">Inicio</a></li>
+                        <li><a href="#boxes" onclick="CerrarMenu()">Servicios</a></li>
                         @*<li><a href="#facilities">Facilidades</a></li>*@
-                        <li><a href="#pricing">Precios</a></li>
+                        <li><a href="#pricing" onclick="CerrarMenu()">Precios</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" onclick="MostrarLogin()"><b>Login</b></a>
                         </li>
@@ -239,6 +239,7 @@
         }
 
         function MostrarLogin() {
+            CerrarMenu();
             swal({
                 title: '',
                 background: '#fff',
@@ -275,6 +276,19 @@
 
         function Registro() {
             AbrirEnlace("@Url.Action("Registro", "Home")");
+        }
+
+        function AbrirMenu() {
+            if ($(".navbar-main-collapse").hasClass("collapse")) {
+                $(".navbar-main-collapse").removeClass("collapse");
+            }
+            else {
+                $(".navbar-main-collapse").addClass("collapse");
+            }
+        }
+
+        function CerrarMenu() {
+            $(".navbar-main-collapse").addClass("collapse");
         }
     </script>
 </body>

@@ -150,7 +150,7 @@ namespace AgroWebPro.Web.Controllers
                             string correoSalida = ConfigurationManager.AppSettings["DireccionCorreo"].ToString();
                             string claveCorreoSalida = ConfigurationManager.AppSettings["ClaveCorreo"].ToString();
                             string imagenCorreo = ConfigurationManager.AppSettings["ImagenCorreo"].ToString();
-
+                            string url = ConfigurationManager.AppSettings["Url"].ToString();
                             string cuerpo =
                                 "<html>" +
                                     "<body>" +
@@ -171,13 +171,13 @@ namespace AgroWebPro.Web.Controllers
                                                         "</tr>" +
                                                     "</table>" +
                                                     "</br>" +
-                                                    "Ingresar:&nbsp;<a href=\"localhost/AgroWebPro.Web/\">www.agrowebpro.com</a> " +
+                                                    "Ingresar:&nbsp;<a href=\"{3}\">www.agrowebpro.com</a> " +
                                                 "</div>" +
                                             "</center>" +
                                         "</div>" +
                                     "</body>" +
                                 "</html>";
-                            Utilitarios.Utilitarios.EnvioCorreo(empleadoRequest.correo, "Creación cuenta AgroWebPro", string.Format(cuerpo,empleadoRequest.nombre,empleadoRequest.correo,Utilitarios.Utilitarios.DesEncriptar(empleadoRequest.password)), correoSalida, claveCorreoSalida);
+                            Utilitarios.Utilitarios.EnvioCorreo(empleadoRequest.correo, "Creación cuenta AgroWebPro", string.Format(cuerpo,empleadoRequest.nombre,empleadoRequest.correo,Utilitarios.Utilitarios.DesEncriptar(empleadoRequest.password),url), correoSalida, claveCorreoSalida);
 
                         }
                         ModelState.Clear();

@@ -46,8 +46,8 @@ namespace AgroWebPro.Web.Controllers
                     terrenosEmpresaResponse = empresa.ConsultarTerrenosEmpresa(terrenosEmpresaRequest);
                     reporteModels.CopiarTerrenosEmpresa(terrenosEmpresaResponse);
                     reporteModels.listaTerrenosEmpresa.Insert(0, new TerrenoModels { idTerreno = Guid.Empty, nombreTerreno = "Todos" });
-                    reporteModels.fechaInicio = DateTime.Now.AddDays(-30).ToString("dd/MM/yyyy");
-                    reporteModels.fechaFin = DateTime.Now.ToString("dd/MM/yyyy");
+                    reporteModels.fechaInicio = DateTime.UtcNow.AddHours(-6).AddDays(-30).ToString("dd/MM/yyyy");
+                    reporteModels.fechaFin = DateTime.UtcNow.AddHours(-6).ToString("dd/MM/yyyy");
 
                 }
                 else
@@ -130,8 +130,8 @@ namespace AgroWebPro.Web.Controllers
                     cultivosEmpresaResponse = empresa.ConsultarCultivosEmpresa(cultivosEmpresaRequest);
                     reporteModels.CopiarCultivosEmpresa(cultivosEmpresaResponse);
                     reporteModels.listaCultivosEmpresa.Insert(0, new CultivoModels { idCultivo = Guid.Empty, nombreCultivo = "Todos" });
-                    reporteModels.fechaInicio = DateTime.Now.AddDays(-30).ToString("dd/MM/yyyy");
-                    reporteModels.fechaFin = DateTime.Now.ToString("dd/MM/yyyy");
+                    reporteModels.fechaInicio = DateTime.UtcNow.AddHours(-6).AddDays(-30).ToString("dd/MM/yyyy");
+                    reporteModels.fechaFin = DateTime.UtcNow.AddHours(-6).ToString("dd/MM/yyyy");
 
                 }
                 else

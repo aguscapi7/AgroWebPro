@@ -1,8 +1,10 @@
-﻿
+﻿@model AgroWebPro.Web.Models.ClienteProveedorModels
+@using AgroWebPro.Utilitarios;
 @{
-    ViewBag.Title = "Clientes y proveedores";
+    ViewBag.Title = "Mantenimiento de cliente/proveedor";
 }
 
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
 <link href="~/Content/bootstrap-table.css" rel="stylesheet" />
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/bootstrap-table.js"></script>
@@ -14,9 +16,303 @@
     <nav class="navbar navbar-default" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
-                <h3 style="margin-left:10px;"><span class="fa fa-address-book fa-lg"></span>&nbsp;<span id="tituloMantenimiento">Clientes y proveedores </span></h3>
+                <h3 style="margin-left:10px;"><span class="fa fa-address-book fa-lg"></span>&nbsp;<span id="tituloMantenimiento">Listado de clientes y proveedores </span></h3>
             </div>
         </div>
     </nav>
 </div>
+@using (Html.BeginForm("MantenimientoClienteProveedor", "Venta", FormMethod.Post, new { id = "formEmpleado", role = "form", @data_toggle = "validator" }))
+{
+    @Html.AntiForgeryToken();
+    @Html.ValidationSummary(true);
+    <div class="form-group @(Model.errorValidacion ? "":"hidden")" id="divMantenimiento">
+        <div class="row form-group">
+            @Html.HiddenFor(m => m.idClienteProveedor, new { @id = "hdnIdUsuario" })
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.nombre)
+                @Html.TextBoxFor(model => model.nombre, new { @id = "txtNombre", @class = "form-control", @placeholder = "Ingrese el nombre", @maxlength = 50 })
+                @Html.ValidationMessageFor(model => model.nombre, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.apellidos)
+                @Html.TextBoxFor(model => model.apellidos, new { @id = "txtApellidos", @class = "form-control", @placeholder = "Ingrese los apellidos", @maxlength = 80 })
+            </div>
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.telefono)
+                @Html.TextBoxFor(model => model.telefono, new { @id = "txtTelefono", @class = "form-control", @placeholder = "Ingrese el telefono", @maxlength = 20 })
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.correo)
+                @Html.TextBoxFor(model => model.correo, new { @id = "txtCorreo", @class = "form-control", @type = "email", @placeholder = "Ingrese el correo", @maxlength = 100 })
+                @Html.ValidationMessageFor(model => model.correo, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.esCliente)<br />
+                <label class="radio-inline"><input id="rbtnCliente" type="radio" name="esCliente" value="true" checked>Cliente</label>
+                <label class="radio-inline"><input id="rbtnProveedor" type="radio" name="esCliente" value="false">Proveedor</label>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.direccion)
+                @Html.TextAreaFor(model => model.direccion, new { @id = "txtDireccion", @class = "form-control", @rows = 2, @placeholder = "Ingrese la dirección", @maxlength = 200 })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8"></div>
+            <div class="col-md-4">
+                <button class="btn btn-danger pull-right" id="btnCancelar" type="button" onclick="Cancelar()">Cancelar</button>
+                <button id="btnGuardar" name="btnGuardar" class="btn btn-primary pull-right btn-guardar" type="submit">Guardar</button>
+            </div>
+        </div>
+    </div>
 
+}
+
+<div class="form-group @(Model.errorValidacion ? "hidden":"")" id="divTablaEmpleados">
+    <div class="row">
+        <div class="col-md-12"><button class="btn btn-orange" onclick="MostrarDivMantenimiento()">Agregar cliente/proveedor&nbsp;<span class="fa fa-plus"></span></button></div>
+        <br />
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-hover" data-show-toggle="true" data-search="true"
+                       data-show-export="true"
+                       data-detail-formatter="detailFormatter"
+                       data-minimum-count-columns="2"
+                       data-show-pagination-switch="true"
+                       data-pagination="true"
+                       data-page-list="[10, 25, 50, 100, ALL]"
+                       data-locale="es-CR">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th>Correo</th>
+                            <th>Teléfono</th>
+                            <th>Dirección</th>
+                            <th>Tipo</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.listaClienteProveedor != null && Model.listaClienteProveedor.Count() > 0)
+                        {
+                            foreach (var itemEmpleado in Model.listaClienteProveedor)
+                            {
+                                <tr>
+                                    <td>@itemEmpleado.nombre</td>
+                                    <td>@itemEmpleado.apellidos</td>
+                                    <td>@itemEmpleado.correo</td>
+                                    <td>@itemEmpleado.telefono</td>
+                                    <td>@(itemEmpleado.direccion.Count() > 50 ? itemEmpleado.direccion.Substring(0, 50) + "..." : itemEmpleado.direccion)</td>
+                                    <td>@(itemEmpleado.esCliente ? "Cliente" : "Proveedor")</td>
+                                    <td>
+                                        <button class="btn btn-primary"
+                                                data-idusuario="@itemEmpleado.idClienteProveedor"
+                                                data-nombre="@itemEmpleado.nombre"
+                                                data-apellidos="@itemEmpleado.apellidos"
+                                                data-direccion="@itemEmpleado.direccion"
+                                                data-telefono="@itemEmpleado.telefono"
+                                                data-correo="@itemEmpleado.correo"
+                                                data-esCliente="@itemEmpleado.esCliente.ToString().ToLower()"
+                                                onclick="CargarDatosEmpleado(this)">
+                                            <span class="fa fa-pencil"></span>
+                                        </button>
+                                        <button class="btn btn-danger" onclick="EliminarEmpleadoPaso1('@itemEmpleado.idClienteProveedor')"><span class="fa fa-trash"></span> </button>&nbsp;
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr><td colspan="6"><center>Aún no ha agregado clientes ni proveedores</center></td></tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+<script src="~/Scripts/sweetalert.min.js"></script>
+@if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoCorrecto)
+{
+    <script>
+        swal({
+            title: 'Correcto',
+            text: "@ViewBag.mensaje",
+            type: 'success',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+}
+else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoError)
+{
+    <script>
+        swal({
+            title: 'Error',
+            text: "@ViewBag.mensaje",
+            type: 'error',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+            });
+    </script>
+}
+<script>
+
+    $('table').bootstrapTable({
+        editable: true
+    });
+
+    $('#txtFechaNacimiento').datepicker({
+
+        changeMonth: true,
+        changeYear: true,
+        format: "dd/mm/yyyy",
+        todayHighlight: true,
+        todayBtn: "linked",
+        onSelect: function (date) {
+        }
+    }).on('changeDate', function (e) {
+        $(this).datepicker('hide');
+    });
+
+    function EliminarEmpleado() {
+        var parametros = {
+            idUsuario: $("#hdnIdEmpleado").val()
+        };
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: '@Url.Action("Eliminar", "Usuario")',
+            data: parametros,
+            success: function (data) {
+                if (data.respuesta == '@Constantes.EstadoCorrecto')
+                {
+                    swal({
+                        title: 'Correcto',
+                        text: "El cliente/proveedor se ha borrado correctamente",
+                        type: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Aceptar'
+                    }).then(function (isConfirm) {
+                        window.location.href = window.location.href;
+                    });
+
+
+                }
+                else
+                {
+                    swal({
+                        title: 'Error',
+                        text: "Ocurrió un error al borrar el cliente/proveedor",
+                        type: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Aceptar'
+                    }).then(function (isConfirm) {
+                        window.location.href = window.location.href;
+                    });
+                }
+
+            }
+        });
+    }
+
+    function EliminarEmpleadoPaso1(idEmpleado)
+    {
+        swal({
+            title: '',
+            text: "Esta acción eliminará el cliente/proveedor",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Borrar',
+            cancelButtonText: 'Cancelar'
+        }).then(function (isConfirm) {
+            if (isConfirm)
+            {
+                $("#hdnIdEmpleado").val(idEmpleado);
+                EliminarEmpleado();
+            }
+
+        })
+    }
+
+    function CargarDatosEmpleado(empleado)
+    {
+        var idUsuario = $(empleado).data("idusuario");
+        var nombre = $(empleado).data("nombre");
+        var apellidos = $(empleado).data("apellidos");
+        var direccion = $(empleado).data("direccion");
+        var telefono = $(empleado).data("telefono");
+        var correo = $(empleado).data("correo");
+        var esCliente = $(empleado).data("escliente");
+
+        $("#txtNombre").val(nombre);
+        $("#txtApellidos").val(apellidos);
+        $("#txtDireccion").val(direccion);
+        $("#txtTelefono").val(telefono);
+        $("#txtCorreo").val(correo);
+        if (esCliente) {
+            $("#rbtnCliente").attr('checked', 'checked');
+        }
+        else {
+            $("#rbtnProveedor").attr('checked', 'checked');
+
+        }
+
+        $("#hdnIdUsuario").val(idUsuario);
+
+        $("#divMantenimiento").removeClass("hidden");
+        $("#divTablaEmpleados").addClass("hidden");
+        $("#tituloMantenimiento").html("Editar cliente/proveedor");
+    }
+
+    function Cancelar()
+    {
+        $("#txtNombre").val("");
+        $("#txtApellidos").val("");
+        $("#txtDireccion").val("");
+        $("#txtTelefono").val("");
+        $("#txtCorreo").val("");
+        $("#ddlRoles").val("@Guid.Empty");
+        $("#hdnIdUsuario").val("@Guid.Empty");
+
+        $("#divMantenimiento").addClass("hidden");
+        $("#divTablaEmpleados").removeClass("hidden");
+        $("#tituloMantenimiento").html("Listado de empleados");
+    }
+
+    function MostrarDivMantenimiento()
+    {
+        $("#divMantenimiento").removeClass("hidden");
+        $("#divTablaEmpleados").addClass("hidden");
+        $("#tituloMantenimiento").html("Agregar cliente/proveedor");
+
+    }
+
+    function OcultarDivMantenimiento()
+    {
+        $("#divMantenimiento").removeClass("hidden");
+        $("#divTablaEmpleados").addClass("hidden");
+    }
+
+</script>
+<style>
+    #btnGuardar, #btnEditar {
+        margin-right: 10px;
+    }
+
+    .ui-datepicker {
+        z-index: 10000 !important;
+    }
+</style>
