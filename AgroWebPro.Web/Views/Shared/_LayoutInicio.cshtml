@@ -47,10 +47,9 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="navbar-collapse navbar-right navbar-main-collapse collapse">
                     <ul id="menuSuperior" class="nav navbar-nav enlaces">
-                        <li class="active" onclick="CerrarMenu()"><a href="#intro">Inicio</a></li>
-                        <li><a href="#boxes" onclick="CerrarMenu()">Servicios</a></li>
-                        @*<li><a href="#facilities">Facilidades</a></li>*@
-                        <li><a href="#pricing" onclick="CerrarMenu()">Precios</a></li>
+                        <li class="active liMenu" onclick="CerrarMenu()"><a href="#intro">Inicio</a></li>
+                        <li class="liMenu"><a href="#boxes" onclick="CerrarMenu()">Servicios</a></li>
+                        <li class="liMenu"><a href="#pricing" onclick="CerrarMenu()">Precios</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" onclick="MostrarLogin()"><b>Login</b></a>
                         </li>
@@ -194,7 +193,6 @@
                     data: parametros,
                     success: function (data) {
                         $("#modalPageLoad").modal("hide");
-                        debugger;
                         if (data.resultado == '@AgroWebPro.Utilitarios.Constantes.EstadoCorrecto')
                         {
                             swal({
@@ -224,13 +222,15 @@
                 });
             }
             else {
+                $("#modalPageLoad").modal("hide");
                 swal({
-                    title: 'Correcto',
+                    title: 'Incorrecto',
                     text: 'Debe ingresar el correo',
                     type: 'error',
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'Aceptar'
                 }).then(function (isConfirm) {
+                    $("#modalPageLoad").modal("hide");
 
                 });
             }

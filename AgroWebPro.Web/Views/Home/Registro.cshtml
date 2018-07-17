@@ -4,6 +4,10 @@
     Layout = "~/Views/Shared/_LayoutInicio.cshtml";
 }
 <br /><br /><br />
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/bootstrap-table.js"></script>
+<link href="~/Content/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert.js"></script>
 <div class="container">
     @using (Html.BeginForm("Registro", "Home", FormMethod.Post, new
     {
@@ -114,8 +118,8 @@
 <script>
 
     $(document).ready(function () {
-        $("#menuSuperior").addClass("hidden");
     });
+    $("#menuSuperior").find(".liMenu").addClass("hidden");
 
     function InfoRegistroValido() {
         var infoAgendaValida = true;

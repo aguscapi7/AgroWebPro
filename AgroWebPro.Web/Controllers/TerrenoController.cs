@@ -52,7 +52,7 @@ namespace AgroWebPro.Web.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Error", "Home");
                 }
             }
             catch(Exception ex)
