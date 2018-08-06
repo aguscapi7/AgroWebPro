@@ -132,5 +132,21 @@ namespace AgroWebPro.LogicaNegocios.Metodos
             return response;
         }
 
+        public ConsultarCategoriasMovimientoResponse ConsultarCategoriasMovimiento(ConsultarCategoriasMovimientoRequest request)
+        {
+            ConsultarCategoriasMovimientoResponse response = new ConsultarCategoriasMovimientoResponse();
+            try
+            {
+                response = catalogos.ConsultarCategoriasMovimiento(request);
+            }
+            catch (Exception ex)
+            {
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorLogicaNegocios + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                throw;
+            }
+            return response;
+        }
+
     }
 }

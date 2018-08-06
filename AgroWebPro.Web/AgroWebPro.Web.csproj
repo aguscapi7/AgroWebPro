@@ -160,6 +160,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CuentasController.cs" />
     <Compile Include="Controllers\EmpresaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\CultivoController.cs" />
@@ -174,6 +175,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AvanceTareaModels.cs" />
+    <Compile Include="Models\MovimientoModels.cs" />
     <Compile Include="Models\ClienteProveedorModels.cs" />
     <Compile Include="Models\CultivoModels.cs" />
     <Compile Include="Models\EmpresaModels.cs" />
@@ -202,6 +204,7 @@
     <Content Include="Content\bootstrap-multiselect.css" />
     <Content Include="Content\bootstrap-select.min.css" />
     <Content Include="Content\bootstrap-table.css" />
+    <Content Include="Content\bootstrap-toggle.min.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\color\amethyst.css" />
     <Content Include="Content\color\blue.css" />
@@ -215,9 +218,11 @@
     <Content Include="Content\color\yellow.css" />
     <Content Include="Content\css\sb-admin.css" />
     <Content Include="Content\css\sb-admin.min.css" />
+    <Content Include="Content\esri-leaflet-geocoder.css" />
     <Content Include="Content\font-awesome\css\font-awesome.css" />
     <Content Include="Content\font-awesome\css\font-awesome.min.css" />
     <Content Include="Content\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\fullcalendar.min.css" />
     <Content Include="Content\inicio\animate.css" />
     <Content Include="Content\inicio\bootstrap.min.css" />
     <Content Include="Content\inicio\nivo-lightbox-theme\default\close%402x.png" />
@@ -276,6 +281,7 @@
     <Content Include="img\photo\4.jpg" />
     <Content Include="img\photo\5.jpg" />
     <Content Include="img\photo\6.jpg" />
+    <Content Include="img\search.png" />
     <Content Include="img\slides\slide1\bg.jpg" />
     <Content Include="img\slides\slide1\img-1.png" />
     <Content Include="img\slides\slide2\bg.jpg" />
@@ -298,6 +304,7 @@
     <Content Include="Scripts\bootstrap-select.js" />
     <Content Include="Scripts\bootstrap-table-locale-all.min.js" />
     <Content Include="Scripts\bootstrap-table.js" />
+    <Content Include="Scripts\bootstrap-toggle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -342,6 +349,9 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\esri-leaflet-geocoder.js" />
+    <Content Include="Scripts\esri-leaflet.js" />
+    <Content Include="Scripts\fullcalendar.min.js" />
     <Content Include="Scripts\inicio\bootstrap.min.js" />
     <Content Include="Scripts\inicio\custom.js" />
     <Content Include="Scripts\inicio\jquery-1.10.2.js" />
@@ -409,8 +419,11 @@
     <Content Include="Scripts\libs\pdfmake\mirza_fonts.js" />
     <Content Include="Scripts\libs\pdfmake\pdfmake.min.js" />
     <Content Include="Scripts\libs\pdfmake\vfs_fonts.js" />
+    <Content Include="Scripts\locale-all.js" />
+    <Content Include="Scripts\mapa_editar.js" />
     <Content Include="Scripts\mdb.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -446,17 +459,19 @@
     <Content Include="Scripts\libs\js-xlsx\LICENSE" />
     <Content Include="Scripts\libs\pdfmake\LICENSE" />
     <Content Include="Views\Reporte\Cosechas.cshtml" />
+    <Content Include="Views\Cuentas\Mantenimiento.cshtml" />
     <None Include="Views\Reporte\Tareas.cshtml" />
     <Content Include="Views\Reporte\Cosechas2.cshtml" />
     <Content Include="Views\Reporte\Ventas.cshtml" />
     <Content Include="Views\Usuario\Mantenimiento.cshtml" />
-    <Content Include="Views\Tarea\Mantenimiento.cshtml" />
+    <Content Include="Views\Tarea\Mantenimiento1.cshtml" />
     <Content Include="Views\Usuario\Perfil.cshtml" />
     <Content Include="Views\Venta\CrearVenta.cshtml" />
     <Content Include="Views\Venta\MantenimientoClienteProveedor.cshtml" />
     <Content Include="Views\Tarea\AvanceTarea.cshtml" />
     <Content Include="Views\Santiago\Test.cshtml" />
     <Content Include="Views\Shared\_LayoutTest.cshtml" />
+    <Content Include="Views\Tarea\Mantenimiento.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

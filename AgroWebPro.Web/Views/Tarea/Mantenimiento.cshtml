@@ -5,13 +5,26 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link href="~/Content/bootstrap-table.css" rel="stylesheet" />
+<link href="~/Content/esri-leaflet-geocoder.css" rel="stylesheet" />
+<link href="~/Content/leaflet.css" rel="stylesheet" />
+<link href="~/Content/leaflet.draw.css" rel="stylesheet" />
+<link href="~/Content/leaflet.toolbar.css" rel="stylesheet" />
+<link href="~/Content/leaflet.draw-toolbar.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-toggle.min.css" rel="stylesheet" />
 <script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/leaflet-src.js"></script>
+<script src="~/Scripts/leaflet.toolbar-src.js"></script>
+<script src="~/Scripts/leaflet.draw-src.js"></script>
+<script src="~/Scripts/leaflet.draw-toolbar.js"></script>
+
+<link href="~/Content/bootstrap-table.css" rel="stylesheet" />
 <script src="~/Scripts/bootstrap-table.js"></script>
 <link href="~/Content/sweetalert.css" rel="stylesheet" />
 <script src="~/Scripts/sweetalert.js"></script>
 <script src="~/Scripts/bootstrap-table-locale-all.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+<script src="~/Scripts/esri-leaflet.js"></script>
+<script src="~/Scripts/esri-leaflet-geocoder.js"></script>
+<script src="~/Scripts/bootstrap-toggle.min.js"></script>
 <div class="row">
     <br>
     <nav class="navbar navbar-default" role="navigation">
@@ -31,7 +44,15 @@
             @Html.HiddenFor(m => m.idTarea, new { @id = "hdnIdTarea" })
             <div class="col-md-6">
                 @Html.LabelFor(model => model.idTerreno)
-                @Html.DropDownListFor(model => model.idTerreno, new SelectList(Model.listaTerrenosEmpresa, "IdTerreno", "NombreTerreno"), new { @id = "ddlTerrenos", @class = "form-control" })
+                <select id="ddlTerrenos" class="form-control" name="idTerreno" onchange="CargarTerreno()">
+                    @if (Model.listaTerrenosEmpresa != null)
+                    {
+                        foreach (var item in Model.listaTerrenosEmpresa)
+                        {
+                            <option value="@item.idTerreno" data-coordenadas="@item.coordenadas">@item.nombreTerreno</option>
+                        }
+                    }
+                </select>
                 @Html.ValidationMessageFor(model => model.idTerreno, "", new { @class = "text-danger" })
             </div>
             <div class="col-md-6">
@@ -41,17 +62,15 @@
             </div>
         </div>
         <div class="row form-group">
-            <div class="col-md-6">
+            <div class="col-md-3">
                 @Html.LabelFor(model => model.fechaInicio)
                 @Html.TextBoxFor(model => model.fechaInicio, new { @id = "txtFechaInicio", @readonly = "readonly", @class = "form-control", @required = "required", @placeholder = "Nombre", value = DateTime.Now.ToShortDateString() })
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
                 @Html.LabelFor(model => model.fechaFinalizacion)
                 @Html.TextBoxFor(model => model.fechaFinalizacion, new { @id = "txtFechaFinalizacion", @readonly = "readonly", @class = "form-control", @required = "required", @placeholder = "Nombre" })
             </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-md-6">
+            <div class="col-md-3">
                 @Html.LabelFor(model => model.idTipoTarea)
                 <select id="ddlTipoTareas" class="form-control" name="idTipoTarea" onchange="VerificarRecoleccion()">
                     @if (Model.listaTareas != null)
@@ -64,21 +83,19 @@
                 </select>
                 @Html.ValidationMessageFor(model => model.idTipoTarea, "", new { @class = "text-danger" })
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
                 @Html.LabelFor(model => model.horasEstimadas)
-                @Html.TextBoxFor(model => model.horasEstimadas, new { @id = "txtHorasEstimadas", @class = "form-control",  @placeholder = "Horas estimadas" })
+                @Html.TextBoxFor(model => model.horasEstimadas, new { @id = "txtHorasEstimadas", @class = "form-control", @placeholder = "Horas estimadas" })
                 @Html.ValidationMessageFor(model => model.horasEstimadas, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="row form-group">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 @Html.LabelFor(model => model.resumen)
                 @Html.TextAreaFor(model => model.resumen, new { @id = "txtResumen", @class = "form-control", @placeholder = "Resumen" })
                 @Html.ValidationMessageFor(model => model.resumen, "", new { @class = "text-danger" })
             </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 @Html.LabelFor(model => model.observaciones)
                 @Html.TextAreaFor(model => model.observaciones, new { @id = "txtObservaciones", @class = "form-control", @placeholder = "Descripción" })
             </div>
@@ -88,16 +105,28 @@
                 <center><label>Esta tarea es de recolección por lo que el responsable deberá indicar los datos de la cosecha en el avance.</label></center>
             </div>
         </div>
+
+        @Html.TextBoxFor(model => model.actualizarCoordenadas, new { @id = "hdnActualizarCoordenadas", @class = "form-control hidden" })
+        @Html.TextBoxFor(model => model.listaCoordenadas, new { @id = "hdnListaCoordenadas", @class = "form-control hidden" })
+        Agregar sub-terreno: <input data-toggle="toggle" type="checkbox" onchange="MostrarMapa(this)" data-onstyle="warning" data-on="Sí" data-off="No"><br /><br />
+        <br />
+        <div id="divMapa" class="hidden">
+            <div id="map" style="height:580px;"></div>
+            <div class='pointer'></div>
+            <div><br /><center>Usar mapa satelital&nbsp; <input data-toggle="toggle" data-onstyle="warning"  type="checkbox" onchange="CambiarTipoMapa(this)" data-on="Sí" data-off="No"><br /><br /></center></div>
+        </div>
+        
+
         <div class="row">
             <div class="col-md-8"></div>
             <div class="col-md-4">
-                <button class="btn btn-danger pull-right" id="btnCancelar" type="button" onclick="Cancelar()">Cancelar</button>
+                <button class="btn btn-danger pull-right" id="btnCancelar" type="button"  onclick="Cancelar()">Cancelar</button>
                 <button id="btnGuardar" name="btnGuardar" class="btn btn-primary pull-right btn-guardar" type="submit">Guardar</button>
             </div>
         </div>
     </div>
 }
-
+        
 
 <div class="form-group  @(Model.errorValidacion ? "hidden" : "")" id="divTablaTareas">
     <div class="row">
@@ -106,74 +135,69 @@
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
-                        <table class="table table-sm" data-show-toggle="true" data-search="true"
-                               data-show-export="true"
-                               data-minimum-count-columns="2"
-                               data-show-pagination-switch="true"
-                               data-pagination="true"
-                               data-page-list="[10, 25, 50, 100, ALL]"
-                               data-locale="es-CR">
-                            <thead  class="thead-dark">
+                <table class="table table-sm" data-show-toggle="true" data-search="true"
+                       data-show-export="true"
+                       data-minimum-count-columns="2"
+                       data-show-pagination-switch="true"
+                       data-pagination="true"
+                       data-page-list="[10, 25, 50, 100, ALL]"
+                       data-locale="es-CR">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Terreno</th>
+                            <th>Empleado</th>
+                            <th>Tipo de tarea</th>
+                            <th>Fecha de inicio</th>
+                            <th>Fecha de finalización</th>
+                            <th>Horas estimadas</th>
+                            <th>Resumen</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.listaTareas != null && Model.listaTareas.Count() > 0)
+                        {
+                            foreach (var itemTarea in Model.listaTareas)
+                            {
                                 <tr>
-                                    <th>Terreno</th>
-                                    <th>Empleado</th>
-                                    <th>Tipo de tarea</th>
-                                    <th>Fecha de inicio</th>
-                                    <th>Fecha de finalización</th>
-                                    <th>Horas estimadas</th>
-                                    <th>Resumen</th>
-                                    <th></th>
+                                    <td>@itemTarea.nombreTerreno</td>
+                                    <td>@itemTarea.nombreEmpleado @itemTarea.apellidoEmpleado</td>
+                                    <td>@itemTarea.nombreTipoTarea</td>
+                                    <td>@itemTarea.fechaInicio</td>
+                                    <td>@itemTarea.fechaFinalizacion</td>
+                                    <td>@itemTarea.horasEstimadas</td>
+                                    <td>@itemTarea.resumen</td>
+                                    <td>
+                                        <button class="btn btn-primary"
+                                                data-idtarea="@itemTarea.idTarea"
+                                                data-idtipotarea="@itemTarea.idTipoTarea"
+                                                data-idterreno="@itemTarea.idTerreno"
+                                                data-idempleado="@itemTarea.idUsuarioTarea"
+                                                data-fechainicio="@itemTarea.fechaInicio"
+                                                data-fechafinalizacion="@itemTarea.fechaFinalizacion"
+                                                data-horasestimadas="@itemTarea.horasEstimadas"
+                                                data-resumen="@itemTarea.resumen"
+                                                data-observaciones="@itemTarea.observaciones"
+                                                onclick="CargarDatosTarea(this)">
+                                            <span class="fa fa-pencil"></span>
+                                        </button>
+                                        <button class="btn btn-danger" onclick="EliminarTareaPaso1('@itemTarea.idTarea')"><span class="fa fa-trash"></span> </button>&nbsp;
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @if (Model.listaTareas != null && Model.listaTareas.Count() > 0)
-                                {
-                                    foreach (var itemTarea in Model.listaTareas)
-                                    {
-                                        <tr>
-                                            <td>@itemTarea.nombreTerreno</td>
-                                            <td>@itemTarea.nombreEmpleado @itemTarea.apellidoEmpleado</td>
-                                            <td>@itemTarea.nombreTipoTarea</td>
-                                            <td>@itemTarea.fechaInicio</td>
-                                            <td>@itemTarea.fechaFinalizacion</td>
-                                            <td>@itemTarea.horasEstimadas</td>
-                                            <td>@itemTarea.resumen</td>
-                                            <td>
-                                                <button class="btn btn-primary"
-                                                        data-idtarea="@itemTarea.idTarea"
-                                                        data-idtipotarea="@itemTarea.idTipoTarea"
-                                                        data-idterreno="@itemTarea.idTerreno"
-                                                        data-idempleado="@itemTarea.idUsuarioTarea"
-                                                        data-fechainicio="@itemTarea.fechaInicio"
-                                                        data-fechafinalizacion="@itemTarea.fechaFinalizacion"
-                                                        data-horasestimadas="@itemTarea.horasEstimadas"
-                                                        data-resumen="@itemTarea.resumen"
-                                                        data-observaciones="@itemTarea.observaciones"
-                                                        onclick="CargarDatosTarea(this)">
-                                                    <span class="fa fa-pencil"></span>
-                                                </button>
-                                                <button class="btn btn-danger" onclick="EliminarTareaPaso1('@itemTarea.idTarea')"><span class="fa fa-trash"></span> </button>&nbsp;
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                                else
-                                {
-                                    <tr><td colspan="8"><center>Aún no ha agregado tareas</center></td></tr>
-                                }
+                            }
+                        }
+                        else
+                        {
+                            <tr><td colspan="8"><center>Aún no ha agregado tareas</center></td></tr>
+                        }
 
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
-
-<script src="~/Scripts/bootstrap-datepicker.js"></script>
-<script src="~/Scripts/sweetalert.min.js"></script>
-<script src="~/Scripts/jquery.numeric.js"></script>
-<script src="~/Scripts/bootstrap-datepicker.js"></script>
 @if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoCorrecto)
 {
     <script>
@@ -197,18 +221,31 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
             });</script>
 }
 
-<script>
-    function VerificarRecoleccion() {
-        var seleccionado = $("#ddlTipoTareas :selected");
-        var recoleccion = $(seleccionado).data("recoleccion");
-        if (recoleccion == "True") {
-            $("#divRecoleccion").removeClass("hidden");
-        }
-        else {
-            $("#divRecoleccion").addClass("hidden");
-        }
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+<script src="~/Scripts/jquery.numeric.js"></script>
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+<style>
+    .pointer {
+        position: absolute;
+        top: 86px;
+        left: 60px;
+        z-index: 99999;
     }
 
+    #mapSearchContainer {
+        position: fixed;
+        top: 20px;
+        right: 40px;
+        height: 30px;
+        width: 180px;
+        z-index: 110;
+        font-size: 10pt;
+        color: #5d5d5d;
+        border: solid 1px #bbb;
+        background-color: #f8f8f8;
+    }
+</style>
+<script>
     $('#txtFechaInicio').datepicker({
         changeMonth: true,
         changeYear: true,
@@ -225,13 +262,72 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
         todayBtn: "linked"
     }).on('changeDate', function (e) {
         $(this).datepicker('hide');
-        });
+    });
 
     $('#txtPrecio').numeric(",");
     $('table').bootstrapTable({
         editable: true
     });
 
+    var map = L.map('map').setView([9.842405, -83.9317569], 29),
+        drawnItems = new L.FeatureGroup().addTo(map);
+
+    map.on('draw:created', function (e) {
+
+        var type = e.layerType,
+            layer = e.layer;
+
+        if (type === 'polygon') {
+
+            var geojson = {};
+            geojson['type'] = 'Feature';
+            geojson['geometry'] = {};
+            geojson['geometry']['type'] = "Polygon";
+
+
+            coordinates = [];
+            var coordenadas = "";
+            latlngs = layer.getLatLngs();
+            for (var i = 0; i < latlngs[0].length; i++) {
+                coordinates.push([latlngs[0][i].lng, latlngs[0][i].lat])
+                var orden = i + 1;
+                coordenadas += '<coordenada><longitud>' + latlngs[0][i].lng + "</longitud><latitud>" + latlngs[0][i].lat + '</latitud><orden>' + orden + '</orden></coordenada>';
+            }
+
+            coordenadas = '<coordenadas>' + coordenadas + '</coordenadas>';
+
+            geojson['geometry']['coordinates'] = [coordinates];
+
+
+            $("#hdnActualizarCoordenadas").val(true);
+            var Base64= { _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=", encode: function (e) { var t = ""; var n, r, i, s, o, u, a; var f = 0; e = Base64._utf8_encode(e); while (f < e.length) { n = e.charCodeAt(f++); r = e.charCodeAt(f++); i = e.charCodeAt(f++); s = n >> 2; o = (n & 3) << 4 | r >> 4; u = (r & 15) << 2 | i >> 6; a = i & 63; if (isNaN(r)) { u = a = 64 } else if (isNaN(i)) { a = 64 } t = t + this._keyStr.charAt(s) + this._keyStr.charAt(o) + this._keyStr.charAt(u) + this._keyStr.charAt(a) } return t }, decode: function (e) { var t = ""; var n, r, i; var s, o, u, a; var f = 0; e = e.replace(/[^A-Za-z0-9+/=]/g, ""); while (f < e.length) { s = this._keyStr.indexOf(e.charAt(f++)); o = this._keyStr.indexOf(e.charAt(f++)); u = this._keyStr.indexOf(e.charAt(f++)); a = this._keyStr.indexOf(e.charAt(f++)); n = s << 2 | o >> 4; r = (o & 15) << 4 | u >> 2; i = (u & 3) << 6 | a; t = t + String.fromCharCode(n); if (u != 64) { t = t + String.fromCharCode(r) } if (a != 64) { t = t + String.fromCharCode(i) } } t = Base64._utf8_decode(t); return t }, _utf8_encode: function (e) { e = e.replace(/rn/g, "n"); var t = ""; for (var n = 0; n < e.length; n++) { var r = e.charCodeAt(n); if (r < 128) { t += String.fromCharCode(r) } else if (r > 127 && r < 2048) { t += String.fromCharCode(r >> 6 | 192); t += String.fromCharCode(r & 63 | 128) } else { t += String.fromCharCode(r >> 12 | 224); t += String.fromCharCode(r >> 6 & 63 | 128); t += String.fromCharCode(r & 63 | 128) } } return t }, _utf8_decode: function (e) { var t = ""; var n = 0; var r = c1 = c2 = 0; while (n < e.length) { r = e.charCodeAt(n); if (r < 128) { t += String.fromCharCode(r); n++ } else if (r > 191 && r < 224) { c2 = e.charCodeAt(n + 1); t += String.fromCharCode((r & 31) << 6 | c2 & 63); n += 2 } else { c2 = e.charCodeAt(n + 1); c3 = e.charCodeAt(n + 2); t += String.fromCharCode((r & 15) << 12 | (c2 & 63) << 6 | c3 & 63); n += 3 } } return t } }
+
+
+            $("#hdnListaCoordenadas").val(Base64.encode(coordenadas));
+
+        }
+
+        drawnItems.addLayer(layer);
+    });
+    map.on('draw:deleted', function (e) {
+        $("#hdnActualizarCoordenadas").val(true);
+        $("#hdnListaCoordenadas").val("");
+    });
+
+    
+
+    function VerificarRecoleccion() {
+        var seleccionado = $("#ddlTipoTareas :selected");
+        var recoleccion = $(seleccionado).data("recoleccion");
+        if (recoleccion == "True") {
+            $("#divRecoleccion").removeClass("hidden");
+        }
+        else {
+            $("#divRecoleccion").addClass("hidden");
+        }
+    }
+
+ 
     function EliminarTarea() {
         var parametros = {
             idTarea: $("#hdnIdTarea").val()
@@ -344,6 +440,7 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
         $("#divMantenimiento").removeClass("hidden");
         $("#divTablaTareas").addClass("hidden");
         $("#tituloMantenimiento").html("Agregar tarea");
+        map.invalidateSize(false);
 
     }
 
@@ -352,12 +449,63 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
         $("#divTablaTareas").addClass("hidden");
     }
 
-    
 
+    function MostrarMapa(checkMapa) {
+        if ($(checkMapa).is(":checked")) {
+            $("#divMapa").removeClass("hidden");
+            map.invalidateSize(false);
+        }
+        else {
+            $("#divMapa").addClass("hidden");
+        }
+    }
+
+    function CargarTerreno() {
+        clearMap();
+        var contenido = $("#ddlTerrenos :selected").data("coordenadas");
+        PintarTerreno(contenido);
+        EstablecerVista();
+    }
+
+    function PintarTerreno(contenido) {
+
+        var xmlDoc = $.parseXML(contenido),
+            $xml = $(xmlDoc),
+            $coordenadas = $xml.find("coordenada");
+        var coor = [];
+        if ($coordenadas.length > 0) {
+            var nombreTerreno = "";
+            for (var i = 0; i < $coordenadas.length; i++) {
+                nombreTerreno = $($coordenadas[i].childNodes[3]).html();
+                coor.push([$($coordenadas[i].childNodes[0]).html(), $($coordenadas[i].childNodes[1]).html()]);
+            }
+            var polygon = L.polygon(coor);
+            polygon.setStyle({ color: '#ff6600', fillColor: '#ffcc99' });
+            polygon.addTo(L.featureGroup().addTo(map));
+
+        }
+    }
+
+    function EstablecerVista() {
+        var contenido = $("#ddlTerrenos :selected").data("coordenadas");
+        var xmlDoc = $.parseXML(contenido),
+            $xml = $(xmlDoc),
+            $coordenadas = $xml.find("coordenada");
+        var coor = [];
+        if ($coordenadas.length > 0) {
+            map.setView([$($coordenadas[0].childNodes[0]).html(), $($coordenadas[0].childNodes[1]).html()], 18);
+
+        }
+    }
 </script>
+<script src="~/Scripts/mapa_editar.js"></script>
 
 <style>
     #btnGuardar, #btnEditar {
         margin-right: 10px;
+    }
+
+    .ui-datepicker {
+        z-index: 10000 !important;
     }
 </style>

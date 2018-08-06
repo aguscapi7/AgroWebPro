@@ -106,5 +106,11 @@ namespace AgroWebPro.Utilitarios
             result = System.Text.Encoding.Unicode.GetString(decryted);
             return result;
         }
+
+        public static string DecodificarBase64(string textoEnBase64)
+        {
+            var base64EncodedBytes = System.Convert.FromBase64String(textoEnBase64);
+            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+        }
     }
 }

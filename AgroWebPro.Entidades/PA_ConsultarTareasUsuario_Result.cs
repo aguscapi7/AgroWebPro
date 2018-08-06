@@ -30,5 +30,7 @@ namespace AgroWebPro.Entidades
         public int IdTipoTarea { get; set; }
         public string NombreTarea { get; set; }
         public bool Recoleccion { get; set; }
+        public string CoordenadasTarea { get; set; }
+        public string CoordenadasTerreno { get; set; }
     }
 }

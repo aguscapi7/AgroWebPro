@@ -29,5 +29,6 @@ namespace AgroWebPro.Entidades
         public bool Activa { get; set; }
         public int IdTipoTarea { get; set; }
         public string NombreTarea { get; set; }
+        public string Coordenadas { get; set; }
     }
 }

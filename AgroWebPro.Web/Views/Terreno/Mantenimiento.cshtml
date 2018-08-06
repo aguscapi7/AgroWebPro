@@ -5,10 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<link href="~/Content/esri-leaflet-geocoder.css" rel="stylesheet" />
 <link href="~/Content/leaflet.css" rel="stylesheet" />
 <link href="~/Content/leaflet.draw.css" rel="stylesheet" />
 <link href="~/Content/leaflet.toolbar.css" rel="stylesheet" />
 <link href="~/Content/leaflet.draw-toolbar.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-toggle.min.css" rel="stylesheet" />
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/leaflet-src.js"></script>
 <script src="~/Scripts/leaflet.toolbar-src.js"></script>
@@ -20,6 +22,9 @@
 <link href="~/Content/sweetalert.css" rel="stylesheet" />
 <script src="~/Scripts/sweetalert.js"></script>
 <script src="~/Scripts/bootstrap-table-locale-all.min.js"></script>
+<script src="~/Scripts/esri-leaflet.js"></script>
+<script src="~/Scripts/esri-leaflet-geocoder.js"></script>
+<script src="~/Scripts/bootstrap-toggle.min.js"></script>
 <div class="row">
     <br>
     <nav class="navbar navbar-default" role="navigation">
@@ -57,8 +62,10 @@
         </div>
         @Html.TextBoxFor(model => model.actualizarCoordenadas, new { @id = "hdnActualizarCoordenadas", @class = "form-control hidden" })
         @Html.TextBoxFor(model => model.listaCoordenadas, new { @id = "hdnListaCoordenadas", @class = "form-control hidden" })
-
+        
         <div id="map" style="height:580px;"></div>
+        <div><br /><center>Usar mapa satelital&nbsp; <input data-toggle="toggle" type="checkbox" onchange="CambiarTipoMapa(this)" data-on="Sí" data-off="No"><br /><br /></center></div>
+        <div class='pointer'></div>
         <br />
         <div class="row">
             <div class="col-md-8"></div>
@@ -191,45 +198,35 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
             });
     </script>
 }
+<style>
+    .pointer {
+        position: absolute;
+        top: 86px;
+        left: 60px;
+        z-index: 99999;
+    }
+
+    #mapSearchContainer {
+        position: fixed;
+        top: 20px;
+        right: 40px;
+        height: 30px;
+        width: 180px;
+        z-index: 110;
+        font-size: 10pt;
+        color: #5d5d5d;
+        border: solid 1px #bbb;
+        background-color: #f8f8f8;
+    }
+</style>
 <script>
 
     $('table').bootstrapTable({
         editable: true
         });
 
-    var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        osm = L.tileLayer(osmUrl, { maxZoom: 29, attribution: osmAttrib });
     var map = L.map('map').setView([9.842405, -83.9317569], 29),
         drawnItems = new L.FeatureGroup().addTo(map);
-
-    L.tileLayer("http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}", {
-        attribution: ''
-    }).addTo(map);
-
-
-    new LeafletToolbar.DrawToolbar({
-        position: 'topleft'
-    }).addTo(map);
-
-    new LeafletToolbar.EditToolbar.Control({
-        position: 'topleft'
-    }).addTo(map, drawnItems);
-
-    map.on('draw:created', function (evt) {
-        var type = evt.layerType,
-            layer = evt.layer;
-
-        drawnItems.addLayer(layer);
-    });
-
-    L.control.layers({
-        'osm': osm.addTo(map),
-        "google": L.tileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}', {
-            maxZoom: 29, attribution: 'google'
-        })
-    }, { 'drawlayer': drawnItems }, { position: 'topleft', collapsed: false }).addTo(map);
-
 
     map.on('draw:created', function (e) {
 
@@ -260,8 +257,6 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
             
             $("#hdnActualizarCoordenadas").val(true);
             $("#hdnListaCoordenadas").val(coordenadas);
-            $("#btnGuardar").removeAttr("disabled");
-            $("#btnEditar").removeAttr("disabled");
 
         }
 
@@ -388,39 +383,11 @@ else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoErro
         $("#divTablaTerrenos").addClass("hidden");
     }
 
-    function DeserealizarXML(contenido)
-    {
-        clearMap();
-        var xmlDoc = $.parseXML(contenido),
-            $xml = $(xmlDoc),
-            $coordenadas = $xml.find("coordenada");
-        var coor = [];
-        if ($coordenadas.length > 0) {
-            map.setView([$($coordenadas[0].childNodes[0]).html(), $($coordenadas[0].childNodes[1]).html()], 18);
-            for (var i = 0; i < $coordenadas.length; i++) {
-                coor.push([$($coordenadas[i].childNodes[0]).html(), $($coordenadas[i].childNodes[1]).html()]);
-            }
-            var polygon = L.polygon(coor);
-            polygon.addTo(L.featureGroup().addTo(map));
-            drawnItems.addLayer(polygon);
-        }
-
-    }
-
-    function clearMap() {
-        for (i in map._layers) {
-            if (map._layers[i]._path != undefined) {
-                try {
-                    map.removeLayer(map._layers[i]);
-                }
-                catch (e) {
-                    console.log("problem with " + e + map._layers[i]);
-                }
-            }
-        }
-    }
+    
 
 </script>
+
+<script src="~/Scripts/mapa_editar.js"></script>
 <style>
     #btnGuardar,#btnEditar {
         margin-right: 10px;

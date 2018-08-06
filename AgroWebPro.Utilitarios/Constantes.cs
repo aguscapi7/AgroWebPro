@@ -37,9 +37,15 @@ namespace AgroWebPro.Utilitarios
         public static readonly String MenuClienteProveedor = "Venta-MantenimientoClienteProveedor";
         public static readonly String MenuAvanceTarea = "Tarea-AvanceTarea";
         public static readonly String MenuPerfil = "Usuario-Perfil";
+        public static readonly String MenuCuentas = "Cuentas-Mantenimiento";
 
         public static readonly String OpcionesRol = "OpcionesRol";
         public static readonly String RolAgricultor = "57bcde54-9b6d-417f-a58a-451ab43431cd";
-        
+
+        public static readonly String AnnioSeleccionado = "AnnioSeleccionado";
+        public static readonly String MesSeleccionado = "MesSeleccionado";
+        public static readonly List<String> Meses = new List<String> { "Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Setiembre","Octubre","Noviembre","Diciembre" };
+
+
     }
 }

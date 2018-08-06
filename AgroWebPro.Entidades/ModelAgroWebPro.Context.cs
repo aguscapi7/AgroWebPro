@@ -219,7 +219,7 @@ namespace AgroWebPro.Entidades
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarUnidadesVenta_Result>("PA_ConsultarUnidadesVenta", estado, mensaje);
         }
     
-        public virtual int PA_MantenimientoTarea(Nullable<int> tipoOperacion, Nullable<System.Guid> idTarea, Nullable<System.Guid> idUsuario, Nullable<System.Guid> idTerreno, Nullable<System.Guid> asignadaPor, Nullable<System.DateTime> fechaInicio, Nullable<System.DateTime> fechaFinalizacion, Nullable<decimal> horasEstimadas, string resumen, string observaciones, Nullable<int> idTipoTarea, Nullable<bool> activa, ObjectParameter estado, ObjectParameter mensaje)
+        public virtual int PA_MantenimientoTarea(Nullable<int> tipoOperacion, Nullable<System.Guid> idTarea, Nullable<System.Guid> idUsuario, Nullable<System.Guid> idTerreno, Nullable<System.Guid> asignadaPor, Nullable<System.DateTime> fechaInicio, Nullable<System.DateTime> fechaFinalizacion, Nullable<decimal> horasEstimadas, string resumen, string observaciones, Nullable<int> idTipoTarea, Nullable<bool> activa, Nullable<bool> actualizarCoordenadas, string coordenadas, ObjectParameter estado, ObjectParameter mensaje)
         {
             var tipoOperacionParameter = tipoOperacion.HasValue ?
                 new ObjectParameter("TipoOperacion", tipoOperacion) :
@@ -269,7 +269,15 @@ namespace AgroWebPro.Entidades
                 new ObjectParameter("Activa", activa) :
                 new ObjectParameter("Activa", typeof(bool));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_MantenimientoTarea", tipoOperacionParameter, idTareaParameter, idUsuarioParameter, idTerrenoParameter, asignadaPorParameter, fechaInicioParameter, fechaFinalizacionParameter, horasEstimadasParameter, resumenParameter, observacionesParameter, idTipoTareaParameter, activaParameter, estado, mensaje);
+            var actualizarCoordenadasParameter = actualizarCoordenadas.HasValue ?
+                new ObjectParameter("ActualizarCoordenadas", actualizarCoordenadas) :
+                new ObjectParameter("ActualizarCoordenadas", typeof(bool));
+    
+            var coordenadasParameter = coordenadas != null ?
+                new ObjectParameter("Coordenadas", coordenadas) :
+                new ObjectParameter("Coordenadas", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_MantenimientoTarea", tipoOperacionParameter, idTareaParameter, idUsuarioParameter, idTerrenoParameter, asignadaPorParameter, fechaInicioParameter, fechaFinalizacionParameter, horasEstimadasParameter, resumenParameter, observacionesParameter, idTipoTareaParameter, activaParameter, actualizarCoordenadasParameter, coordenadasParameter, estado, mensaje);
         }
     
         public virtual ObjectResult<PA_ConsultarTerreno_Result> PA_ConsultarTerreno(Nullable<System.Guid> idTerreno, ObjectParameter estado, ObjectParameter mensaje)
@@ -622,6 +630,93 @@ namespace AgroWebPro.Entidades
                 new ObjectParameter("EsCliente", typeof(bool));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_MantenimientoClienteProveedor", tipoOperacionParameter, idClienteProveedorParameter, nombreParameter, apellidosParameter, correoParameter, direccionParameter, telefonoParameter, ingresadoPorParameter, activoParameter, idEmpresaParameter, esClienteParameter, estado, mensaje);
+        }
+    
+        public virtual ObjectResult<PA_ConsultarCategoriasMovimiento_Result> PA_ConsultarCategoriasMovimiento(ObjectParameter estado, ObjectParameter mensaje)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarCategoriasMovimiento_Result>("PA_ConsultarCategoriasMovimiento", estado, mensaje);
+        }
+    
+        public virtual int PA_MantenimientoMovimiento(Nullable<int> tipoOperacion, Nullable<System.Guid> idMovimiento, Nullable<System.DateTime> fecha, Nullable<int> annio, Nullable<int> mes, string observaciones, Nullable<System.Guid> idCategoriaMovimiento, Nullable<decimal> monto, Nullable<System.Guid> idEmpresa, Nullable<System.Guid> idUsuario, Nullable<bool> ingreso, Nullable<bool> activo, ObjectParameter estado, ObjectParameter mensaje)
+        {
+            var tipoOperacionParameter = tipoOperacion.HasValue ?
+                new ObjectParameter("TipoOperacion", tipoOperacion) :
+                new ObjectParameter("TipoOperacion", typeof(int));
+    
+            var idMovimientoParameter = idMovimiento.HasValue ?
+                new ObjectParameter("IdMovimiento", idMovimiento) :
+                new ObjectParameter("IdMovimiento", typeof(System.Guid));
+    
+            var fechaParameter = fecha.HasValue ?
+                new ObjectParameter("Fecha", fecha) :
+                new ObjectParameter("Fecha", typeof(System.DateTime));
+    
+            var annioParameter = annio.HasValue ?
+                new ObjectParameter("Annio", annio) :
+                new ObjectParameter("Annio", typeof(int));
+    
+            var mesParameter = mes.HasValue ?
+                new ObjectParameter("Mes", mes) :
+                new ObjectParameter("Mes", typeof(int));
+    
+            var observacionesParameter = observaciones != null ?
+                new ObjectParameter("Observaciones", observaciones) :
+                new ObjectParameter("Observaciones", typeof(string));
+    
+            var idCategoriaMovimientoParameter = idCategoriaMovimiento.HasValue ?
+                new ObjectParameter("IdCategoriaMovimiento", idCategoriaMovimiento) :
+                new ObjectParameter("IdCategoriaMovimiento", typeof(System.Guid));
+    
+            var montoParameter = monto.HasValue ?
+                new ObjectParameter("Monto", monto) :
+                new ObjectParameter("Monto", typeof(decimal));
+    
+            var idEmpresaParameter = idEmpresa.HasValue ?
+                new ObjectParameter("IdEmpresa", idEmpresa) :
+                new ObjectParameter("IdEmpresa", typeof(System.Guid));
+    
+            var idUsuarioParameter = idUsuario.HasValue ?
+                new ObjectParameter("IdUsuario", idUsuario) :
+                new ObjectParameter("IdUsuario", typeof(System.Guid));
+    
+            var ingresoParameter = ingreso.HasValue ?
+                new ObjectParameter("Ingreso", ingreso) :
+                new ObjectParameter("Ingreso", typeof(bool));
+    
+            var activoParameter = activo.HasValue ?
+                new ObjectParameter("Activo", activo) :
+                new ObjectParameter("Activo", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_MantenimientoMovimiento", tipoOperacionParameter, idMovimientoParameter, fechaParameter, annioParameter, mesParameter, observacionesParameter, idCategoriaMovimientoParameter, montoParameter, idEmpresaParameter, idUsuarioParameter, ingresoParameter, activoParameter, estado, mensaje);
+        }
+    
+        public virtual ObjectResult<PA_ConsultarMovimientos_Result> PA_ConsultarMovimientos(Nullable<int> annio, Nullable<int> mes, Nullable<bool> busquedaFechas, Nullable<System.DateTime> fechaInicio, Nullable<System.DateTime> fechaFin, Nullable<System.Guid> idEmpresa, ObjectParameter estado, ObjectParameter mensaje)
+        {
+            var annioParameter = annio.HasValue ?
+                new ObjectParameter("Annio", annio) :
+                new ObjectParameter("Annio", typeof(int));
+    
+            var mesParameter = mes.HasValue ?
+                new ObjectParameter("Mes", mes) :
+                new ObjectParameter("Mes", typeof(int));
+    
+            var busquedaFechasParameter = busquedaFechas.HasValue ?
+                new ObjectParameter("BusquedaFechas", busquedaFechas) :
+                new ObjectParameter("BusquedaFechas", typeof(bool));
+    
+            var fechaInicioParameter = fechaInicio.HasValue ?
+                new ObjectParameter("FechaInicio", fechaInicio) :
+                new ObjectParameter("FechaInicio", typeof(System.DateTime));
+    
+            var fechaFinParameter = fechaFin.HasValue ?
+                new ObjectParameter("FechaFin", fechaFin) :
+                new ObjectParameter("FechaFin", typeof(System.DateTime));
+    
+            var idEmpresaParameter = idEmpresa.HasValue ?
+                new ObjectParameter("IdEmpresa", idEmpresa) :
+                new ObjectParameter("IdEmpresa", typeof(System.Guid));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarMovimientos_Result>("PA_ConsultarMovimientos", annioParameter, mesParameter, busquedaFechasParameter, fechaInicioParameter, fechaFinParameter, idEmpresaParameter, estado, mensaje);
         }
     }
 }

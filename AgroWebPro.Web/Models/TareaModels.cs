@@ -58,6 +58,10 @@ namespace AgroWebPro.Web.Models
         public int idEstadoTarea { get; set; }
         public bool recoleccion { get; set; }
 
+        public string listaCoordenadas { get; set; }
+        public string listaCoordenadasTerreno { get; set; }        
+        public bool actualizarCoordenadas { get; set; }
+
         public void CopiarTiposTareas(ConsultarTiposTareasResponse tiposTareasResponse)
         {
             try
@@ -166,6 +170,7 @@ namespace AgroWebPro.Web.Models
                         tarea.nombreEmpleado = tareaItem.NombreEmpleado;
                         tarea.apellidoEmpleado = tareaItem.ApellidosEmpleado;
                         tarea.idTipoTarea = tareaItem.IdTipoTarea;
+                        tarea.listaCoordenadas = tareaItem.Coordenadas;
                         listaTareas.Add(tarea);
                     }
                 }

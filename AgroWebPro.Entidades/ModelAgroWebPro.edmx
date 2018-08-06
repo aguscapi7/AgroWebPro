@@ -5,6 +5,10 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="AgroWebProModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <Function Name="PA_ConsultarCategoriasMovimiento" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
         <Function Name="PA_ConsultarClientesProveedoresEmpresa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdEmpresa" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="EsCliente" Type="bit" Mode="In" />
@@ -35,6 +39,16 @@
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
         <Function Name="PA_ConsultarMonedas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
+        <Function Name="PA_ConsultarMovimientos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Annio" Type="int" Mode="In" />
+          <Parameter Name="Mes" Type="int" Mode="In" />
+          <Parameter Name="BusquedaFechas" Type="bit" Mode="In" />
+          <Parameter Name="FechaInicio" Type="datetime" Mode="In" />
+          <Parameter Name="FechaFin" Type="datetime" Mode="In" />
+          <Parameter Name="IdEmpresa" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
@@ -178,6 +192,22 @@
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
+        <Function Name="PA_MantenimientoMovimiento" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TipoOperacion" Type="int" Mode="In" />
+          <Parameter Name="IdMovimiento" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="Fecha" Type="datetime" Mode="In" />
+          <Parameter Name="Annio" Type="int" Mode="In" />
+          <Parameter Name="Mes" Type="int" Mode="In" />
+          <Parameter Name="Observaciones" Type="varchar" Mode="In" />
+          <Parameter Name="IdCategoriaMovimiento" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="Monto" Type="decimal" Mode="In" />
+          <Parameter Name="IdEmpresa" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="IdUsuario" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="Ingreso" Type="bit" Mode="In" />
+          <Parameter Name="Activo" Type="bit" Mode="In" />
+          <Parameter Name="Estado" Type="varchar" Mode="InOut" />
+          <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
+        </Function>
         <Function Name="PA_MantenimientoRecoleccion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdTarea" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="IdUsuarioRecolecta" Type="uniqueidentifier" Mode="In" />
@@ -202,6 +232,8 @@
           <Parameter Name="Observaciones" Type="varchar" Mode="In" />
           <Parameter Name="IdTipoTarea" Type="int" Mode="In" />
           <Parameter Name="Activa" Type="bit" Mode="In" />
+          <Parameter Name="ActualizarCoordenadas" Type="bit" Mode="In" />
+          <Parameter Name="Coordenadas" Type="xml" Mode="In" />
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
@@ -339,6 +371,8 @@
             <Parameter Name="Observaciones" Mode="In" Type="String" />
             <Parameter Name="IdTipoTarea" Mode="In" Type="Int32" />
             <Parameter Name="Activa" Mode="In" Type="Boolean" />
+            <Parameter Name="ActualizarCoordenadas" Mode="In" Type="Boolean" />
+            <Parameter Name="Coordenadas" Mode="In" Type="String" />
             <Parameter Name="Estado" Mode="InOut" Type="String" />
             <Parameter Name="Mensaje" Mode="InOut" Type="String" />
           </FunctionImport>
@@ -482,6 +516,36 @@
             <Parameter Name="Activo" Mode="In" Type="Boolean" />
             <Parameter Name="IdEmpresa" Mode="In" Type="Guid" />
             <Parameter Name="EsCliente" Mode="In" Type="Boolean" />
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PA_ConsultarCategoriasMovimiento" ReturnType="Collection(AgroWebProModel.PA_ConsultarCategoriasMovimiento_Result)">
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PA_MantenimientoMovimiento">
+            <Parameter Name="TipoOperacion" Mode="In" Type="Int32" />
+            <Parameter Name="IdMovimiento" Mode="In" Type="Guid" />
+            <Parameter Name="Fecha" Mode="In" Type="DateTime" />
+            <Parameter Name="Annio" Mode="In" Type="Int32" />
+            <Parameter Name="Mes" Mode="In" Type="Int32" />
+            <Parameter Name="Observaciones" Mode="In" Type="String" />
+            <Parameter Name="IdCategoriaMovimiento" Mode="In" Type="Guid" />
+            <Parameter Name="Monto" Mode="In" Type="Decimal" />
+            <Parameter Name="IdEmpresa" Mode="In" Type="Guid" />
+            <Parameter Name="IdUsuario" Mode="In" Type="Guid" />
+            <Parameter Name="Ingreso" Mode="In" Type="Boolean" />
+            <Parameter Name="Activo" Mode="In" Type="Boolean" />
+            <Parameter Name="Estado" Mode="InOut" Type="String" />
+            <Parameter Name="Mensaje" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PA_ConsultarMovimientos" ReturnType="Collection(AgroWebProModel.PA_ConsultarMovimientos_Result)">
+            <Parameter Name="Annio" Mode="In" Type="Int32" />
+            <Parameter Name="Mes" Mode="In" Type="Int32" />
+            <Parameter Name="BusquedaFechas" Mode="In" Type="Boolean" />
+            <Parameter Name="FechaInicio" Mode="In" Type="DateTime" />
+            <Parameter Name="FechaFin" Mode="In" Type="DateTime" />
+            <Parameter Name="IdEmpresa" Mode="In" Type="Guid" />
             <Parameter Name="Estado" Mode="InOut" Type="String" />
             <Parameter Name="Mensaje" Mode="InOut" Type="String" />
           </FunctionImport>
@@ -666,6 +730,7 @@
           <Property Type="Boolean" Name="Activa" Nullable="false" />
           <Property Type="Int32" Name="IdTipoTarea" Nullable="false" />
           <Property Type="String" Name="NombreTarea" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Coordenadas" Nullable="true" />
         </ComplexType>
         <ComplexType Name="PA_ConsultarTareasUsuario_Result">
           <Property Type="Guid" Name="IdTarea" Nullable="false" />
@@ -685,6 +750,8 @@
           <Property Type="Int32" Name="IdTipoTarea" Nullable="false" />
           <Property Type="String" Name="NombreTarea" Nullable="false" MaxLength="50" />
           <Property Type="Boolean" Name="Recoleccion" Nullable="false" />
+          <Property Type="String" Name="CoordenadasTarea" Nullable="true" />
+          <Property Type="String" Name="CoordenadasTerreno" Nullable="true" />
         </ComplexType>
         <ComplexType Name="PA_ConsultarOpcionesRol_Result">
           <Property Type="Guid" Name="idOpcion" Nullable="false" />
@@ -713,6 +780,26 @@
           <Property Type="Int32" Name="id" Nullable="false" />
           <Property Type="String" Name="nombre" Nullable="false" MaxLength="200" />
           <Property Type="DateTime" Name="fechaIngreso" Nullable="false" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="PA_ConsultarCategoriasMovimiento_Result">
+          <Property Type="Guid" Name="IdCategoriaMovimiento" Nullable="false" />
+          <Property Type="String" Name="NombreCategoria" Nullable="false" MaxLength="50" />
+          <Property Type="Boolean" Name="Ingreso" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="PA_ConsultarMovimientos_Result">
+          <Property Type="Guid" Name="IdMovimiento" Nullable="false" />
+          <Property Type="DateTime" Name="Fecha" Nullable="false" Precision="23" />
+          <Property Type="String" Name="Observaciones" Nullable="false" MaxLength="100" />
+          <Property Type="Guid" Name="IdCategoriaMovimiento" Nullable="false" />
+          <Property Type="Decimal" Name="Monto" Nullable="false" Precision="18" Scale="5" />
+          <Property Type="Guid" Name="IdEmpresa" Nullable="false" />
+          <Property Type="Guid" Name="IdUsuario" Nullable="false" />
+          <Property Type="DateTime" Name="FechaIngreso" Nullable="false" Precision="23" />
+          <Property Type="Boolean" Name="Activo" Nullable="false" />
+          <Property Type="Int32" Name="Annio" Nullable="false" />
+          <Property Type="Int32" Name="Mes" Nullable="false" />
+          <Property Type="Boolean" Name="Ingreso" Nullable="false" />
+          <Property Type="String" Name="NombreCategoria" Nullable="false" MaxLength="50" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -966,6 +1053,7 @@
                 <ScalarProperty Name="Activa" ColumnName="Activa" />
                 <ScalarProperty Name="IdTipoTarea" ColumnName="IdTipoTarea" />
                 <ScalarProperty Name="NombreTarea" ColumnName="NombreTarea" />
+                <ScalarProperty Name="Coordenadas" ColumnName="Coordenadas" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -989,6 +1077,8 @@
                 <ScalarProperty Name="IdTipoTarea" ColumnName="IdTipoTarea" />
                 <ScalarProperty Name="NombreTarea" ColumnName="NombreTarea" />
                 <ScalarProperty Name="Recoleccion" ColumnName="Recoleccion" />
+                <ScalarProperty Name="CoordenadasTarea" ColumnName="CoordenadasTarea" />
+                <ScalarProperty Name="CoordenadasTerreno" ColumnName="CoordenadasTerreno" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -1036,6 +1126,35 @@
           <FunctionImportMapping FunctionImportName="PA_MantenimientoRecoleccion" FunctionName="AgroWebProModel.Store.PA_MantenimientoRecoleccion" />
           <FunctionImportMapping FunctionImportName="PA_CrearRecoleccionCultivo" FunctionName="AgroWebProModel.Store.PA_CrearRecoleccionCultivo" />
           <FunctionImportMapping FunctionImportName="PA_MantenimientoClienteProveedor" FunctionName="AgroWebProModel.Store.PA_MantenimientoClienteProveedor" />
+          <FunctionImportMapping FunctionImportName="PA_ConsultarCategoriasMovimiento" FunctionName="AgroWebProModel.Store.PA_ConsultarCategoriasMovimiento">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AgroWebProModel.PA_ConsultarCategoriasMovimiento_Result">
+                <ScalarProperty Name="IdCategoriaMovimiento" ColumnName="IdCategoriaMovimiento" />
+                <ScalarProperty Name="NombreCategoria" ColumnName="NombreCategoria" />
+                <ScalarProperty Name="Ingreso" ColumnName="Ingreso" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PA_MantenimientoMovimiento" FunctionName="AgroWebProModel.Store.PA_MantenimientoMovimiento" />
+          <FunctionImportMapping FunctionImportName="PA_ConsultarMovimientos" FunctionName="AgroWebProModel.Store.PA_ConsultarMovimientos">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AgroWebProModel.PA_ConsultarMovimientos_Result">
+                <ScalarProperty Name="IdMovimiento" ColumnName="IdMovimiento" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Observaciones" ColumnName="Observaciones" />
+                <ScalarProperty Name="IdCategoriaMovimiento" ColumnName="IdCategoriaMovimiento" />
+                <ScalarProperty Name="Monto" ColumnName="Monto" />
+                <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="Annio" ColumnName="Annio" />
+                <ScalarProperty Name="Mes" ColumnName="Mes" />
+                <ScalarProperty Name="Ingreso" ColumnName="Ingreso" />
+                <ScalarProperty Name="NombreCategoria" ColumnName="NombreCategoria" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

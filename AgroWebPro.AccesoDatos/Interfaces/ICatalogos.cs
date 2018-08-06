@@ -17,5 +17,6 @@ namespace AgroWebPro.AccesoDatos.Interfaces
         ConsultarZonasHorariasResponse ConsultarZonasHorarias(ConsultarZonasHorariasRequest request);
         ConsultarEstadoTareaResponse ConsultarEstadoTarea(ConsultarEstadoTareaRequest request);
         ConsultarTiposTareasResponse ConsultarTiposTareas(ConsultarTiposTareasRequest request);
+        ConsultarCategoriasMovimientoResponse ConsultarCategoriasMovimiento(ConsultarCategoriasMovimientoRequest request);
     }
 }

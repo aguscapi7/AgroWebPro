@@ -210,5 +210,32 @@ namespace AgroWebPro.AccesoDatos.Metodos
             return response;
         }
 
+        public ConsultarCategoriasMovimientoResponse ConsultarCategoriasMovimiento(ConsultarCategoriasMovimientoRequest request)
+        {
+            ConsultarCategoriasMovimientoResponse response = new ConsultarCategoriasMovimientoResponse();
+            ObjectParameter estado = new ObjectParameter("Estado", Constantes.EstadoCorrecto);
+            ObjectParameter mensaje = new ObjectParameter("Mensaje", string.Empty);
+            try
+            {
+                using (AgroWebProEntities modelo = new AgroWebProEntities())
+                {
+                    response.listaCategorias = modelo.PA_ConsultarCategoriasMovimiento(
+                                                     estado
+                                                    , mensaje).ToList();
+                    if (estado.Value.ToString().Equals(Constantes.EstadoError))
+                    {
+                        response.estado = Constantes.EstadoError;
+                        response.mensaje = Constantes.MensajeErrorAccesoDatos + mensaje.Value.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.estado = Constantes.EstadoError;
+                response.mensaje = Constantes.MensajeErrorAccesoDatos + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty);
+                throw;
+            }
+            return response;
+        }
     }
 }

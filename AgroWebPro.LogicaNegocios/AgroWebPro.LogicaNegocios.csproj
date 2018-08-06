@@ -44,6 +44,7 @@
     <Compile Include="Interfaces\IEmpresa.cs" />
     <Compile Include="Interfaces\IReportes.cs" />
     <Compile Include="Interfaces\ISeguridad.cs" />
+    <Compile Include="Interfaces\ICuenta.cs" />
     <Compile Include="Interfaces\IVenta.cs" />
     <Compile Include="Interfaces\ITarea.cs" />
     <Compile Include="Interfaces\IUsuario.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Metodos\Empresa.cs" />
     <Compile Include="Metodos\Reportes.cs" />
     <Compile Include="Metodos\Seguridad.cs" />
+    <Compile Include="Metodos\Cuenta.cs" />
     <Compile Include="Metodos\Venta.cs" />
     <Compile Include="Metodos\Tarea.cs" />
     <Compile Include="Metodos\Usuario.cs" />

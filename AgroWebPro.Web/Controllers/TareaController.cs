@@ -139,8 +139,9 @@ namespace AgroWebPro.Web.Controllers
                             observaciones = tareaModels.observaciones,
                             fechaInicio = DateTime.Parse(tareaModels.fechaInicio),
                             fechaFinalizacion = DateTime.Parse(tareaModels.fechaFinalizacion),
-                            horasEstimadas = tareaModels.horasEstimadas
-
+                            horasEstimadas = tareaModels.horasEstimadas,
+                            actualizarCoordenadas = tareaModels.actualizarCoordenadas,
+                            coordenadas = AgroWebPro.Utilitarios.Utilitarios.DecodificarBase64(tareaModels.listaCoordenadas)
                         };
                         mensajeCorrecto = string.Format(mensajeCorrecto, "guardado");
                         mensajeError = string.Format(mensajeError, "guardar");
@@ -158,7 +159,9 @@ namespace AgroWebPro.Web.Controllers
                             observaciones = tareaModels.observaciones,
                             fechaInicio = DateTime.Parse(tareaModels.fechaInicio),
                             fechaFinalizacion = DateTime.Parse(tareaModels.fechaFinalizacion),
-                            horasEstimadas = tareaModels.horasEstimadas
+                            horasEstimadas = tareaModels.horasEstimadas,
+                            actualizarCoordenadas = tareaModels.actualizarCoordenadas,
+                            coordenadas = AgroWebPro.Utilitarios.Utilitarios.DecodificarBase64(tareaModels.listaCoordenadas)
                         };
                         mensajeCorrecto = string.Format(mensajeCorrecto, "editado");
                         mensajeError = string.Format(mensajeError, "editar");

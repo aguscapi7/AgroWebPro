@@ -74,6 +74,8 @@ namespace AgroWebPro.AccesoDatos.Metodos
                                                     , request.observaciones
                                                     , request.idTipoTarea
                                                     , request.activa
+                                                    , request.actualizarCoordenadas
+                                                    , request.coordenadas
                                                     , estado
                                                     , mensaje);
                     if (estado.Value.ToString().Equals(Constantes.EstadoError))

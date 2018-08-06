@@ -10,9 +10,9 @@
 <script src="~/Scripts/leaflet-src.js"></script>
 <link href="~/Content/reportes.css" rel="stylesheet" />
 <link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<link href="~/Content/esri-leaflet-geocoder.css" rel="stylesheet" />
 
 <script>
-    debugger;
     var coordenadasTerrenos = "@(Html.Raw(Model.coordenadasTerrenos))";
     var listaCoordenadas = coordenadasTerrenos.split('|');
 </script>
@@ -32,40 +32,52 @@
 
     if (Model.listaTareasUsuario != null && Model.listaTareasUsuario.Count > 0)
     {
-        <h3>Tareas pendientes</h3>
-        foreach (var item in Model.listaTareasUsuario)
-        {
-            <div class="well well-lg">
-                <h3>Información general</h3>
+        <center>
+            <h3>Tareas pendientes</h3>
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <select id="ddlFiltroTipoTarea" class="form-control" onchange="FiltrarPorTipoTarea()">
+                    <option value="0">Mostrar todas</option>
+                    @foreach (var item in Model.listaTareasUsuario.GroupBy(x => x.idTipoTarea))
+                    {
+                        <option value="@item.ElementAt(0).idTipoTarea">@item.ElementAt(0).nombreTipoTarea</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4"></div>
+        </center>
+        <br />
+        <br />
+        <br />
+                
+                
+        <div id="divListadoTareas">
+            @foreach (var item in Model.listaTareasUsuario)
+            {
+            <div class="well well-lg divTarea divTarea-@item.idTipoTarea">
+
+                <p><a onclick=""><h3 onclick="VerMapa('@item.listaCoordenadas','@item.listaCoordenadasTerreno')">@item.resumen</h3></a></p>
                 <div class="row">
                     <div class="col-md-3">
-                        <label>Fechas:</label>
-                        <p>Inicia @item.fechaInicio y finaliza @item.fechaFinalizacion</p>
+                        <label><i class="fa fa-calendar" aria-hidden="true"></i> Fechas</label>
+                        <p>@item.fechaInicio al @item.fechaFinalizacion</p>
                     </div>
                     <div class="col-md-3">
-                        <label>Terreno:</label>
+                        <label><i class="fa fa-map-o" aria-hidden="true"></i> Terreno</label>
                         <p>@item.nombreTerreno</p>
                     </div>
                     <div class="col-md-3">
                         <label>Tipo de tarea:</label>
                         <p>@item.nombreTipoTarea</p>
                     </div>
-                    <div class="col-md-3">
-                        <label>Horas estimadas:</label>
-                        <p>@item.horasEstimadas</p>
-                    </div>
                 </div>
-
-                <h3>Descripción de la tarea</h3>
-                <div></div>
-                <p>@item.resumen</p>
-                @if (!string.IsNullOrEmpty(item.observaciones))
-                {   <br />
-                    <p>@item.observaciones</p>
-                }
+                
+                <button class="btn btn-orange" onclick="VerMapa('@item.listaCoordenadas','@item.listaCoordenadasTerreno')">Mapa&nbsp;&nbsp;<i class="fa fa-map" aria-hidden="true"></i></button>
                 <button class="btn btn-orange" onclick="AbrirAvance('@Url.Action("RedireccionarAvanceTarea", "Tarea", new { idTarea = item.idTarea })')">Realizar avance</button>
             </div>
-        }
+            }
+        </div>
+        
     }
     else
     {
@@ -77,11 +89,24 @@ else if (Request.Cookies["usuario"] != null && Request.Cookies["usuario"]["rol"]
 {
     <div class="row">
         <div class="col-lg-8">
+            <label>Terreno:</label>
+            @if (Model.listaTerrenosEmpresa != null && Model.listaTerrenosEmpresa.Count() > 1)
+            {
+                <select class="form-control" onchange="EstablecerVista()" id="ddlTerrenosMapa">
+                    @foreach (var itemTerreno in Model.listaTerrenosEmpresa.Where(x => x.idTerreno != Guid.Empty).ToList())
+                    {
+                        <option value="@itemTerreno.idTerreno" data-coordenadas="@itemTerreno.listaCoordenadas">@itemTerreno.nombreTerreno</option>
+                    }
+                </select>
+
+            }
+            <br />
             <div id="map" style="height:580px;"></div>
+            <br />
+            <div class='pointer'></div>
 
         </div>
         <div class="col-lg-4">
-            <!-- Example Pie Chart Card-->
             <div class="card mb-3">
                 <div class="card-header">
                     <i class="fa fa-pie-chart"></i> Resumen de tareas&nbsp;
@@ -105,7 +130,7 @@ else if (Request.Cookies["usuario"] != null && Request.Cookies["usuario"]["rol"]
                     </div>
 
                     <div id="divContenedor">
-                        <canvas id="canvasGrafico" width="100%" height="150"></canvas>
+                        <canvas id="canvasGrafico" width="100%" height="100"></canvas>
                     </div>
                     <br />
                     <div id="divSinDatos" class="alert alert-warning hidden">
@@ -115,14 +140,96 @@ else if (Request.Cookies["usuario"] != null && Request.Cookies["usuario"]["rol"]
                 <div class="card-footer small text-muted"></div>
             </div>
         </div>
-    </div>
-}
+        </div>
 
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <i class="fa fa-pie-chart"></i> Resumen de tareas&nbsp;
+
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Periodo</label>
+                                <select id="ddlTiempo" onchange="" class="form-control">
+                                    <option value="1" selected>Día</option>
+                                    <option value="2">Semana</option>
+                                    <option value="3">Mes</option>
+                                    <option value="4">Año</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6" onchange="">
+                                <label>Terreno</label>
+                                @Html.DropDownListFor(m => Model.idTerreno, new SelectList(Model.listaTerrenosEmpresa, "IdTerreno", "NombreTerreno", Guid.Empty.ToString()), new { @id = "idesa", @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div id="divContenedorGraficoArea">
+                            <canvas id="canvasIngresosGastos" width="100%" height="350"></canvas>
+                        </div>
+                        <br />
+                        <div id="divSinDatos" class="alert alert-warning hidden">
+                            <p><center><strong>No hay datos disponibles</strong></center></p>
+                        </div>
+                    </div>
+                    <div class="card-footer small text-muted"></div>
+                </div>
+            </div>
+
+            
+        </div>
+}
+<div class="modal" id="modalMapa" tabindex="-1" role="dialog" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Información de la tarea</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div id="mapaTarea" style="height:580px;"></div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary">Guardar cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <script src="~/Scripts/Chart.js"></script>
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/bootstrap-datepicker.js"></script>
+<script src="~/Scripts/esri-leaflet.js"></script>
+<script src="~/Scripts/esri-leaflet-geocoder.js"></script>
+<style>
+    .pointer {
+        position: absolute;
+        top: 86px;
+        left: 60px;
+        z-index: 99999;
+    }
+
+    #mapSearchContainer {
+        position: fixed;
+        top: 20px;
+        right: 40px;
+        height: 30px;
+        width: 180px;
+        z-index: 110;
+        font-size: 10pt;
+        color: #5d5d5d;
+        border: solid 1px #bbb;
+        background-color: #f8f8f8;
+    }
+</style>
 
 <script>
 
@@ -136,7 +243,156 @@ else if (Request.Cookies["usuario"] != null && Request.Cookies["usuario"]["rol"]
         window.location.href = '@Url.Action("Mantenimiento", "Tarea")';
     }
 
-    CargarTareas();
+    
+
+    var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        osm = L.tileLayer(osmUrl, { maxZoom: 29, attribution: osmAttrib });
+
+    var mapa = L.map('mapaTarea').setView([9.842405, -83.9317569], 29);
+    L.tileLayer(osmUrl, {
+        attribution: ''
+    }).addTo(mapa);
+
+    L.tileLayer(osmUrl, {
+        attribution: ''
+    }).addTo(mapa);
+    function DeserealizarXML(contenido) {
+
+            var xmlDoc = $.parseXML(contenido),
+                $xml = $(xmlDoc),
+                $coordenadas = $xml.find("coordenada");
+            var coor = [];
+            if ($coordenadas.length > 0) {
+            var nombreTerreno = "";
+            for (var i = 0; i < $coordenadas.length; i++) {
+                nombreTerreno = $($coordenadas[i].childNodes[3]).html();
+                coor.push([$($coordenadas[i].childNodes[0]).html(), $($coordenadas[i].childNodes[1]).html()]);
+            }
+            var polygon = L.polygon(coor);
+            var contenido = '<div><div class="row">' +
+                '<div class="col-lg-12"><h4>' + nombreTerreno + '</h4></div>' +
+                '<div class="row" style="margin-top:20px">' +
+                '<div class="col-lg-12"><button class="btn btn-primary btn-sm" onclick="AgregarTarea()">Agregar tarea<span class="fa fa-plus" style="margin-left:20px;"></span></button></div>' +
+                '</div>';
+            polygon.bindPopup(
+                contenido
+                , { maxWidth: "auto" }
+                );
+            polygon.addTo(L.featureGroup().addTo(map));
+
+        }
+    }
+
+    function AgregarTerreno(contenido,principal) {
+        var xmlDoc = $.parseXML(contenido),
+            $xml = $(xmlDoc),
+            $coordenadas = $xml.find("coordenada");
+        var coor = [];
+        if ($coordenadas.length > 0) {
+            var nombreTerreno = "";
+            for (var i = 0; i < $coordenadas.length; i++) {
+                nombreTerreno = $($coordenadas[i].childNodes[3]).html();
+                coor.push([$($coordenadas[i].childNodes[0]).html(), $($coordenadas[i].childNodes[1]).html()]);
+            }
+            var polygon = L.polygon(coor);
+            if (principal) {
+                polygon.setStyle({ color: '#ff6600', fillColor: '#ffcc99' });
+            }
+            polygon.addTo(L.featureGroup().addTo(mapa));
+
+        }
+    }
+
+
+    function FiltrarPorTipoTarea() {
+        var tipoTarea = $("#ddlFiltroTipoTarea").val();
+        if (tipoTarea == "0") {
+
+            $("#divListadoTareas").find(".divTarea").removeClass("hidden");
+        }
+        else {
+
+            $("#divListadoTareas").find(".divTarea").addClass("hidden");
+            $("#divListadoTareas").find(".divTarea-"+tipoTarea).removeClass("hidden");
+        }
+    }
+
+    function VerMapa(coordenadasTarea, coordenadasTerreno) {
+
+        $("#modalMapa").modal("show");
+        mapa.invalidateSize(false);
+        clearMap();
+        AgregarTerreno(coordenadasTerreno, true);
+        AgregarTerreno(coordenadasTarea, false);
+        EstablecerVistaMapa(coordenadasTerreno);
+    }
+
+    function EstablecerVistaMapa(contenido) {
+        var xmlDoc = $.parseXML(contenido),
+            $xml = $(xmlDoc),
+            $coordenadas = $xml.find("coordenada");
+        var coor = [];
+        if ($coordenadas.length > 0) {
+            mapa.setView([$($coordenadas[0].childNodes[0]).html(), $($coordenadas[0].childNodes[1]).html()], 17);
+
+        }
+    }
+
+    function clearMap() {
+        for (i in mapa._layers) {
+            if (mapa._layers[i]._path != undefined) {
+                try {
+                    mapa.removeLayer(mapa._layers[i]);
+                }
+                catch (e) {
+                }
+            }
+        }
+    }
+
+</script>
+
+@if (Request.Cookies["usuario"] != null && Request.Cookies["usuario"]["rol"] != null && !Request.Cookies["usuario"]["rol"].ToString().Equals("57bcde54-9b6d-417f-a58a-451ab43431cd"))
+{
+    <script>
+        var map = L.map('map').setView([9.842405, -83.9317569], 29),
+            drawnItems = new L.FeatureGroup().addTo(map);
+
+
+        L.tileLayer(osmUrl, {
+            attribution: ''
+        }).addTo(map);
+
+        L.tileLayer(osmUrl, {
+            attribution: ''
+        }).addTo(map);
+
+        var searchControl = new L.esri.Controls.Geosearch().addTo(map);
+
+        var results = new L.LayerGroup().addTo(map);
+
+        searchControl.on('results', function (data) {
+            results.clearLayers();
+            for (var i = data.results.length - 1; i >= 0; i--) {
+                results.addLayer(L.marker(data.results[i].latlng));
+            }
+        });
+
+        setTimeout(function () { $('.pointer').fadeOut('slow'); }, 3400);
+
+        CargarTerrenos();
+
+        function CargarTerrenos() {
+            for (var i = 0; i < listaCoordenadas.length; i++) {
+                if (listaCoordenadas[i] != "") {
+                    DeserealizarXML(listaCoordenadas[i]);
+                }
+            }
+            EstablecerVista();
+        }
+
+        CargarTareas();
 
     function CargarTareas() {
         var parametros = {
@@ -151,9 +407,7 @@ else if (Request.Cookies["usuario"] != null && Request.Cookies["usuario"]["rol"]
             success: function (data) {
                 if (data.respuesta == '@Constantes.EstadoCorrecto' && data.agrupada.length > 0)
                 {
-                    debugger;
-
-                    $('#canvasGrafico').remove(); // this is my <canvas> element
+                    $('#canvasGrafico').remove(); 
                     $('#divContenedor').append('<canvas id="canvasGrafico" width="100%" height="150"><canvas>');
                     ctx = document.getElementById("canvasGrafico");
 
@@ -174,67 +428,119 @@ else if (Request.Cookies["usuario"] != null && Request.Cookies["usuario"]["rol"]
                         },
                     });
                 }
-                else {                    
+                else {
                     $("#canvasGrafico").addClass("hidden");
                     $("#divSinDatos").removeClass("hidden");
                 }
 
             }
         });
-    }
-
-
-    var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        osm = L.tileLayer(osmUrl, { maxZoom: 29, attribution: osmAttrib });
-    var map = L.map('map').setView([9.842405, -83.9317569], 29),
-        drawnItems = new L.FeatureGroup().addTo(map);
-
-    L.tileLayer(osmUrl, {
-        attribution: ''
-    }).addTo(map);
-
-    CargarTerrenos();
-
-    function CargarTerrenos()
-    {
-        for (var i = 0; i < listaCoordenadas.length; i++) {
-            if (listaCoordenadas[i] != "")
-            {
-                DeserealizarXML(listaCoordenadas[i]);
-            }
-        }
-    }
-
-    function DeserealizarXML(contenido) {
-
-        var xmlDoc = $.parseXML(contenido),
-            $xml = $(xmlDoc),
-            $coordenadas = $xml.find("coordenada");
-        var coor = [];
-        if ($coordenadas.length > 0) {
-            map.setView([$($coordenadas[0].childNodes[0]).html(), $($coordenadas[0].childNodes[1]).html()], 18);
-            var nombreTerreno = "";
-            for (var i = 0; i < $coordenadas.length; i++) {
-                nombreTerreno = $($coordenadas[i].childNodes[3]).html();
-                coor.push([$($coordenadas[i].childNodes[0]).html(), $($coordenadas[i].childNodes[1]).html()]);
-            }
-            var polygon = L.polygon(coor);
-            var contenido = '<div><div class="row">' +
-                '<div class="col-lg-12"><h4>' + nombreTerreno + '</h4></div>' +
-                '<div class="row" style="margin-top:20px">' +
-                '<div class="col-lg-12"><button class="btn btn-primary btn-sm" onclick="AgregarTarea()">Agregar tarea<span class="fa fa-plus" style="margin-left:20px;"></span></button></div>' +
-                '</div>';
-            polygon.bindPopup(
-                contenido
-                , { maxWidth: "auto" }
-            );
-            polygon.addTo(L.featureGroup().addTo(map));
-
         }
 
-    }
 
-</script>
+        function EstablecerVista() {
+            var contenido = $("#ddlTerrenosMapa :selected").data("coordenadas");
+            var xmlDoc = $.parseXML(contenido),
+                $xml = $(xmlDoc),
+                $coordenadas = $xml.find("coordenada");
+            var coor = [];
+            if ($coordenadas.length > 0) {
+                map.setView([$($coordenadas[0].childNodes[0]).html(), $($coordenadas[0].childNodes[1]).html()], 18);
+
+            }
+        }
+
+        CargarIngresosGastos();
+        function CargarIngresosGastos() {
+            
+
+            var config = {
+                type: 'line',
+                data: {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                    datasets: [ {
+                        label: 'Ingresos',
+                        fill: false,
+                        backgroundColor: '#28a745',
+                        borderColor: '#28a745',
+                        data: [
+                           325,
+                            873,
+                            765,
+                            423,
+                            345,
+                            544,
+                            123
+                        ]
+                    }, {
+                        label: 'Gastos',
+                        backgroundColor: '#dc3545',
+                        borderColor: '#dc3545',
+                        data: [
+                            543,
+                            123,
+                            543,
+                            564,
+                            763,
+                            805,
+                            876
+                        ],
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: 'Ingresos y gastos'
+                    },
+                    tooltips: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    hover: {
+                        mode: 'nearest',
+                        intersect: true
+                    },
+                    scales: {
+                        xAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Meses'
+                            }
+                        }],
+                        yAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Monto'
+                            }
+                        }]
+                    },
+                    maintainAspectRatio: false
+                }
+            };
+
+
+            var contexto = document.getElementById('canvasIngresosGastos');
+            var grafico = new Chart(contexto, config);
+            
+        }
+
+        function randomScalingFactor() {
+            return Math.round(rand(0, 1000));
+        }
+        var _seed = Date.now();
+        function rand(min, max) {
+            var seed = this._seed;
+            min = min === undefined ? 0 : min;
+            max = max === undefined ? 1 : max;
+            this._seed = (seed * 9301 + 49297) % 233280;
+            return min + (this._seed / 233280) * (max - min);
+        }
+
+    </script>
+}
 
 

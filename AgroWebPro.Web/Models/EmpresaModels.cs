@@ -98,6 +98,9 @@ namespace AgroWebPro.Web.Models
                         tarea.fechaFinalizacion = tareaItem.FechaFinalizacion.ToShortDateString();
                         tarea.horasEstimadas = tareaItem.HorasEstimadas;
                         tarea.observaciones = tareaItem.Observaciones;
+                        tarea.listaCoordenadas = tareaItem.CoordenadasTarea;
+                        tarea.listaCoordenadasTerreno = tareaItem.CoordenadasTerreno;
+                        tarea.idTipoTarea = tareaItem.IdTipoTarea;
                         listaTareasUsuario.Add(tarea);
                     }
                 }
