@@ -274,6 +274,64 @@ namespace AgroWebPro.Web.Controllers
             return Json(new { respuesta = respuesta });
         }
 
+        public ActionResult ResumenMovimientos()
+        {
+            string respuesta = Constantes.EstadoError;
+            ICuenta cuenta = new Cuenta();
+
+            ConsultarMovimientosResponse reporteTareasResponse = null;
+            ConsultarMovimientosRequest reporteTareasRequest = null;
+            try
+            {
+                if (Request.Cookies["usuario"] != null)
+                {
+                    Guid idEmpresa = Guid.Parse(Request.Cookies["usuario"]["idEmpresa"].ToString());
+                    reporteTareasRequest = new ConsultarMovimientosRequest();
+                    reporteTareasRequest.idEmpresa = idEmpresa;
+                    DateTime fechaInicio = PrimerDiaMes(DateTime.Now.AddMonths(-5));
+                    DateTime fechaFinalizacion = UltimoDiaMes(DateTime.Now);
+                    reporteTareasRequest.fechaInicio = fechaInicio;
+                    reporteTareasRequest.fechaFin = fechaFinalizacion;
+                    reporteTareasRequest.busquedaFechas = true;
+                    reporteTareasResponse = cuenta.ConsultarMovimientos(reporteTareasRequest);
+
+                    if (reporteTareasResponse != null && reporteTareasResponse.estado.Equals(Constantes.EstadoCorrecto))
+                    {
+                        var agrupada = reporteTareasResponse.listaMovimientos.OrderBy(x => x.Mes).GroupBy(x => x.Mes);
+                        List<MovimientoResumen> listaMovimientoResumen = new List<MovimientoResumen>();
+                        foreach (var item in agrupada)
+                        {
+                            decimal ingresos = item.Where(x => x.Ingreso == true) != null ? item.Where(x => x.Ingreso == true).Sum(x => x.Monto) : 0;
+                            decimal gastos = item.Where(x => x.Ingreso == false) != null ? item.Where(x => x.Ingreso == false).Sum(x => x.Monto) : 0;
+                            string nombreMes = Constantes.Meses[item.ElementAt(0).Mes - 1];
+                            MovimientoResumen resumen = new MovimientoResumen()
+                            {
+                                gasto = gastos,
+                                ingreso = ingresos,
+                                mes = nombreMes
+                            };
+                            listaMovimientoResumen.Add(resumen);
+
+                        }
+                        return Json(new { respuesta = reporteTareasResponse.estado, agrupada = listaMovimientoResumen });
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Inicio", "Home");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                AgroWebPro.Utilitarios.Utilitarios.BitacoraErrores(ex.Message + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty),
+                                                    "Error WEB: ",
+                                                    this.GetType().Name,
+                                                    System.Reflection.MethodInfo.GetCurrentMethod().Name);
+            }
+            return Json(new { respuesta = respuesta });
+        }
+
         public static DateTime PrimerDiaSemana()
         {
             var culture = System.Threading.Thread.CurrentThread.CurrentCulture;
@@ -290,6 +348,11 @@ namespace AgroWebPro.Web.Controllers
         public static DateTime PrimerDiaMes()
         {
             DateTime fecha = DateTime.Now;
+            var primerDiaMes = new DateTime(fecha.Year, fecha.Month, 1);
+            return primerDiaMes;
+        }
+        public static DateTime PrimerDiaMes(DateTime fecha)
+        {
             var primerDiaMes = new DateTime(fecha.Year, fecha.Month, 1);
             return primerDiaMes;
         }

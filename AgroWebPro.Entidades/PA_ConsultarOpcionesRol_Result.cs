@@ -19,5 +19,6 @@ namespace AgroWebPro.Entidades
         public string accion { get; set; }
         public bool activo { get; set; }
         public string icono { get; set; }
+        public bool mostrarMenu { get; set; }
     }
 }

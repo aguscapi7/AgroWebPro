@@ -25,14 +25,13 @@ namespace AgroWebPro.Web.Controllers
             {
                 string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
                 string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
-                if (ConsultarOpcionPorUsuario(controllerName, actionName))
+                
+                string idUsuario = Request.Cookies["usuario"]["idUsuario"];
+                if (!string.IsNullOrEmpty(idUsuario))
                 {
-                    string idUsuario = Request.Cookies["usuario"]["idUsuario"];
-                    if (!string.IsNullOrEmpty(idUsuario))
-                    {
-                        return RedirectToAction("Inicio");
-                    }
+                    return RedirectToAction("Inicio");
                 }
+                
                 
             }
             catch(Exception ex)
@@ -77,8 +76,14 @@ namespace AgroWebPro.Web.Controllers
                     cookie.Values["rol"] = consultaUsuario.IdRol.ToString();
                     cookie.Values["password"] = Utilitarios.Utilitarios.Encriptar(consultaUsuario.Password);
                     cookie.Values["idEmpresa"] = consultaUsuario.IdEmpresa.ToString();
+                    cookie.Values["nombreEmpresa"] = consultaUsuario.NombreEmpresa.ToString();
                     cookie.Expires = DateTime.Now.AddDays(30);
                     Response.Cookies.Add(cookie);
+
+                    HttpCookie cookieNombre = new HttpCookie("nombreUsuario");
+                    cookieNombre.Value = HttpUtility.UrlEncode(consultaUsuario.Nombre);
+                    cookieNombre.Expires = DateTime.Now.AddDays(30);
+                    Response.Cookies.Add(cookieNombre);
 
                     opcionesRolRequest = new ConsultarOpcionesRolRequest();
                     opcionesRolRequest.idRol = consultaUsuario.IdRol;
@@ -204,6 +209,13 @@ namespace AgroWebPro.Web.Controllers
                                 cookie.Expires = DateTime.Now.AddDays(1);
                                 Response.Cookies.Add(cookie);
 
+
+                                HttpCookie cookieNombre = new HttpCookie("nombreUsuario");
+                                cookieNombre.Value = HttpUtility.UrlEncode(usuarioRequest.nombre);
+                                cookieNombre.Expires = DateTime.Now.AddDays(30);
+                                Response.Cookies.Add(cookieNombre);
+
+
                                 opcionesRolRequest = new ConsultarOpcionesRolRequest();
                                 opcionesRolRequest.idRol = usuarioRequest.rol;
                                 opcionesRolResponse = seguridad.ConsultarOpcionesRol(opcionesRolRequest);
@@ -251,6 +263,9 @@ namespace AgroWebPro.Web.Controllers
 
             ConsultarTareasUsuarioRequest tareasUsuarioRequest = null;
             ConsultarTareasUsuarioResponse tareasUsuarioResponse = null;
+
+            ConsultarMovimientosRequest movimientosRequest = null;
+            ConsultarMovimientosResponse movimientosResponse = null;
             try
             {
                 string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
@@ -262,7 +277,7 @@ namespace AgroWebPro.Web.Controllers
                     Guid idEmpresa = Guid.Parse(idEmpresaCookie);
                     Guid idUsuario = Guid.Parse(idUsuarioCookie);
 
-                    empresaModels.usuario = new UsuarioModels() { nombre = Request.Cookies["usuario"]["nombre"] };
+                    empresaModels.usuario = new UsuarioModels() { nombre = Request.Cookies["nombreUsuario"].Value };
 
                     terrenosEmpresaRequest = new ConsultarTerrenosEmpresaRequest();
                     terrenosEmpresaRequest.idEmpresa = idEmpresa;
@@ -298,14 +313,13 @@ namespace AgroWebPro.Web.Controllers
         {
             try
             {
-                string[] myCookies = Request.Cookies.AllKeys;
-                foreach (string nombreCookie in myCookies)
-                {
-                    Request.Cookies.Remove(nombreCookie);
+                HttpCookie usuario = new HttpCookie("usuario");
+                usuario.Expires = DateTime.Now.AddDays(-1d);
+                Response.Cookies.Add(usuario);
 
-                    var aCookie = new HttpCookie(nombreCookie) { Expires = DateTime.Now.AddDays(-1) };
-                    Response.Cookies.Add(aCookie);
-                }
+                HttpCookie nombre = new HttpCookie("nombreUsuario");
+                nombre.Expires = DateTime.Now.AddDays(-1d);
+                Response.Cookies.Add(nombre);
             }
             catch(Exception ex)
             {

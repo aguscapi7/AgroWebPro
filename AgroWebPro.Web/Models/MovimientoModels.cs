@@ -117,4 +117,11 @@ namespace AgroWebPro.Web.Models
         public Guid idCategoriaMovimiento { get; set; }
         public bool ingreso { get; set; }
     }
+
+    public class MovimientoResumen
+    {
+        public decimal ingreso { get; set; }
+        public decimal gasto { get; set; }
+        public string mes { get; set; }
+    }
 }

@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "Inicio";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string encode = HttpUtility.UrlEncode("ahí");
+    string decode = HttpUtility.UrlDecode(encode);
 }
 
 <link href="~/Content/leaflet.css" rel="stylesheet" />
@@ -22,7 +24,7 @@
     <nav class="navbar navbar-default" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
-                <h3 style="margin-left:10px;"><span class="fa fa-home fa-lg"></span>&nbsp;<span id="tituloMantenimiento">Bienvenido, @Html.Raw(Model.usuario.nombre)</span></h3>
+                <h3 style="margin-left:10px;"><span class="fa fa-home fa-lg"></span>&nbsp;<span id="tituloMantenimiento">Bienvenido, @HttpUtility.UrlDecode(Model.usuario.nombre)</span></h3>
             </div>
         </div>
     </nav>
@@ -89,22 +91,23 @@ else if (Request.Cookies["usuario"] != null && Request.Cookies["usuario"]["rol"]
 {
     <div class="row">
         <div class="col-lg-8">
-            <label>Terreno:</label>
-            @if (Model.listaTerrenosEmpresa != null && Model.listaTerrenosEmpresa.Count() > 1)
-            {
-                <select class="form-control" onchange="EstablecerVista()" id="ddlTerrenosMapa">
-                    @foreach (var itemTerreno in Model.listaTerrenosEmpresa.Where(x => x.idTerreno != Guid.Empty).ToList())
-                    {
-                        <option value="@itemTerreno.idTerreno" data-coordenadas="@itemTerreno.listaCoordenadas">@itemTerreno.nombreTerreno</option>
-                    }
-                </select>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fa fa-pie-chart"></i> Ingresos y gastos de los últimos 6 meses&nbsp;
 
-            }
-            <br />
-            <div id="map" style="height:580px;"></div>
-            <br />
-            <div class='pointer'></div>
+                </div>
+                <div class="card-body">
 
+                    <div id="divContenedorGraficoArea">
+                        <canvas id="canvasIngresosGastos" width="100%" height="350"></canvas>
+                    </div>
+                    <br />
+                    <div id="divSinDatosIngresosGastos" class="alert alert-warning hidden">
+                        <p><center><strong>No hay datos disponibles</strong></center></p>
+                    </div>
+                </div>
+                <div class="card-footer small text-muted"></div>
+            </div>
         </div>
         <div class="col-lg-4">
             <div class="card mb-3">
@@ -143,41 +146,37 @@ else if (Request.Cookies["usuario"] != null && Request.Cookies["usuario"]["rol"]
         </div>
 
         <div class="row">
+            
             <div class="col-lg-8">
                 <div class="card mb-3">
                     <div class="card-header">
-                        <i class="fa fa-pie-chart"></i> Resumen de tareas&nbsp;
+                        <i class="fa fa-map"></i> Terrenos&nbsp;
 
                     </div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Periodo</label>
-                                <select id="ddlTiempo" onchange="" class="form-control">
-                                    <option value="1" selected>Día</option>
-                                    <option value="2">Semana</option>
-                                    <option value="3">Mes</option>
-                                    <option value="4">Año</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6" onchange="">
-                                <label>Terreno</label>
-                                @Html.DropDownListFor(m => Model.idTerreno, new SelectList(Model.listaTerrenosEmpresa, "IdTerreno", "NombreTerreno", Guid.Empty.ToString()), new { @id = "idesa", @class = "form-control" })
-                            </div>
-                        </div>
 
-                        <div id="divContenedorGraficoArea">
-                            <canvas id="canvasIngresosGastos" width="100%" height="350"></canvas>
-                        </div>
+                        <label>Terreno:</label>
+                        @if (Model.listaTerrenosEmpresa != null && Model.listaTerrenosEmpresa.Count() > 1)
+                        {
+                            <select class="form-control" onchange="EstablecerVista()" id="ddlTerrenosMapa">
+                                @foreach (var itemTerreno in Model.listaTerrenosEmpresa.Where(x => x.idTerreno != Guid.Empty).ToList())
+                                {
+                                    <option value="@itemTerreno.idTerreno" data-coordenadas="@itemTerreno.listaCoordenadas">@itemTerreno.nombreTerreno</option>
+                                }
+                            </select>
+
+                        }
                         <br />
-                        <div id="divSinDatos" class="alert alert-warning hidden">
-                            <p><center><strong>No hay datos disponibles</strong></center></p>
-                        </div>
+                        <div id="map" style="height:580px;"></div>
+                        <br />
+                        <div class='pointer'></div>
+                        <br />
                     </div>
                     <div class="card-footer small text-muted"></div>
                 </div>
-            </div>
+                
 
+            </div>
             
         </div>
 }
@@ -407,7 +406,7 @@ else if (Request.Cookies["usuario"] != null && Request.Cookies["usuario"]["rol"]
             success: function (data) {
                 if (data.respuesta == '@Constantes.EstadoCorrecto' && data.agrupada.length > 0)
                 {
-                    $('#canvasGrafico').remove(); 
+                    $('#canvasGrafico').remove();
                     $('#divContenedor').append('<canvas id="canvasGrafico" width="100%" height="150"><canvas>');
                     ctx = document.getElementById("canvasGrafico");
 
@@ -453,92 +452,94 @@ else if (Request.Cookies["usuario"] != null && Request.Cookies["usuario"]["rol"]
         CargarIngresosGastos();
         function CargarIngresosGastos() {
             
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: '@Url.Action("ResumenMovimientos", "Reporte")',
+            success: function (data) {
+                if (data.respuesta == '@Constantes.EstadoCorrecto' && data.agrupada.length > 0)
+                {
 
-            var config = {
-                type: 'line',
-                data: {
-                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                    datasets: [ {
-                        label: 'Ingresos',
-                        fill: false,
-                        backgroundColor: '#28a745',
-                        borderColor: '#28a745',
-                        data: [
-                           325,
-                            873,
-                            765,
-                            423,
-                            345,
-                            544,
-                            123
-                        ]
-                    }, {
-                        label: 'Gastos',
-                        backgroundColor: '#dc3545',
-                        borderColor: '#dc3545',
-                        data: [
-                            543,
-                            123,
-                            543,
-                            564,
-                            763,
-                            805,
-                            876
-                        ],
-                        fill: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    title: {
-                        display: true,
-                        text: 'Ingresos y gastos'
-                    },
-                    tooltips: {
-                        mode: 'index',
-                        intersect: false,
-                    },
-                    hover: {
-                        mode: 'nearest',
-                        intersect: true
-                    },
-                    scales: {
-                        xAxes: [{
-                            display: true,
-                            scaleLabel: {
+                    $("#canvasIngresosGastos").removeClass("hidden");
+                    $("#divSinDatosIngresosGastos").addClass("hidden");
+                    
+                    var ingresos = [data.agrupada.length];
+                    var gastos = [data.agrupada.length];
+                    var meses = [data.agrupada.length];
+                    for (var i = 0; i < data.agrupada.length; i++) {
+                        ingresos[i] = data.agrupada[i].ingreso;
+                        gastos[i] = data.agrupada[i].gasto;
+                        meses[i] = data.agrupada[i].mes;                        
+                    }
+
+                    var config = {
+                        type: 'line',
+                        data: {
+                            labels: meses,
+                            datasets: [{
+                                label: 'Ingresos',
+                                fill: false,
+                                backgroundColor: '#28a745',
+                                borderColor: '#28a745',
+                                data: ingresos
+                            }, {
+                                label: 'Gastos',
+                                backgroundColor: '#dc3545',
+                                borderColor: '#dc3545',
+                                data: gastos,
+                                fill: false
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            title: {
                                 display: true,
-                                labelString: 'Meses'
-                            }
-                        }],
-                        yAxes: [{
-                            display: true,
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Monto'
-                            }
-                        }]
-                    },
-                    maintainAspectRatio: false
+                                text: 'Ingresos y gastos'
+                            },
+                            tooltips: {
+                                mode: 'index',
+                                intersect: false,
+                            },
+                            hover: {
+                                mode: 'nearest',
+                                intersect: true
+                            },
+                            scales: {
+                                xAxes: [{
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Meses'
+                                    }
+                                }],
+                                yAxes: [{
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Monto'
+                                    }
+                                }]
+                            },
+                            maintainAspectRatio: false
+                        }
+                    };
+
+
+                    var contexto = document.getElementById('canvasIngresosGastos');
+                    var grafico = new Chart(contexto, config);
                 }
-            };
+                else {
+                    $("#canvasIngresosGastos").addClass("hidden");
+                    $("#divSinDatosIngresosGastos").removeClass("hidden");
+                }
 
-
-            var contexto = document.getElementById('canvasIngresosGastos');
-            var grafico = new Chart(contexto, config);
+            }
+        });
             
+
         }
 
-        function randomScalingFactor() {
-            return Math.round(rand(0, 1000));
-        }
-        var _seed = Date.now();
-        function rand(min, max) {
-            var seed = this._seed;
-            min = min === undefined ? 0 : min;
-            max = max === undefined ? 1 : max;
-            this._seed = (seed * 9301 + 49297) % 233280;
-            return min + (this._seed / 233280) * (max - min);
-        }
+        
 
     </script>
 }

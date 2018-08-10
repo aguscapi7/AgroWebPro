@@ -126,6 +126,7 @@ namespace AgroWebPro.Web.Models
                         opcion.accion = item.accion;
                         opcion.nombre = item.nombre;
                         opcion.icono = item.icono;
+                        opcion.mostrarMenu = item.mostrarMenu;
                         listaOpciones.Add(opcion);
                     }
                 }
@@ -175,5 +176,6 @@ namespace AgroWebPro.Web.Models
         public string controlador { get; set; }
         public string accion { get; set; }
         public string icono { get; set; }
+        public bool mostrarMenu { get; set; }
     }
 }

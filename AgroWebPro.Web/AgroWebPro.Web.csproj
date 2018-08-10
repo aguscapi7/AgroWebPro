@@ -218,6 +218,7 @@
     <Content Include="Content\color\yellow.css" />
     <Content Include="Content\css\sb-admin.css" />
     <Content Include="Content\css\sb-admin.min.css" />
+    <Content Include="Content\demo.css" />
     <Content Include="Content\esri-leaflet-geocoder.css" />
     <Content Include="Content\font-awesome\css\font-awesome.css" />
     <Content Include="Content\font-awesome\css\font-awesome.min.css" />
@@ -246,6 +247,7 @@
     <Content Include="Content\mantenimiento.css" />
     <Content Include="Content\mdb.min.css" />
     <Content Include="Content\menu.css" />
+    <Content Include="Content\mmenu.css" />
     <Content Include="Content\navbar-fixed-left.css" />
     <Content Include="Content\reportes.css" />
     <Content Include="Content\sweetalert.css" />
@@ -422,6 +424,7 @@
     <Content Include="Scripts\locale-all.js" />
     <Content Include="Scripts\mapa_editar.js" />
     <Content Include="Scripts\mdb.min.js" />
+    <Content Include="Scripts\mmenu.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\popper.min.js" />
@@ -449,7 +452,7 @@
     <Content Include="Views\Shared\_LayoutInicio.cshtml" />
     <Content Include="Views\Home\Inicio.cshtml" />
     <Content Include="Views\Terreno\Mantenimiento.cshtml" />
-    <Content Include="Views\Empresa\Mantenimiento.cshtml" />
+    <Content Include="Views\Empresa\Perfil.cshtml" />
     <Content Include="Views\Home\Registro.cshtml" />
     <Content Include="Views\Cultivo\Mantenimiento.cshtml" />
     <Content Include="Views\Reporte\General.cshtml" />

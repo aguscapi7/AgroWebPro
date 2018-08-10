@@ -22,5 +22,7 @@ namespace AgroWebPro.Entidades
         public System.Guid IdEmpresa { get; set; }
         public string NombreEmpresa { get; set; }
         public System.Guid IdRol { get; set; }
+        public string Latitud { get; set; }
+        public string Longitud { get; set; }
     }
 }

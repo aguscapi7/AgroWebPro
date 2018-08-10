@@ -21,5 +21,7 @@ namespace AgroWebPro.Entidades
         public string Direccion { get; set; }
         public System.Guid IdZonaHoraria { get; set; }
         public bool Activa { get; set; }
+        public string Latitud { get; set; }
+        public string Longitud { get; set; }
     }
 }

@@ -189,6 +189,8 @@
           <Parameter Name="idZonaHoraria" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="Direccion" Type="varchar" Mode="In" />
           <Parameter Name="Activa" Type="bit" Mode="In" />
+          <Parameter Name="Latitud" Type="varchar" Mode="In" />
+          <Parameter Name="Longitud" Type="varchar" Mode="In" />
           <Parameter Name="Estado" Type="varchar" Mode="InOut" />
           <Parameter Name="Mensaje" Type="varchar(max)" Mode="InOut" />
         </Function>
@@ -294,6 +296,8 @@
             <Parameter Name="idZonaHoraria" Mode="In" Type="Guid" />
             <Parameter Name="Direccion" Mode="In" Type="String" />
             <Parameter Name="Activa" Mode="In" Type="Boolean" />
+            <Parameter Name="Latitud" Mode="In" Type="String" />
+            <Parameter Name="Longitud" Mode="In" Type="String" />
             <Parameter Name="Estado" Mode="InOut" Type="String" />
             <Parameter Name="Mensaje" Mode="InOut" Type="String" />
           </FunctionImport>
@@ -569,11 +573,13 @@
           <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Apellidos" Nullable="true" MaxLength="80" />
           <Property Type="String" Name="Correo" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Password" Nullable="true" MaxLength="50" />
           <Property Type="Boolean" Name="Activo" Nullable="false" />
           <Property Type="Guid" Name="IdEmpresa" Nullable="false" />
           <Property Type="String" Name="NombreEmpresa" Nullable="false" MaxLength="100" />
           <Property Type="Guid" Name="IdRol" Nullable="false" />
+          <Property Type="String" Name="Latitud" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Longitud" Nullable="true" MaxLength="50" />
         </ComplexType>
         <ComplexType Name="PA_ConsultarFamilias_Result">
           <Property Type="Int32" Name="IdFamilia" Nullable="false" />
@@ -646,6 +652,8 @@
           <Property Type="String" Name="Direccion" Nullable="true" MaxLength="200" />
           <Property Type="Guid" Name="IdZonaHoraria" Nullable="false" />
           <Property Type="Boolean" Name="Activa" Nullable="false" />
+          <Property Type="String" Name="Latitud" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Longitud" Nullable="true" MaxLength="50" />
         </ComplexType>
         <ComplexType Name="PA_ConsultarUsuario_Result">
           <Property Type="Guid" Name="IdUsuario" Nullable="false" />
@@ -760,6 +768,7 @@
           <Property Type="String" Name="accion" Nullable="false" MaxLength="100" />
           <Property Type="Boolean" Name="activo" Nullable="false" />
           <Property Type="String" Name="icono" Nullable="false" MaxLength="50" />
+          <Property Type="Boolean" Name="mostrarMenu" Nullable="false" />
         </ComplexType>
         <ComplexType Name="PA_ConsultarReporteTareas_Result">
           <Property Type="Guid" Name="idTarea" Nullable="false" />
@@ -829,6 +838,8 @@
                 <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
                 <ScalarProperty Name="NombreEmpresa" ColumnName="NombreEmpresa" />
                 <ScalarProperty Name="IdRol" ColumnName="IdRol" />
+                <ScalarProperty Name="Latitud" ColumnName="Latitud" />
+                <ScalarProperty Name="Longitud" ColumnName="Longitud" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -940,6 +951,8 @@
                 <ScalarProperty Name="Direccion" ColumnName="Direccion" />
                 <ScalarProperty Name="IdZonaHoraria" ColumnName="IdZonaHoraria" />
                 <ScalarProperty Name="Activa" ColumnName="Activa" />
+                <ScalarProperty Name="Latitud" ColumnName="Latitud" />
+                <ScalarProperty Name="Longitud" ColumnName="Longitud" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -1091,6 +1104,7 @@
                 <ScalarProperty Name="accion" ColumnName="accion" />
                 <ScalarProperty Name="activo" ColumnName="activo" />
                 <ScalarProperty Name="icono" ColumnName="icono" />
+                <ScalarProperty Name="mostrarMenu" ColumnName="mostrarMenu" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

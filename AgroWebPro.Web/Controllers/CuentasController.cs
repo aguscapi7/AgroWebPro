@@ -44,8 +44,6 @@ namespace AgroWebPro.Web.Controllers
                         movimientoModels.nombreMes = Constantes.Meses[Convert.ToInt32(Session[Constantes.MesSeleccionado]) - 1];
                         movimientoModels.annioSeleccionado = Convert.ToInt32(Session[Constantes.AnnioSeleccionado].ToString());
                         movimientoModels.mesSeleccionado = Convert.ToInt32(Session[Constantes.MesSeleccionado].ToString());
-                        Session[Constantes.AnnioSeleccionado] = null;
-                        Session[Constantes.MesSeleccionado] = null;
                         movimientoModels.primerDia = new DateTime(movimientoModels.annioSeleccionado, movimientoModels.mesSeleccionado, 1);
                         movimientoModels.ultimoDia = movimientoModels.primerDia.AddMonths(1).AddDays(-1);
                         movimientoModels.fecha = movimientoModels.primerDia.ToString("dd/MM/yyyy");
@@ -125,8 +123,8 @@ namespace AgroWebPro.Web.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    string mensajeCorrecto = "La tarea se ha {0} correctamente.";
-                    string mensajeError = "Ocurrió un error al {0} la tarea.";
+                    string mensajeCorrecto = movimientoModels.ingreso ? "El ingreso se ha {0} correctamente." : "El gasto se ha {0} correctamente.";
+                    string mensajeError = movimientoModels.ingreso ? "Ocurrió un error al {0} el ingreso." : "Ocurrió un error al {0} el gasto.";
 
                     if (movimientoModels.idMovimiento == Guid.Empty || movimientoModels.idMovimiento == null)
                     {
@@ -230,6 +228,43 @@ namespace AgroWebPro.Web.Controllers
             return Json(new { respuesta = Constantes.EstadoCorrecto });
         }
 
-        
+        public ActionResult Eliminar(Guid idMovimiento)
+        {
+            ICuenta cuentas = new Cuenta();
+
+            MantenimientoMovimientoResponse movimientoResponse = null;
+            MantenimientoMovimientoRequest movimientoRequest = null;
+
+            string respuesta = string.Empty;
+
+            try
+            {
+                movimientoRequest = new MantenimientoMovimientoRequest()
+                {
+                    tipoOperacion = Constantes.operacionDesactivar,
+                    idMovimiento = idMovimiento,
+                    fecha = DateTime.Now
+                };
+
+                movimientoResponse = cuentas.MantenimientoMovimiento(movimientoRequest);
+                if (movimientoResponse != null && movimientoResponse.estado.Equals(Constantes.EstadoCorrecto))
+                {
+                    respuesta = Constantes.EstadoCorrecto;
+                }
+                else
+                {
+                    respuesta = Constantes.EstadoError;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                AgroWebPro.Utilitarios.Utilitarios.BitacoraErrores(ex.Message + ((ex.InnerException != null) ? Environment.NewLine + ex.InnerException.Message : string.Empty),
+                                                    "Error WEB: ",
+                                                    this.GetType().Name,
+                                                    System.Reflection.MethodInfo.GetCurrentMethod().Name);
+            }
+            return Json(new { respuesta = respuesta });
+        }
     }
 }

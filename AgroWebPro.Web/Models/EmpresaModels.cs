@@ -2,6 +2,7 @@
 using AgroWebPro.Utilitarios;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -10,12 +11,20 @@ namespace AgroWebPro.Web.Models
     public class EmpresaModels
     {
         public Guid idEmpresa { get; set; }
-        public string nombreEmpres { get; set; }
+        [Display(Name = "Nombre")]
+        [Required(ErrorMessage = "El nombre es requerido")]
+        public string nombreEmpresa { get; set; }
+        [Display(Name = "Descripción")]
         public string descripcionEmpresa { get; set; }
+        [Display(Name = "Teléfono")]
         public string telefono { get; set; }
+        [Display(Name = "Cédula Jurídica")]
         public string cedulaJuridica { get; set; }
+        [Display(Name = "Dirección")]
         public string direccion { get; set; }
-        public Guid idZonaHoraria { get; set; }
+        [Display(Name = "Zona horaria")]
+        [Required(ErrorMessage = "Seleccione una zona")]
+        public Guid? idZonaHoraria { get; set; }
 
         public UsuarioModels usuario { get; set; }
 
@@ -24,6 +33,8 @@ namespace AgroWebPro.Web.Models
         public string coordenadasTerrenos { get; set; }
         public Guid idTerreno { get; set; }
         public List<TareaModels> listaTareasUsuario { get; set; }
+        public string latitud { get; set; }
+        public string longitud { get; set; }
 
         public void CopiarListaZonasHorarias(ConsultarZonasHorariasResponse zonasHorariasResponse)
         {
@@ -108,6 +119,29 @@ namespace AgroWebPro.Web.Models
             catch (Exception ex)
             {
 
+            }
+        }
+
+        public void CopiarEmpresa(ConsultarEmpresaResponse empresaResponse)
+        {
+            try
+            {
+                if(empresaResponse != null && empresaResponse.estado.Equals(Constantes.EstadoCorrecto) && empresaResponse.listaEmpresa.Count > 0)
+                {
+                    this.nombreEmpresa = empresaResponse.listaEmpresa[0].NombreEmpresa;
+                    this.descripcionEmpresa = empresaResponse.listaEmpresa[0].DescripcionEmpresa;
+                    this.telefono = empresaResponse.listaEmpresa[0].Telefono;
+                    this.cedulaJuridica = empresaResponse.listaEmpresa[0].CedulaJuridica;
+                    this.idZonaHoraria = empresaResponse.listaEmpresa[0].IdZonaHoraria;
+                    this.latitud = empresaResponse.listaEmpresa[0].Latitud;
+                    this.longitud = empresaResponse.listaEmpresa[0].Longitud;
+                    this.idEmpresa = empresaResponse.listaEmpresa[0].IdEmpresa;
+                    this.direccion = empresaResponse.listaEmpresa[0].Direccion;
+                }
+            }
+            catch(Exception ex)
+            {
+                throw;
             }
         }
     }

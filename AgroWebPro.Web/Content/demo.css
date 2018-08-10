@@ -1,0 +1,97 @@
+html, body
+{
+	padding: 0;
+	margin: 0;
+}
+body
+{
+	
+}
+body *
+{
+	text-shadow: none;
+}
+
+p
+{
+	margin: 0 0 10px 0;
+}
+a, a:link, a:active, a:visited, a:hover
+{
+	color: inherit;
+	text-decoration: underline;
+}
+
+nav:not(.mm-menu):not(.navbar-default) {
+    display: none;
+}
+
+
+.header {
+    background: #333;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    line-height: 40px;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    height: 40px;
+    padding: 0 5px;
+}
+.header.fixed
+{
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+.footer.fixed
+{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+}
+.header > .enlace
+{
+	display: block;
+	width: 48px;
+	height: 38px;
+	padding: 11px;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.header > .enlace:before,
+.header > .enlace:after
+{
+	content: '';
+	display: block;
+	background: #fff;
+	height: 2px;
+}
+.header > .enlace span
+{
+	background: #fff;
+	display: block;
+	height: 2px;
+	margin: 6px 0;
+}
+.content
+{
+	padding: 50px 20px 50px 20px;
+}
+
+
+.btn-orange {
+    background-color: #cc5802;
+    color: white;
+}
+
+a {
+    cursor: pointer;
+}
+
+.field-validation-error {
+    color: red;
+    font-weight: bold;
+}

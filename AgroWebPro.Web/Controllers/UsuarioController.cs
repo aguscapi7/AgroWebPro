@@ -332,6 +332,7 @@ namespace AgroWebPro.Web.Controllers
                     empleadoResponse = usuario.MantenimientoUsuario(empleadoRequest);
                     if (empleadoResponse != null && empleadoResponse.estado.Equals(Constantes.EstadoCorrecto))
                     {
+                        Response.Cookies["nombreUsuario"].Value = HttpUtility.UrlEncode(usuarioModels.nombre);
                         ModelState.Clear();
                         ViewBag.respuesta = Constantes.EstadoCorrecto;
                         ViewBag.mensaje = "La información se ha actualizado correctamente";

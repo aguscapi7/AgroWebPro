@@ -33,7 +33,7 @@ namespace AgroWebPro.Entidades
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PA_ConsultarZonasHorarias_Result>("PA_ConsultarZonasHorarias", estado, mensaje);
         }
     
-        public virtual int PA_MantenimientoEmpresa(Nullable<int> tipoOperacion, Nullable<System.Guid> idEmpresa, string nombreEmpresa, string descripcionEmpresa, string telefono, string cedulaJuridica, Nullable<System.Guid> idZonaHoraria, string direccion, Nullable<bool> activa, ObjectParameter estado, ObjectParameter mensaje)
+        public virtual int PA_MantenimientoEmpresa(Nullable<int> tipoOperacion, Nullable<System.Guid> idEmpresa, string nombreEmpresa, string descripcionEmpresa, string telefono, string cedulaJuridica, Nullable<System.Guid> idZonaHoraria, string direccion, Nullable<bool> activa, string latitud, string longitud, ObjectParameter estado, ObjectParameter mensaje)
         {
             var tipoOperacionParameter = tipoOperacion.HasValue ?
                 new ObjectParameter("TipoOperacion", tipoOperacion) :
@@ -71,7 +71,15 @@ namespace AgroWebPro.Entidades
                 new ObjectParameter("Activa", activa) :
                 new ObjectParameter("Activa", typeof(bool));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_MantenimientoEmpresa", tipoOperacionParameter, idEmpresaParameter, nombreEmpresaParameter, descripcionEmpresaParameter, telefonoParameter, cedulaJuridicaParameter, idZonaHorariaParameter, direccionParameter, activaParameter, estado, mensaje);
+            var latitudParameter = latitud != null ?
+                new ObjectParameter("Latitud", latitud) :
+                new ObjectParameter("Latitud", typeof(string));
+    
+            var longitudParameter = longitud != null ?
+                new ObjectParameter("Longitud", longitud) :
+                new ObjectParameter("Longitud", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PA_MantenimientoEmpresa", tipoOperacionParameter, idEmpresaParameter, nombreEmpresaParameter, descripcionEmpresaParameter, telefonoParameter, cedulaJuridicaParameter, idZonaHorariaParameter, direccionParameter, activaParameter, latitudParameter, longitudParameter, estado, mensaje);
         }
     
         public virtual int PA_MantenimientoUsuario(Nullable<int> tipoOperacion, Nullable<System.Guid> idUsuario, string nombre, string apellidos, string correo, string password, string direccion, string telefono, Nullable<System.Guid> ingresadoPor, Nullable<System.Guid> rol, Nullable<bool> activo, Nullable<System.Guid> idEmpresa, ObjectParameter estado, ObjectParameter mensaje)

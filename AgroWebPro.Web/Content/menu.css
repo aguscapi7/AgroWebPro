@@ -29,14 +29,4 @@ ul > li > a:hover {
     background-color: #cc5802;
 }
 
-.btn-orange {
-    background-color: #cc5802;
-    color: white;
-}
 
-
-
-.field-validation-error {
-    color: red;
-    font-weight: bold;
-}

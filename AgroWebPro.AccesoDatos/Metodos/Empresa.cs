@@ -34,6 +34,8 @@ namespace AgroWebPro.AccesoDatos.Metodos
                                                     , request.idZonaHoraria
                                                     , request.direccion
                                                     , request.activa
+                                                    , request.latitud
+                                                    , request.longitud
                                                     , estado
                                                     , mensaje);
                     if (estado.Value.ToString().Equals(Constantes.EstadoError))

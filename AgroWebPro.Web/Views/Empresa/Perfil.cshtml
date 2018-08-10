@@ -1,0 +1,166 @@
+﻿@model AgroWebPro.Web.Models.EmpresaModels
+@using AgroWebPro.Utilitarios;
+@{
+    ViewBag.Title = "Empresa";
+}
+
+<link href="~/Content/esri-leaflet-geocoder.css" rel="stylesheet" />
+<link href="~/Content/leaflet.css" rel="stylesheet" />
+<link href="~/Content/leaflet.draw.css" rel="stylesheet" />
+<link href="~/Content/leaflet.toolbar.css" rel="stylesheet" />
+<link href="~/Content/leaflet.draw-toolbar.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-toggle.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/leaflet-src.js"></script>
+<script src="~/Scripts/leaflet.toolbar-src.js"></script>
+<script src="~/Scripts/leaflet.draw-src.js"></script>
+<script src="~/Scripts/leaflet.draw-toolbar.js"></script>
+
+<link href="~/Content/bootstrap-table.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-table.js"></script>
+<link href="~/Content/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert.js"></script>
+<script src="~/Scripts/bootstrap-table-locale-all.min.js"></script>
+<script src="~/Scripts/esri-leaflet.js"></script>
+<script src="~/Scripts/esri-leaflet-geocoder.js"></script>
+<script src="~/Scripts/bootstrap-toggle.min.js"></script>
+<div class="row">
+    <br>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <h3 style="margin-left:10px;"><span class="fa fa-building fa-lg"></span>&nbsp;<span id="tituloMantenimiento">Perfil de empresa </span></h3>
+            </div>
+        </div>
+    </nav>
+</div>
+@using (Html.BeginForm("Perfil", "Empresa", FormMethod.Post, new { id = "formPerfil", role = "form", @data_toggle = "validator" }))
+{
+    @Html.AntiForgeryToken();
+    @Html.ValidationSummary(true);
+    <div class="form-group" id="divMantenimiento">
+        <div class="row form-group">
+            @Html.HiddenFor(m => m.idEmpresa)
+            @Html.HiddenFor(m => m.latitud)
+            @Html.HiddenFor(m => m.longitud)
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.nombreEmpresa)
+                @Html.TextBoxFor(model => model.nombreEmpresa, new { @id = "txtNombreEmpresa", @class = "form-control", @placeholder = "Ingrese el nombre", @maxlength = 50 })
+                @Html.ValidationMessageFor(model => model.nombreEmpresa, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.cedulaJuridica)
+                @Html.TextBoxFor(model => model.cedulaJuridica, new { @id = "txtCedula", @class = "form-control", @placeholder = "Ingrese la cédula júrídica", @maxlength = 80 })
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.telefono)
+                @Html.TextBoxFor(model => model.telefono, new { @id = "txtTelefono", @class = "form-control", @placeholder = "Ingrese el teléfono", @maxlength = 80 })
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.idZonaHoraria)
+                @Html.DropDownListFor(model => model.idZonaHoraria, new SelectList(Model.listaZonasHorarias, "idZonaHoraria", "zonaHoraria"), new { @id = "ddlZonas", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.idZonaHoraria, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.direccion)
+                @Html.TextBoxFor(model => model.direccion, new { @id = "txtDireccion", @class = "form-control", @type = "email", @placeholder = "Ingrese la dirección", @maxlength = 100 })
+                @Html.ValidationMessageFor(model => model.direccion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div id="divMapa" class="">
+            <div id="map" style="height:580px;"></div>
+            <div class='pointer'></div>
+            <div><br /><center>Usar mapa satelital&nbsp; <input data-toggle="toggle" data-onstyle="warning" type="checkbox" onchange="CambiarTipoMapa(this)" data-on="Sí" data-off="No"><br /><br /></center></div>
+        </div>
+        <a style="font-size:12px;">Dar de baja la página</a>
+        <div class="row">
+            <div class="col-md-8"></div>
+            <div class="col-md-4">
+                <button id="btnGuardar" name="btnGuardar" class="btn btn-primary pull-right btn-guardar" type="submit">Actualizar&nbsp;<span><i class="fa fa-refresh"></i></span></button>
+            </div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+
+}
+
+@if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoCorrecto)
+{
+    <script>
+        swal({
+            title: 'Correcto',
+            text: "@ViewBag.mensaje",
+            type: 'success',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+}
+else if (ViewBag.respuesta != null && ViewBag.respuesta == Constantes.EstadoError)
+{
+    <script>
+        swal({
+            title: 'Error',
+            text: "@ViewBag.mensaje",
+            type: 'error',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+            });
+    </script>
+}
+<script>
+
+        var map = L.map('map').setView([9.842405, -83.9317569], 29),
+            drawnItems = new L.FeatureGroup().addTo(map);
+
+        map.on('draw:created', function (e) {
+
+            var type = e.layerType,
+                layer = e.layer;
+
+            if (type === 'polygon') {
+
+                var geojson = {};
+                geojson['type'] = 'Feature';
+                geojson['geometry'] = {};
+                geojson['geometry']['type'] = "Polygon";
+
+
+                coordinates = [];
+                var coordenadas = "";
+                latlngs = layer.getLatLngs();
+                for (var i = 0; i < latlngs[0].length; i++) {
+                    coordinates.push([latlngs[0][i].lng, latlngs[0][i].lat])
+                    var orden = i + 1;
+                    coordenadas += '<coordenada><longitud>' + latlngs[0][i].lng + "</longitud><latitud>" + latlngs[0][i].lat + '</latitud><orden>' + orden + '</orden></coordenada>';
+                }
+
+                coordenadas = '<coordenadas>' + coordenadas + '</coordenadas>';
+
+                geojson['geometry']['coordinates'] = [coordinates];
+
+
+                $("#hdnActualizarCoordenadas").val(true);
+                var Base64 = { _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=", encode: function (e) { var t = ""; var n, r, i, s, o, u, a; var f = 0; e = Base64._utf8_encode(e); while (f < e.length) { n = e.charCodeAt(f++); r = e.charCodeAt(f++); i = e.charCodeAt(f++); s = n >> 2; o = (n & 3) << 4 | r >> 4; u = (r & 15) << 2 | i >> 6; a = i & 63; if (isNaN(r)) { u = a = 64 } else if (isNaN(i)) { a = 64 } t = t + this._keyStr.charAt(s) + this._keyStr.charAt(o) + this._keyStr.charAt(u) + this._keyStr.charAt(a) } return t }, decode: function (e) { var t = ""; var n, r, i; var s, o, u, a; var f = 0; e = e.replace(/[^A-Za-z0-9+/=]/g, ""); while (f < e.length) { s = this._keyStr.indexOf(e.charAt(f++)); o = this._keyStr.indexOf(e.charAt(f++)); u = this._keyStr.indexOf(e.charAt(f++)); a = this._keyStr.indexOf(e.charAt(f++)); n = s << 2 | o >> 4; r = (o & 15) << 4 | u >> 2; i = (u & 3) << 6 | a; t = t + String.fromCharCode(n); if (u != 64) { t = t + String.fromCharCode(r) } if (a != 64) { t = t + String.fromCharCode(i) } } t = Base64._utf8_decode(t); return t }, _utf8_encode: function (e) { e = e.replace(/rn/g, "n"); var t = ""; for (var n = 0; n < e.length; n++) { var r = e.charCodeAt(n); if (r < 128) { t += String.fromCharCode(r) } else if (r > 127 && r < 2048) { t += String.fromCharCode(r >> 6 | 192); t += String.fromCharCode(r & 63 | 128) } else { t += String.fromCharCode(r >> 12 | 224); t += String.fromCharCode(r >> 6 & 63 | 128); t += String.fromCharCode(r & 63 | 128) } } return t }, _utf8_decode: function (e) { var t = ""; var n = 0; var r = c1 = c2 = 0; while (n < e.length) { r = e.charCodeAt(n); if (r < 128) { t += String.fromCharCode(r); n++ } else if (r > 191 && r < 224) { c2 = e.charCodeAt(n + 1); t += String.fromCharCode((r & 31) << 6 | c2 & 63); n += 2 } else { c2 = e.charCodeAt(n + 1); c3 = e.charCodeAt(n + 2); t += String.fromCharCode((r & 15) << 12 | (c2 & 63) << 6 | c3 & 63); n += 3 } } return t } }
+
+
+                $("#hdnListaCoordenadas").val(Base64.encode(coordenadas));
+
+            }
+
+            drawnItems.addLayer(layer);
+        });
+        map.on('draw:deleted', function (e) {
+            $("#hdnActualizarCoordenadas").val(true);
+            $("#hdnListaCoordenadas").val("");
+        });
+</script>
+<script src="~/Scripts/mapa_editar.js"></script>

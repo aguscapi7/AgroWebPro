@@ -8,46 +8,62 @@
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
     <link href="~/Content/navbar-fixed-left.css" rel="stylesheet" />
-    <link href="~/Content/menu.css" rel="stylesheet" />
+    @*<link href="~/Content/menu.css" rel="stylesheet" />*@
+    <link href="~/Content/mmenu.css" rel="stylesheet" />
+    <link href="~/Content/demo.css" rel="stylesheet" />
     <link href="~/Content/font-awesome/css/font-awesome.css" rel="stylesheet" />
     @Scripts.Render("~/bundles/modernizr")
 </head>
 
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-left">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+        <div class="header navbar navbar-inverse navbar-fixed-left">
+            <a class="enlace" href="#menu"><span></span></a>
+            <div class="btn-group" style="float:right;cursor:pointer;margin-top:5px;">
+                <button type="button" class="btn btn-default dropdown-toggle" style="color:white;background-color:#333;border-color:#333;padding-left:0px;padding-bottom:0px; padding-top:10px;padding-right:10px;" data-toggle="dropdown">
+                    @(HttpUtility.UrlDecode(Request.Cookies["nombreUsuario"] != null ? (Request.Cookies["nombreUsuario"].Value.ToString().Length > 15 ? Request.Cookies["nombreUsuario"].Value.ToString().Substring(0,15) : Request.Cookies["nombreUsuario"].Value.ToString()) : "")) <span class="caret" style="border-top:14px solid white;border-width: 5px;"></span>
                 </button>
-                <a class="navbar-brand" href="#" onclick="AbrirEnlace('@Url.Action("Inicio", "Home")')"><img src="~/img/agro_web_small.png" /></a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
-                <ul class="nav navbar-nav">
-                    @if (Request.Cookies["usuario"] != null && Request.Cookies["usuario"].Values["opciones-menu"] != null)
+                <ul class="dropdown-menu  pull-right" role="menu">
+                    <li ><a href="#" onclick="AbrirEnlace('@Url.Action("Perfil", "Usuario")')" style="text-decoration: none;"><span class="fa fa-user fa-lg"></span>&nbsp;Perfil</a></li>
+                    @if (Request.Cookies["usuario"] != null && Request.Cookies["usuario"]["rol"] != null && !Request.Cookies["usuario"]["rol"].ToString().Equals("57bcde54-9b6d-417f-a58a-451ab43431cd"))
                     {
-                        System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                        List<AgroWebPro.Web.Models.OpcionModels> listaOpciones = serializer.Deserialize<List<AgroWebPro.Web.Models.OpcionModels>>(Request.Cookies["usuario"].Values["opciones-menu"].ToString());
-                        foreach (var item in listaOpciones)
-                        {
-                            <li id="li-@item.controlador-@item.accion" onclick="AbrirEnlace('@Url.Action(item.accion, item.controlador)')" class="li-menu"><a><i class="@item.icono"></i> @item.nombre</a></li>
-
-                        }
+                        <li><a href="#" onclick="AbrirEnlace('@Url.Action("Perfil", "Empresa")')" style="text-decoration: none;"><span class="fa fa-building fa-lg"></span>&nbsp;Empresa</a></li>
                     }
-                    <li id="li-salir" onclick="AbrirEnlace('@Url.Action("CerrarSesion", "Home")')" class="li-menu"><a><i class="fa fa-sign-out fa-lg"></i> Cerrar sesión</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#" onclick="AbrirEnlace('@Url.Action("CerrarSesion", "Home")')"  style="text-decoration: none;"><span class="fa fa-sign-out fa-lg"></span>Cerrar sesión</a></li>
                 </ul>
             </div>
+           <img style="margin:auto;display:block;cursor:pointer;padding-left:60px;padding-top:5px;" src="~/img/agro_web_small.png" onclick="AbrirEnlace('@Url.Action("Inicio", "Home")')" />
+            
         </div>
+    <nav id="menu" style="float:right;">
+        <ul>
+            @if (Request.Cookies["usuario"] != null && Request.Cookies["usuario"].Values["opciones-menu"] != null)
+            {
+                System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                List<AgroWebPro.Web.Models.OpcionModels> listaOpciones = serializer.Deserialize<List<AgroWebPro.Web.Models.OpcionModels>>(Request.Cookies["usuario"].Values["opciones-menu"].ToString());
+                foreach (var item in listaOpciones)
+                {
+                    if (item.mostrarMenu)
+                    {
+                        <li id="li-@item.controlador-@item.accion" onclick="AbrirEnlace('@Url.Action(item.accion, item.controlador)')" class="li-menu"><a><i class="@item.icono"></i> @item.nombre</a></li>
+                    }
+
+                }
+            }
+            <li id="li-salir" onclick="AbrirEnlace('@Url.Action("CerrarSesion", "Home")')" class="li-menu"><a><i class="fa fa-sign-out fa-lg"></i> Cerrar sesión</a></li>
+
+        </ul>
     </nav>
-    <div class="container body-content">
+    <div class="content">
         <div>
-            <br /><br />
         </div>
-        
-        @RenderBody()
+        <div class="row" style="background-color:#eae9e9;padding-left:-10px;padding-right:-10px;">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8" style="background-color:#fff;border-left-color:gray;border-right-color:gray;min-height:800px;">
+                @RenderBody()</div>
+            <div class="col-sm-2" ></div>
+        </div>
+
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - AgroWebPro / Un desarrollo de CPSoft</p>
@@ -85,5 +101,32 @@
     </script>
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    <script src="~/Scripts/mmenu.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('nav#menu').mmenu();
+            $(".mm-navbar__title").html("");
+            var span = "<div class='row'><div class='col-xs-2'></div><div class='col-xs-7'>@(Request.Cookies["usuario"] != null && Request.Cookies["usuario"].Values["nombreEmpresa"] != null ? Request.Cookies["usuario"].Values["nombreEmpresa"] : "" )</div><div class='col-xs-3'><span style='cursor:pointer;' id='btnConfigurarEmpresa'><font size='4'><i class='fa fa-cog'></i></font></span></div></div>"
+            $(".mm-navbar__title").append(span);
+            $("#btnConfigurarEmpresa").on("click", function () {
+            var url = "@Url.Action("Perfil", "Empresa")";
+            AbrirEnlace(url);
+        });
+        });
+
+        $("#btnConfigurarEmpresa").on("click", function () {
+            var url = "@Url.Action("Perfil", "Empresa")";
+            AbrirEnlace(url);
+        });
+    </script>
+    <style>
+        .mm-navbar__title{
+            color: #fff;
+        }
+        .dropdown-menu > li > a:hover {
+            background-color: #cc5802;
+        }
+    </style>
 </body>
 </html>
